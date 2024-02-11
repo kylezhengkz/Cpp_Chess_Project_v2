@@ -37,6 +37,8 @@ U64 BoardNode::getColourPieces(Colour colour) {
 
 double BoardNode::staticEval() {
     double eval = 0;
+
+    // material balance
     eval += __builtin_popcountll(board->whitePawns) * 1;
     eval += __builtin_popcountll(board->whiteKnights) * 3;
     eval += __builtin_popcountll(board->whiteBishops) * 3.05;
@@ -47,6 +49,8 @@ double BoardNode::staticEval() {
     eval -= __builtin_popcountll(board->blackBishops) * 3.05;
     eval -= __builtin_popcountll(board->blackRooks) * 5;
     eval -= __builtin_popcountll(board->blackQueens) * 9;
+
+
     return eval;
 }
 
@@ -83,7 +87,6 @@ void BoardNode::searchLegalMusks(Colour colour, unordered_map<int, U64>& pins, b
     // look for pawn checks
     U64 checkMusk = LookupTable::lookupPawnControlMusk(kingSquare, colour);
     if ((checkMusk & oppositionPawns) != 0) {
-        cout << "Pawn check" << endl;
         check = true;
         checkPath = checkMusk & oppositionPawns;
     }
@@ -91,7 +94,6 @@ void BoardNode::searchLegalMusks(Colour colour, unordered_map<int, U64>& pins, b
     // look for knight checks
     checkMusk = LookupTable::lookupMusk(kingSquare, Piece::KNIGHT);
     if (!check && (checkMusk & oppositionKnights) != 0) {
-        cout << "Knight check" << endl;
         check = true;
         checkPath = checkMusk & oppositionKnights;
     }
@@ -115,9 +117,6 @@ void BoardNode::searchLegalMusks(Colour colour, unordered_map<int, U64>& pins, b
 
         if ((ray & oppositionAttackers) != 0) {
             int sourceIndex = getLSB(ray & oppositionAttackers);
-            if (sourceIndex == -1) {
-                throw logic_error("Expected a checking piece, but it doesn't exist");
-            }
             U64 inBetweenRay = clearBitsGreaterThanIndex(ray, sourceIndex);
             if (inBetweenRay & oppositionPieces) { // opponent piece in the way
                 continue;
@@ -149,9 +148,6 @@ void BoardNode::searchLegalMusks(Colour colour, unordered_map<int, U64>& pins, b
 
         if ((ray & oppositionAttackers) != 0) {
             int sourceIndex = getMSB(ray & oppositionAttackers);
-            if (sourceIndex == -1) {
-                throw logic_error("Expected a checking piece, but it doesn't exist");
-            }
             U64 inBetweenRay = clearBitsLessThanIndex(ray, sourceIndex);
             if (inBetweenRay & oppositionPieces) { // no check or pin due to opponent piece interference
                 continue;
@@ -173,45 +169,86 @@ void BoardNode::searchLegalMusks(Colour colour, unordered_map<int, U64>& pins, b
 }
 
 bool BoardNode::isSquareSafe(int square, Colour colour) { // castling purposes
+    U64 oppositionPawns;
+    U64 oppositionKnights;
+    U64 oppositionBishops;
+    U64 oppositionRooks;
+    U64 oppositionQueens;
+    U64 allPieces;
     if (colour == Colour::WHITE) {
-        U64 knightMusk = LookupTable::lookupMusk(square, Piece::KNIGHT);
-        if ((knightMusk & board->blackKnights) != 0) {
-            return false;
-        }
-
-        U64 pawnCheckMusk = LookupTable::lookupPawnControlMusk(square, colour);
-        if ((pawnCheckMusk & board->blackPawns) != 0) {
-            return false;
-        }
-
-        U64 diagonalMusk = LookupTable::lookupMusk(square, Piece::BISHOP);
-        if ((diagonalMusk & (board->blackBishops | board->blackQueens)) != 0) {
-            return false;
-        }
-
-        U64 straightMusk = LookupTable::lookupMusk(square, Piece::ROOK);
-        if ((straightMusk & (board->blackRooks | board->blackQueens)) != 0) {
-            return false;
-        }
+        oppositionPawns = board->blackPawns;
+        oppositionKnights = board->blackKnights;
+        oppositionBishops = board->blackBishops;
+        oppositionRooks = board->blackRooks;
+        oppositionQueens = board->blackQueens;
+        allPieces = board->blackPieces | board->whitePieces;
     } else {
-        U64 knightMusk = LookupTable::lookupMusk(square, Piece::KNIGHT);
-        if ((knightMusk & board->whiteKnights) != 0) {
-            return false;
+        oppositionPawns = board->whitePawns;
+        oppositionKnights = board->whiteKnights;
+        oppositionBishops = board->whiteBishops;
+        oppositionRooks = board->whiteRooks;
+        oppositionQueens = board->whiteQueens;
+        allPieces = board->whitePieces | board->whitePieces;
+    }
+    
+    // look for pawn checks
+    U64 checkMusk = LookupTable::lookupPawnControlMusk(square, colour);
+    if ((checkMusk & oppositionPawns) != 0) {
+        return false;
+    }
+
+    // look for knight checks
+    checkMusk = LookupTable::lookupMusk(square, Piece::KNIGHT);
+    if ((checkMusk & oppositionKnights) != 0) {
+        return false;
+    }
+    
+    // quick way to ensure that it's possible for square to be unsafe
+    U64 potentialCheckPaths = LookupTable::lookupMove(square, Piece::QUEEN, 0);
+    if ((potentialCheckPaths & (oppositionBishops | oppositionRooks | oppositionQueens)) == 0) {
+        return false;
+    }
+
+    // search each check ray direction one-by-one
+    vector<int> increasingRays = {VERTICAL, POSITIVE_DIAGONAL, NEGATIVE_DIAGONAL, HORIZONTAL};
+    for (int direction : increasingRays) {
+        U64 ray = LookupTable::lookupRayMusk(square, direction);
+        U64 oppositionAttackers;
+        if (isDiagonal(direction)) {
+            oppositionAttackers = oppositionBishops | oppositionQueens;
+        } else {
+            oppositionAttackers = oppositionRooks | oppositionQueens;
         }
 
-        U64 pawnCheckMusk = LookupTable::lookupPawnControlMusk(square, colour);
-        if ((pawnCheckMusk & board->whitePawns) != 0) {
-            return false;
+        if ((ray & oppositionAttackers) != 0) {
+            int sourceIndex = getLSB(ray & oppositionAttackers);
+            U64 inBetweenRay = clearBitsGreaterThanIndex(ray, sourceIndex);
+            if (inBetweenRay & allPieces) { // piece in the way
+                continue;
+            } else {
+                return false;
+            }
+        }
+    }
+
+    vector<int> decreasingRays = {-VERTICAL, -POSITIVE_DIAGONAL, -NEGATIVE_DIAGONAL, -HORIZONTAL};
+    for (int direction : decreasingRays) {
+        U64 ray = LookupTable::lookupRayMusk(square, direction);
+        U64 oppositionAttackers;
+        if (isDiagonal(direction)) {
+            oppositionAttackers = oppositionBishops | oppositionQueens;
+        } else {
+            oppositionAttackers = oppositionRooks | oppositionQueens;
         }
 
-        U64 diagonalMusk = LookupTable::lookupMusk(square, Piece::BISHOP);
-        if ((diagonalMusk & (board->whiteBishops | board->blackQueens)) != 0) {
-            return false;
-        }
-
-        U64 straightMusk = LookupTable::lookupMusk(square, Piece::ROOK);
-        if ((straightMusk & (board->whiteRooks | board->blackQueens)) != 0) {
-            return false;
+        if ((ray & oppositionAttackers) != 0) {
+            int sourceIndex = getMSB(ray & oppositionAttackers);
+            U64 inBetweenRay = clearBitsLessThanIndex(ray, sourceIndex);
+            if (inBetweenRay & allPieces) { // piece in the way
+                continue;
+            } else {
+                return false;
+            }
         }
     }
 
@@ -296,12 +333,11 @@ void BoardNode::generateMoves(Colour colour) {
     searchLegalMusks(colour, pins, check, checkPath, doubleCheck, kingLegalMoves, kingSquare);
 
     U64 unsafeSquares = generateUnsafeMusk(colour);
-
     U64 allPieces = board->whitePieces | board->blackPieces;
     vector<Piece> pieceGenerationOrder;
     U64 teamPieces;
     U64 oppositionPieces;
-    int enPassantCaptureIndex;
+    int enPassantCaptureIndex = -1;
     if (colour == Colour::WHITE) {
         pieceGenerationOrder = {Piece::WHITEPAWN, Piece::KNIGHT, Piece::BISHOP, Piece::ROOK, Piece::QUEEN};
         teamPieces = board->whitePieces;
@@ -384,6 +420,8 @@ void BoardNode::generateMoves(Colour colour) {
                 int8_t captureFlag = 0b0000;
                 if (getBit(oppositionPieces, newSquare)) { // if capture
                     moveVal += board->findPiece(newSquare, !colour, captureFlag);
+                } else if (flag == Move::enPassant) {
+                    moveVal += 1;
                 }
 
                 if (getBit(unsafeSquares, newSquare)) {
@@ -395,10 +433,8 @@ void BoardNode::generateMoves(Colour colour) {
                 U64 futureMuskDestinations;
                 if (piece == Piece::WHITEPAWN) {
                     futureMuskDestinations = LookupTable::lookupPawnControlMusk(newSquare, colour);
-                    moveVal += __builtin_popcountll(board->getPieces(Piece::WHITEPAWN, colour)) * 0.5;
                 } else if (piece == Piece::BLACKPAWN) {
                     futureMuskDestinations = LookupTable::lookupPawnControlMusk(newSquare, colour);
-                    moveVal += __builtin_popcountll(board->getPieces(Piece::BLACKPAWN, colour)) * 0.5;
                 } else if (piece == Piece::KNIGHT) {
                     futureMuskDestinations = LookupTable::lookupMusk(newSquare, piece) & ~teamPieces;
                 } else {
@@ -411,9 +447,14 @@ void BoardNode::generateMoves(Colour colour) {
                         continue;
                     } else if (getBit(board->getPieces(Piece::KING, !colour), destinationSquare)) { // check
                         moveVal += 3.5;
-                    } else if (getBit(oppositionPieces, destinationSquare)) {
+                    } else if (getBit(oppositionPieces, destinationSquare)) { // attack
                         int8_t dummyVar = 0b0000;
-                        moveVal += board->findPiece(destinationSquare, !colour, dummyVar) * 0.25;
+                        double attackVal = board->findPiece(destinationSquare, !colour, dummyVar);
+                        if (getBit(unsafeSquares, destinationSquare) && attackVal < board->getPieceValue(piece)) { // attacked piece is being defended and isn't worth pursuing
+                            attackVal *= 0.1;
+                        }
+
+                        moveVal += attackVal * 0.25;
                     }
                 }
 
@@ -447,7 +488,7 @@ void BoardNode::generateMoves(Colour colour) {
         if (castleStatus.canWhiteKingCastleLeft() && ((whiteLeftCastle & allPieces) == 0)) {
             if (isSquareSafe(4, colour) && isSquareSafe(1, colour) && isSquareSafe(2, colour) && isSquareSafe(3, colour)) {
                 Move move{kingSquare, 2, Move::castle, Move::noCapture};
-                moves.emplace(1.1, move);
+                moves.emplace(1, move);
             }
         }
         
@@ -461,7 +502,7 @@ void BoardNode::generateMoves(Colour colour) {
         if (castleStatus.canBlackKingCastleLeft() && ((blackLeftCastle & allPieces) == 0)) {
             if (isSquareSafe(60, colour) &&  isSquareSafe(57, colour) && isSquareSafe(58, colour) && isSquareSafe(59, colour)) {
                 Move move{kingSquare, 58, Move::castle, Move::noCapture};
-                moves.emplace(1.1, move);
+                moves.emplace(1, move);
             }
         }
         
@@ -758,7 +799,7 @@ string indexToChessSquare(int index) {
 
 ostream& BoardNode::printChildrenMoveNotation(ostream& out) {
     for (auto move : moves) {
-        cout << indexToChessSquare(move.second.getFromSquare()) << " " << indexToChessSquare(move.second.getToSquare()) << endl;
+        cout << "move value: " << move.first  << " " << indexToChessSquare(move.second.getFromSquare()) << " " << indexToChessSquare(move.second.getToSquare()) << endl;
     }
     return out;
 }

@@ -19,14 +19,7 @@ void CPU::pickMove(BoardNode*& pos) {
         cout << "BLACK TO MOVE:" << endl;
     }
     pos->generateMoves(colour);
-    /*
-    cout << "Display CPU's possible moves" << endl;
-    cout << *pos << endl;
-    cout << "End displaying CPU's possible moves" << endl;
-    */
-    
-    // int rand = getRandomNumber(pos->getChildren().size() - 1);
-    // cout << rand << endl;
+    pos->printChildrenMoveNotation(cout);
     pos->addPredictedBestMove(colour);
     branchToChild(pos, 0);
 }

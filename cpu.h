@@ -12,7 +12,7 @@ class CPU: public Player {
     public:
     CPU(Colour colour);
     void generateMoves();
-    void pickMove(BoardNode*& pos) override; // DEBUGGING PURPOSES
+    void pickMove(BoardNode*& pos) override;
     void iterativeDeepening(BoardNode*& pos);
     double alphaBetaPruning(BoardNode* pos, int depth, double alpha, double beta, bool maximizingPlayer);
     private:
