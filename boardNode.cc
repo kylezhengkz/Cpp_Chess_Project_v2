@@ -847,6 +847,15 @@ void branchToChild(BoardNode*& boardNode, size_t childIndex) {
         delete boardNode->getChildren()[i];
     }
     boardNode->deleteBoard();
+    BoardNode* ptr = boardNode;
     boardNode = boardNode->getChildren()[childIndex];
-    boardNode->getChildren().clear();
+    ptr->getChildren().clear();
+}
+
+void BoardNode::setValue(double value) {
+    this->value = value;
+}
+
+double BoardNode::getValue() const {
+    return value;
 }

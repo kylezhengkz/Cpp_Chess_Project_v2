@@ -22,53 +22,54 @@ void CPU::pickMove(BoardNode*& pos) {
     pos->printChildrenMoveNotation(cout);
     pos->addPredictedBestMove(colour);
     branchToChild(pos, 0);
+    // iterativeDeepening(pos);
 }
 
 void CPU::iterativeDeepening(BoardNode*& pos) {
-    // int temp = numeric_limits<int>::max();
-    int temp = 2;
-    for (int depth = 1; depth < temp; depth++) {
+    startTime = high_resolution_clock::now();
+    for (int depth = 1; depth < numeric_limits<int>::max(); depth++) {
         if (colour == Colour::WHITE) {
-            startTime = high_resolution_clock::now();
             alphaBetaPruning(pos, depth, negativeInfinity, positiveInfinity, true);
         } else {
-            startTime = high_resolution_clock::now();
             alphaBetaPruning(pos, depth, negativeInfinity, positiveInfinity, false);
         }
+        auto currentTime = high_resolution_clock::now();
+        if ((duration_cast<seconds>(currentTime - startTime)).count() >= maxTimeSeconds) {
+            break;
+        }
     }
-    for (size_t i = 1; i < pos->getChildren().size(); i++) {
-        delete pos->getChildren()[i];
-    }
-    pos->deleteBoard();
-    pos = pos->getChildren()[0];
-    pos->getChildren().clear();
+    branchToChild(pos, 0);
 }
 
 double CPU::alphaBetaPruning(BoardNode* pos, int depth, double alpha, double beta, bool maximizingPlayer) {
     auto currentTime = high_resolution_clock::now();
     auto duration = duration_cast<seconds>(currentTime - startTime);
     if (duration.count() >= maxTimeSeconds) { // time is up! stop the search
-        return pos->staticEval();
+        if (depth == 0) {
+            double staticEval = pos->staticEval();
+            pos->setValue(staticEval);
+            return staticEval;
+        } else {
+            return pos->getValue();
+        }
     }
 
     if (depth == 0) {
-        return pos->staticEval();
+        double staticEval = pos->staticEval();
+        pos->setValue(staticEval);
+        return staticEval;
     }
 
     if (maximizingPlayer) {
         double maxEval = negativeInfinity;
-        bool newMoves = false;
         if (pos->getChildren().size() == 0) {
             pos->generateMoves(Colour::WHITE);
-            newMoves = true;
-        }
-        /*
-        if (!newMoves) { // order move
+        } else {
             sort(pos->getChildren().begin(), pos->getChildren().end(), [](const BoardNode* lhs, const BoardNode* rhs) {
-                return lhs->getValue() < rhs->getValue();
+                return lhs->getValue() > rhs->getValue();
             });
         }
-        */
+
         for (size_t i = 0; i < pos->getChildren().size(); i++) {
             double eval = alphaBetaPruning(pos->getChildren()[i], depth - 1, alpha, beta, false);
             maxEval = max(maxEval, eval);
@@ -76,23 +77,22 @@ double CPU::alphaBetaPruning(BoardNode* pos, int depth, double alpha, double bet
             if (beta <= alpha) {
                 break;
             }
-            return maxEval;
         }
+        pos->setValue(maxEval);
+        return maxEval;
+
+        throw logic_error("Logically unreachable code has been reached");
         return negativeInfinity;
     } else {
         double minEval = positiveInfinity;
-        bool newMoves = false;
         if (pos->getChildren().size() == 0) {
             pos->generateMoves(Colour::BLACK);
-            newMoves = true;
-        }
-        /*
-        if (!newMoves) { // order move
+        } else {
             sort(pos->getChildren().begin(), pos->getChildren().end(), [](const BoardNode* lhs, const BoardNode* rhs) {
                 return lhs->getValue() < rhs->getValue();
             });
         }
-        */
+
         for (size_t i = 0; i < pos->getChildren().size(); i++) {
             double eval = alphaBetaPruning(pos->getChildren()[i], depth - 1, alpha, beta, true);
             minEval = min(minEval, eval);
@@ -100,8 +100,11 @@ double CPU::alphaBetaPruning(BoardNode* pos, int depth, double alpha, double bet
             if (beta <= alpha) {
                 break;
             }
-            return minEval;
         }
+        pos->setValue(minEval);
+        return minEval;
+
+        throw logic_error("Logically unreachable code has been reached");
         return positiveInfinity;
     }
 }

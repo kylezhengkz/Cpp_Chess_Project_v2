@@ -16,6 +16,7 @@ class BoardNode {
     unordered_map<int, U64> opponentPins;
     multimap<double, Move, greater<double>> moves;
     vector<BoardNode*> children;
+    double value;
     public:
     // Board* getBoard(); // TEMP
     bool moveListEmpty(); // TEMP
@@ -32,12 +33,13 @@ class BoardNode {
     ostream& printChildren(ostream& out);
     ostream& printChildrenMoveNotation(ostream& out);
     vector<BoardNode*> getChildren();
-    double getValue() const;
     ~BoardNode();
     void deleteChildren();
     void clearMoves();
     void deleteBoard();
     bool containsMove(int fromSquare, int toSquare);
     friend void branchToChild(BoardNode*& boardNode, size_t index);
+    void setValue(double val);
+    double getValue() const;
 };
 #endif
