@@ -8,6 +8,15 @@
         "iosfwd": "cpp",
         "__bit_reference": "cpp",
         "stdexcept": "cpp",
-        "chrono": "cpp"
+        "chrono": "cpp",
+        "__hash_table": "cpp",
+        "__split_buffer": "cpp",
+        "__tree": "cpp",
+        "array": "cpp",
+        "bitset": "cpp",
+        "initializer_list": "cpp",
+        "random": "cpp",
+        "string": "cpp",
+        "string_view": "cpp"
     }
 }

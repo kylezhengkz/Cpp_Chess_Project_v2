@@ -18,25 +18,32 @@ void CPU::pickMove(BoardNode*& pos) {
     } else {
         cout << "BLACK TO MOVE:" << endl;
     }
+    /*
     pos->generateMoves(colour);
     pos->printChildrenMoveNotation(cout);
     pos->addPredictedBestMove(colour);
     branchToChild(pos, 0);
-    // iterativeDeepening(pos);
+    */
+    iterativeDeepening(pos);
 }
 
 void CPU::iterativeDeepening(BoardNode*& pos) {
     startTime = high_resolution_clock::now();
     for (int depth = 1; depth < numeric_limits<int>::max(); depth++) {
+        cout << "Searching depth " << depth << endl;
         if (colour == Colour::WHITE) {
             alphaBetaPruning(pos, depth, negativeInfinity, positiveInfinity, true);
         } else {
             alphaBetaPruning(pos, depth, negativeInfinity, positiveInfinity, false);
         }
         auto currentTime = high_resolution_clock::now();
-        if ((duration_cast<seconds>(currentTime - startTime)).count() >= maxTimeSeconds) {
+        auto timeElasped = (duration_cast<seconds>(currentTime - startTime)).count();
+        cout << "Time elasped: " << timeElasped << endl;
+        if (timeElasped >= maxTimeSeconds) {
+            cout << "Halted search at depth " << depth << endl;
             break;
         }
+        cout << "Finished searching depth " << depth << endl;
     }
     branchToChild(pos, 0);
 }
@@ -80,9 +87,6 @@ double CPU::alphaBetaPruning(BoardNode* pos, int depth, double alpha, double bet
         }
         pos->setValue(maxEval);
         return maxEval;
-
-        throw logic_error("Logically unreachable code has been reached");
-        return negativeInfinity;
     } else {
         double minEval = positiveInfinity;
         if (pos->getChildren().size() == 0) {
@@ -103,8 +107,5 @@ double CPU::alphaBetaPruning(BoardNode* pos, int depth, double alpha, double bet
         }
         pos->setValue(minEval);
         return minEval;
-
-        throw logic_error("Logically unreachable code has been reached");
-        return positiveInfinity;
     }
 }
