@@ -34,6 +34,12 @@ U64 LookupTable::lookupMusk(int key, Piece piece) {
         case (Piece::QUEEN):
             return queenMusks[key];
             break;
+        case (Piece::BISHOP):
+            return bishopMusks[key];
+            break;
+        case (Piece::ROOK):
+            return rookMusks[key];
+            break;
         default:
             throw logic_error("Attempted to search an invalid musk");
             break;
@@ -128,7 +134,7 @@ U64 LookupTable::lookupRayMusk(int square, int direction) {
             return rayMusks[UPLEFTINDEX][square];
             break;
         } case(-NEGATIVE_DIAGONAL): {
-            return rayMusks[DOWNLEFTINDEX][square];
+            return rayMusks[DOWNRIGHTINDEX][square];
             break;
         } default:
             throw logic_error("Attempted to lookup an invalid ray musk");

@@ -102,6 +102,12 @@ namespace MaskUtils {
     const int POSITIVE_DIAGONAL = 9;
     const int NO_DIRECTION = 0;
 
+    // castling rays
+    const U64 whiteLeftCastle = (0x1ULL << 1) | (0x1ULL << 2) | (0x1ULL << 3);
+    const U64 whiteRightCastle = (0x1ULL << 5) | (0x1ULL << 6);
+    const U64 blackLeftCastle = (0x1ULL << 57) | (0x1ULL << 58) | (0x1ULL << 59);
+    const U64 blackRightCastle = (0x1ULL << 61) | (0x1ULL << 62);
+
     int getBit(const U64& b, int i);
     void setBit(U64& b, int i);
     void clearBit(U64& b, int i);

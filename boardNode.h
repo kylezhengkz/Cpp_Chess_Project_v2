@@ -23,6 +23,7 @@ class BoardNode {
     U64 getColourPieces(Colour colour);
     double staticEval();
     void searchLegalMusks(Colour colour, unordered_map<int, U64>& pins, bool& check, U64& checkPath, bool& doubleCheck, U64& kingLegalMoves, int& kingSquare);
+    bool isSquareSafe(int square, Colour colour);
     U64 generateUnsafeMusk(Colour teamColour);
     void generateMoves(Colour colour);
     void addPredictedBestMove(Colour colour);

@@ -6,6 +6,7 @@
         "ostream": "cpp",
         "iostream": "cpp",
         "iosfwd": "cpp",
-        "__bit_reference": "cpp"
+        "__bit_reference": "cpp",
+        "stdexcept": "cpp"
     }
 }

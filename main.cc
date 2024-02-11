@@ -26,7 +26,7 @@ int main() {
     BoardNode* currentPosition = StartPosition::defaultPosition(board);
     Player* player1 = choosePlayerType(Colour::WHITE);
     Player* player2 = choosePlayerType(Colour::BLACK);
-    for (int i = 0; i < 150; i++) {
+    for (int i = 0; i < 300; i++) {
         while (true) {
             try {
                 player1->pickMove(currentPosition);
