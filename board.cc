@@ -59,10 +59,10 @@ double Board::findPiece(int squareIndex, Colour teamColour, int8_t& captureFlag)
             captureFlag = Move::pawnCapture;
             return 1;
         } else if (getBit(whiteKnights, squareIndex)) {
-            captureFlag = Move::bishopCapture;
+            captureFlag = Move::knightCapture;
             return 3;
         } else if (getBit(whiteBishops, squareIndex)) {
-            captureFlag = Move::knightCapture;
+            captureFlag = Move::bishopCapture;
             return 3.05;
         } else if (getBit(whiteRooks, squareIndex)) {
             captureFlag = Move::rookCapture;

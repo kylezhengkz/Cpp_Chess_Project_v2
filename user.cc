@@ -21,7 +21,10 @@ void User::pickMove(BoardNode*& pos) {
     while (command != "move") {
         if (command == "list") {
             pos->generateMoves(colour);
-            pos->printChildren(cout);
+            pos->printChildrenMoveNotation(cout);
+            while (!pos->moveListEmpty()) {
+                pos->addPredictedBestMove(colour);
+            }
             pos->deleteChildren();
         }
         cout << "Input command as follows: (move OR list)" << endl;
@@ -35,13 +38,23 @@ void User::pickMove(BoardNode*& pos) {
     cin >> squareTwo;
     int fromSquareIndex = strToIndex(squareOne);
     int toSquareIndex = strToIndex(squareTwo);
-    if (!getBit(pos->getColourPieces(colour), fromSquareIndex) // from square index does not contain your piece
-    || getBit(pos->getColourPieces(colour), toSquareIndex)) { // to square is occupied by your own piece
+
+    pos->generateMoves(colour);
+    if (!pos->containsMove(fromSquareIndex, toSquareIndex)) {
+        cout << "Couldn't find move in move list" << endl;
         throw InvalidUserMove();
     }
 
     int branchChildIndex = -1;
-    pos->generateMoves(colour);
+    if (!getBit(pos->getColourPieces(colour), fromSquareIndex) // from square index does not contain your piece
+    || getBit(pos->getColourPieces(colour), toSquareIndex)) { // to square is occupied by your own piece
+        cout << "Move doesn't make sense?" << endl;
+        throw InvalidUserMove();
+    }
+
+    while (!pos->moveListEmpty()) {
+        pos->addPredictedBestMove(colour);
+    }
     for (int i = 0; i < pos->getChildren().size(); i++) {
         if (!getBit(pos->getChildren()[i]->getColourPieces(colour), fromSquareIndex) // from square index in new position does not contain your piece
         && getBit(pos->getChildren()[i]->getColourPieces(colour), toSquareIndex)) { // to square contains your piece
@@ -50,7 +63,7 @@ void User::pickMove(BoardNode*& pos) {
     }
 
     if (branchChildIndex == -1) {
-        throw InvalidUserMove();
+        throw logic_error("Found move in move list but couldn't find in children");
     } else {
         branchToChild(pos, branchChildIndex);
     }

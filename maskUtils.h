@@ -100,6 +100,7 @@ namespace MaskUtils {
     const int HORIZONTAL = 1;
     const int NEGATIVE_DIAGONAL = 7;
     const int POSITIVE_DIAGONAL = 9;
+    const int NO_DIRECTION = 0;
 
     int getBit(const U64& b, int i);
     void setBit(U64& b, int i);

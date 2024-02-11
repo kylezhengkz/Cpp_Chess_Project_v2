@@ -18,8 +18,6 @@ class CPU: public Player {
     private:
     static const double negativeInfinity;
     static const double positiveInfinity;
-    static const double prunedWhite;
-    static const double prunedBlack;
     static const int maxTimeSeconds;
     high_resolution_clock::time_point startTime;
 };

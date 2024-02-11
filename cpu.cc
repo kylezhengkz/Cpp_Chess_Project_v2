@@ -3,8 +3,6 @@ CPU::CPU(Colour colour): Player{colour} {};
 
 double const CPU::negativeInfinity = -9999;
 double const CPU::positiveInfinity = 9999;
-double const CPU::prunedWhite = -7777;
-double const CPU::prunedBlack = 7777;
 const int CPU::maxTimeSeconds = 10;
 
 int getRandomNumber(int n) {
@@ -29,8 +27,8 @@ void CPU::pickMove(BoardNode*& pos) {
     
     // int rand = getRandomNumber(pos->getChildren().size() - 1);
     // cout << rand << endl;
-    cout << pos->getChildren().size() << endl;;
-    pos = pos->getChildren()[0];
+    pos->addPredictedBestMove(colour);
+    branchToChild(pos, 0);
 }
 
 void CPU::iterativeDeepening(BoardNode*& pos) {
@@ -57,7 +55,7 @@ double CPU::alphaBetaPruning(BoardNode* pos, int depth, double alpha, double bet
     auto currentTime = high_resolution_clock::now();
     auto duration = duration_cast<seconds>(currentTime - startTime);
     if (duration.count() >= maxTimeSeconds) { // time is up! stop the search
-        return pos->getValue();
+        return pos->staticEval();
     }
 
     if (depth == 0) {
@@ -80,13 +78,9 @@ double CPU::alphaBetaPruning(BoardNode* pos, int depth, double alpha, double bet
         */
         for (size_t i = 0; i < pos->getChildren().size(); i++) {
             double eval = alphaBetaPruning(pos->getChildren()[i], depth - 1, alpha, beta, false);
-            pos->getChildren()[i]->setNewValue(eval);
             maxEval = max(maxEval, eval);
             alpha = max(alpha, eval);
             if (beta <= alpha) {
-                for (size_t j = i + 1; j < pos->getChildren().size(); j++) { // set remaining node values to pruned
-                    pos->getChildren()[i]->setNewValue(prunedWhite);
-                }
                 break;
             }
             return maxEval;
@@ -108,13 +102,9 @@ double CPU::alphaBetaPruning(BoardNode* pos, int depth, double alpha, double bet
         */
         for (size_t i = 0; i < pos->getChildren().size(); i++) {
             double eval = alphaBetaPruning(pos->getChildren()[i], depth - 1, alpha, beta, true);
-            pos->getChildren()[i]->setNewValue(eval);
             minEval = min(minEval, eval);
             beta = min(beta, eval);
             if (beta <= alpha) {
-                for (size_t j = i + 1; j < pos->getChildren().size(); j++) { // set remaining node values to pruned
-                    pos->getChildren()[i]->setNewValue(prunedBlack);
-                }
                 break;
             }
             return minEval;

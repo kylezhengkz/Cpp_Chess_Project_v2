@@ -32,13 +32,13 @@ int MaskUtils::popLSB(U64& b) {
 }
 
 MaskUtils::U64 MaskUtils::clearBitsGreaterThanIndex(U64 b, int index) {
-    U64 musk = (1ULL << (index + 1)) - 1;
+    U64 musk = (1ULL << index) - 1;
     return b & musk;
 }
 
 MaskUtils::U64 MaskUtils::clearBitsLessThanIndex(U64 b, int index) {
-    U64 mask = ~((1ULL << index) - 1);
-    return b & mask;
+    U64 musk = ~(((1ULL << index) - 1) | (0x1ULL << index));
+    return b & musk;
 }
 
 ostream& MaskUtils::printBitboard(const U64& board, ostream& out) {

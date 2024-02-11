@@ -10,29 +10,32 @@
 class BoardNode {
     string id;
     Board* board;
-    double value;
     int lastDoublePawnMoveIndex;
     CastleStatus castleStatus;
+    unordered_map<int, U64> pins;
     unordered_map<int, U64> opponentPins;
-    multimap<double, Move> moves;
+    multimap<double, Move, greater<double>> moves;
     vector<BoardNode*> children;
     public:
-    BoardNode(Board* board, double value, int lastDoublePawnMoveIndex, CastleStatus castleStatus, unordered_map<int, U64> opponentPins);
+    // Board* getBoard(); // TEMP
+    bool moveListEmpty(); // TEMP
+    BoardNode(Board* board, int lastDoublePawnMoveIndex, CastleStatus castleStatus, unordered_map<int, U64> opponentPins);
     U64 getColourPieces(Colour colour);
     double staticEval();
-    void searchLegalMusks(Colour colour, unordered_map<int, U64>& pins, bool& check, U64& checkPath, bool& doubleCheck);
+    void searchLegalMusks(Colour colour, unordered_map<int, U64>& pins, bool& check, U64& checkPath, bool& doubleCheck, U64& kingLegalMoves, int& kingSquare);
     U64 generateUnsafeMusk(Colour teamColour);
     void generateMoves(Colour colour);
-    void branchPredictedBestMove(Colour colour);
+    void addPredictedBestMove(Colour colour);
     friend ostream& operator<<(ostream& out, BoardNode& boardNode);
     ostream& printBoardOnly(ostream& out);
     ostream& printChildren(ostream& out);
+    ostream& printChildrenMoveNotation(ostream& out);
     vector<BoardNode*> getChildren();
-    void setNewValue(double newValue);
     double getValue() const;
     ~BoardNode();
     void deleteChildren();
     void deleteBoard();
+    bool containsMove(int fromSquare, int toSquare);
     friend void branchToChild(BoardNode*& boardNode, size_t index);
 };
 #endif

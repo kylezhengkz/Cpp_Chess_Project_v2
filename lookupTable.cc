@@ -202,7 +202,7 @@ void LookupTable::setMusks() {
         | (((fromSquare >> 15) | (fromSquare << 17)) & ~A_FILE)
         | (((fromSquare << 15) | (fromSquare >> 17)) & ~H_FILE);
         
-        if (i > 7 && i < 56) {
+        if (i <= 55) {
             whitePawnMusks[i] = (((fromSquare << NEGATIVE_DIAGONAL)) & ~H_FILE)
             | (((fromSquare << POSITIVE_DIAGONAL)) & ~A_FILE)
             | (fromSquare << VERTICAL);
@@ -212,7 +212,9 @@ void LookupTable::setMusks() {
 
             whitePawnControlMusks[i] = (((fromSquare << NEGATIVE_DIAGONAL)) & ~H_FILE)
             | (((fromSquare << POSITIVE_DIAGONAL)) & ~A_FILE);
+        }
 
+        if (i >= 8) {
             blackPawnMusks[i] = (((fromSquare >> NEGATIVE_DIAGONAL)) & ~A_FILE)
             | (((fromSquare >> POSITIVE_DIAGONAL)) & ~H_FILE)
             | (fromSquare >> VERTICAL);

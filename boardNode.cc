@@ -1,4 +1,15 @@
 #include "boardNode.h"
+
+/*
+Board* BoardNode::getBoard() { // TEMP
+    return board;
+}
+*/
+
+bool BoardNode::moveListEmpty() {
+    return moves.empty();
+}
+
 string generateRandomID() { // TEMP
     std::string charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
     std::random_device rd;
@@ -11,8 +22,8 @@ string generateRandomID() { // TEMP
     return id;
 }
 
-BoardNode::BoardNode(Board* board, double value, int lastDoublePawnMoveIndex, CastleStatus castleStatus, unordered_map<int, U64> opponentPins):
-board{board}, value{value}, lastDoublePawnMoveIndex{lastDoublePawnMoveIndex}, castleStatus{castleStatus}, opponentPins{opponentPins} {
+BoardNode::BoardNode(Board* board, int lastDoublePawnMoveIndex, CastleStatus castleStatus, unordered_map<int, U64> opponentPins):
+board{board}, lastDoublePawnMoveIndex{lastDoublePawnMoveIndex}, castleStatus{castleStatus}, opponentPins{opponentPins} {
     id = generateRandomID();
 };
 
@@ -39,8 +50,7 @@ double BoardNode::staticEval() {
     return eval;
 }
 
-void BoardNode::searchLegalMusks(Colour colour, unordered_map<int, U64>& pins, bool& check, U64& checkPath, bool& doubleCheck) {
-    int kingSquare;
+void BoardNode::searchLegalMusks(Colour colour, unordered_map<int, U64>& pins, bool& check, U64& checkPath, bool& doubleCheck, U64& kingLegalMoves, int& kingSquare) {
     U64 oppositionPawns;
     U64 oppositionKnights;
     U64 oppositionBishops;
@@ -55,6 +65,7 @@ void BoardNode::searchLegalMusks(Colour colour, unordered_map<int, U64>& pins, b
         oppositionBishops = board->blackBishops;
         oppositionRooks = board->blackRooks;
         oppositionQueens = board->blackQueens;
+        oppositionPieces = board->blackPieces;
         teamPieces = board->whitePieces;
     } else {
         kingSquare = getLSB(board->blackKing);
@@ -63,12 +74,16 @@ void BoardNode::searchLegalMusks(Colour colour, unordered_map<int, U64>& pins, b
         oppositionBishops = board->whiteBishops;
         oppositionRooks = board->whiteRooks;
         oppositionQueens = board->whiteQueens;
-        oppositionPieces = board->blackPieces;
+        oppositionPieces = board->whitePieces;
+        teamPieces = board->blackPieces;
     }
+    
+    kingLegalMoves = LookupTable::lookupMusk(kingSquare, Piece::KING) & ~teamPieces;
 
     // look for pawn checks
     U64 checkMusk = LookupTable::lookupPawnControlMusk(kingSquare, colour);
     if ((checkMusk & oppositionPawns) != 0) {
+        cout << "Pawn check" << endl;
         check = true;
         checkPath = checkMusk & oppositionPawns;
     }
@@ -76,12 +91,13 @@ void BoardNode::searchLegalMusks(Colour colour, unordered_map<int, U64>& pins, b
     // look for knight checks
     checkMusk = LookupTable::lookupMusk(kingSquare, Piece::KNIGHT);
     if (!check && (checkMusk & oppositionKnights) != 0) {
+        cout << "Knight check" << endl;
         check = true;
         checkPath = checkMusk & oppositionKnights;
     }
     
     // quick way to ensure that check is possible
-    U64 potentialCheckPaths = LookupTable::lookupMusk(kingSquare, Piece::QUEEN);
+    U64 potentialCheckPaths = LookupTable::lookupMove(kingSquare, Piece::QUEEN, 0);
     if ((potentialCheckPaths & (oppositionBishops | oppositionRooks | oppositionQueens)) == 0) {
         return;
     }
@@ -98,22 +114,30 @@ void BoardNode::searchLegalMusks(Colour colour, unordered_map<int, U64>& pins, b
         }
 
         if ((ray & oppositionAttackers) != 0) {
-            int sourceIndex = getLSB(ray & (oppositionRooks | oppositionQueens));
+            int sourceIndex = getLSB(ray & oppositionAttackers);
             if (sourceIndex == -1) {
-                continue;
+                throw logic_error("Expected a checking piece, but it doesn't exist");
             }
+            cout << "Possible check from: " << endl;
+            printBitboard(0x1ULL << sourceIndex, cout);
             U64 inBetweenRay = clearBitsGreaterThanIndex(ray, sourceIndex);
             if (inBetweenRay & oppositionPieces) { // opponent piece in the way
                 continue;
             } else if ((inBetweenRay & teamPieces) == 0) { // check
+                cout << "CHECK" << endl;
+                kingLegalMoves &= ~inBetweenRay;
+                kingLegalMoves &= ~LookupTable::lookupRayMusk(kingSquare, -direction);
+                cout << "After cutting some king squares:" << endl;
+                printBitboard(kingLegalMoves, cout);
                 if (check) {
                     doubleCheck = true;
                     return;
                 } else {
-                    checkPath = inBetweenRay;
+                    check = true;
+                    checkPath = inBetweenRay | (0X1ULL << sourceIndex);
                 }
             } else if (__builtin_popcountll(inBetweenRay & teamPieces) == 1) { // pin
-                pins[getLSB(inBetweenRay & teamPieces)] = inBetweenRay;
+                pins[getLSB(inBetweenRay & teamPieces)] = inBetweenRay | (0x1ULL << sourceIndex);
             }
         }
     }
@@ -129,19 +153,30 @@ void BoardNode::searchLegalMusks(Colour colour, unordered_map<int, U64>& pins, b
         }
 
         if ((ray & oppositionAttackers) != 0) {
-            int sourceIndex = getMSB(ray & (oppositionRooks | oppositionQueens));
+            int sourceIndex = getMSB(ray & oppositionAttackers);
+            if (sourceIndex == -1) {
+                throw logic_error("Expected a checking piece, but it doesn't exist");
+            }
+            cout << "Possible check from: " << endl;
+            printBitboard(0x1ULL << sourceIndex, cout);
             U64 inBetweenRay = clearBitsLessThanIndex(ray, sourceIndex);
             if (inBetweenRay & oppositionPieces) { // no check or pin due to opponent piece interference
                 continue;
             } else if ((inBetweenRay & teamPieces) == 0) { // check
+                cout << "CHECK" << endl;
+                kingLegalMoves &= ~inBetweenRay;
+                kingLegalMoves &= ~LookupTable::lookupRayMusk(kingSquare, -direction);
+                cout << "After cutting some king squares:" << endl;
+                printBitboard(kingLegalMoves, cout);
                 if (check) {
                     doubleCheck = true;
                     return;
                 } else {
-                    checkPath = inBetweenRay & sourceIndex;
+                    check = true;
+                    checkPath = inBetweenRay | (0X1ULL << sourceIndex);
                 }
             } else if (__builtin_popcountll(inBetweenRay & teamPieces) == 1) { // pin
-                pins[getLSB(inBetweenRay & teamPieces)] = inBetweenRay & sourceIndex;
+                pins[getLSB(inBetweenRay & teamPieces)] = inBetweenRay | (0x1ULL << sourceIndex);
             }
         }
     }
@@ -209,17 +244,18 @@ Algorithm:
 - Add 25% of piece value for each attack (accounts for forks)
 
 Note that:
-Pinned pieces remain pinned on your turn unless you move king or you move piece in the way of pin
+Pinned pieces remain pinned on your turn unless you move king or you move piece in the way of pin (we can ignore for now, but FIX LATER)
 So you have access to opponent's pinned pieces
 Make sure you add pinned piece if blocking check
 */
 
 void BoardNode::generateMoves(Colour colour) {
-    unordered_map<int, U64> pins;
     bool check = false;
     U64 checkPath;
     bool doubleCheck = false;
-    searchLegalMusks(colour, pins, check, checkPath, doubleCheck);
+    U64 kingLegalMoves;
+    int kingSquare;
+    searchLegalMusks(colour, pins, check, checkPath, doubleCheck, kingLegalMoves, kingSquare);
 
     U64 unsafeSquares = generateUnsafeMusk(colour);
 
@@ -248,7 +284,7 @@ void BoardNode::generateMoves(Colour colour) {
                 legalMoves = LookupTable::lookupMove(initialSquare, piece, allPieces) & ~teamPieces;
             }
 
-            if (check) {
+            if (check && !doubleCheck) {
                 legalMoves &= checkPath;
             }
 
@@ -259,14 +295,23 @@ void BoardNode::generateMoves(Colour colour) {
             while (legalMoves != 0) {
                 int newSquare = popLSB(legalMoves);
                 double moveVal = 0;
-
                 int8_t flag = 0b0000;
                 switch (piece) {
                     case Piece::WHITEPAWN:
-                        flag = Move::pawnMove;
+                        if (newSquare >= 56) {
+                            flag = Move::queenPromotion;
+                        } else if (abs(newSquare - initialSquare) == 16) {
+                            flag = Move::pawnDoubleMove;
+                        } else {
+                            flag = Move::pawnMove;
+                        }
                         break;
                     case Piece::BLACKPAWN:
-                        flag = Move::pawnMove;
+                        if (newSquare < 8) {
+                            flag = Move::queenPromotion;
+                        } else {
+                            flag = Move::pawnMove;
+                        }
                         break;
                     case Piece::KNIGHT:
                         flag = Move::knightMove;
@@ -285,7 +330,6 @@ void BoardNode::generateMoves(Colour colour) {
                 }
 
                 int8_t captureFlag = 0b0000;
-
                 if (getBit(oppositionPieces, newSquare)) { // if capture
                     moveVal += board->findPiece(newSquare, !colour, captureFlag);
                 }
@@ -316,11 +360,11 @@ void BoardNode::generateMoves(Colour colour) {
                     } else if (getBit(board->getPieces(Piece::KING, !colour), destinationSquare)) { // check
                         moveVal += 3.5;
                     } else if (getBit(oppositionPieces, destinationSquare)) {
-                        int8_t dummy = 0b0000;
-                        moveVal += board->findPiece(destinationSquare, !colour, dummy) * 0.25;
+                        int8_t dummyVar = 0b0000;
+                        moveVal += board->findPiece(destinationSquare, !colour, dummyVar) * 0.25;
                     }
                 }
-            
+
                 Move move{initialSquare, newSquare, flag, captureFlag};
                 moves.emplace(moveVal, move);
             }
@@ -328,17 +372,37 @@ void BoardNode::generateMoves(Colour colour) {
     }
 
     // generate king moves below
+    while (kingLegalMoves != 0) {
+        int newSquare = popLSB(kingLegalMoves);
+        if (getBit(unsafeSquares, newSquare)) {
+            continue;
+        }
+
+        double moveVal = 0;
+        int8_t flag = Move::kingMove;
+        int8_t captureFlag = 0b0000;
+
+        if (getBit(oppositionPieces, newSquare)) { // if capture
+            moveVal += board->findPiece(newSquare, !colour, captureFlag);
+        }
+
+        Move move{kingSquare, newSquare, flag, captureFlag};
+        moves.emplace(moveVal, move);
+    }
 }
 
-void BoardNode::branchPredictedBestMove(Colour colour) {
+void BoardNode::addPredictedBestMove(Colour colour) {
     if (moves.size() <= 0) {
         throw logic_error("Attempted to branch but there are no moves to branch");
     }
 
     Board* newPosition = new Board(*board);
-    
-    auto bestPredictedMove = moves.rbegin()->second;
+    auto bestPredictedMove = moves.begin()->second;
+    moves.erase(moves.begin());
     int flag = bestPredictedMove.getFlag();
+
+    CastleStatus newCastleStatus = castleStatus;
+    int newLastDoublePawnMoveIndex = -1;
 
     if (colour == Colour::WHITE) {
         switch (flag) {
@@ -346,13 +410,22 @@ void BoardNode::branchPredictedBestMove(Colour colour) {
                 throw logic_error("No flag");
                 break;
             case Move::castle:
+                newCastleStatus.disenableWhiteKingCastleLeft();
+                newCastleStatus.disenableWhiteKingCastleRight();
                 break;
             case Move::enPassant:
                 break;
             case Move::pawnDoubleMove:
-                break;
+                newPosition->whitePawns ^= (0x1ULL << bestPredictedMove.getFromSquare()) | (0x1ULL << bestPredictedMove.getToSquare());
+                newPosition->whitePieces ^= (0x1ULL << bestPredictedMove.getFromSquare()) | (0x1ULL << bestPredictedMove.getToSquare());
+                newLastDoublePawnMoveIndex = bestPredictedMove.getToSquare();
+                return;
             case Move::queenPromotion:
-                break;
+                clearBit(newPosition->whitePawns, bestPredictedMove.getFromSquare());
+                setBit(newPosition->whiteQueens, bestPredictedMove.getToSquare());
+                newPosition->whitePieces ^= (0x1ULL << bestPredictedMove.getFromSquare()) | (0x1ULL << bestPredictedMove.getToSquare());
+                children.emplace_back(new BoardNode(newPosition, newLastDoublePawnMoveIndex, newCastleStatus, pins));
+                return;
             case Move::rookPromotion:
                 break;
             case Move::knightPromotion:
@@ -361,29 +434,164 @@ void BoardNode::branchPredictedBestMove(Colour colour) {
                 break;
             case Move::pawnMove:
                 newPosition->whitePawns ^= (0x1ULL << bestPredictedMove.getFromSquare()) | (0x1ULL << bestPredictedMove.getToSquare());
+                newPosition->whitePieces ^= (0x1ULL << bestPredictedMove.getFromSquare()) | (0x1ULL << bestPredictedMove.getToSquare());
                 break;
             case Move::knightMove:
-                newPosition->whitePawns ^= (0x1ULL << bestPredictedMove.getFromSquare()) | (0x1ULL << bestPredictedMove.getToSquare());
+                newPosition->whiteKnights ^= (0x1ULL << bestPredictedMove.getFromSquare()) | (0x1ULL << bestPredictedMove.getToSquare());
+                newPosition->whitePieces ^= (0x1ULL << bestPredictedMove.getFromSquare()) | (0x1ULL << bestPredictedMove.getToSquare());
                 break;
             case Move::bishopMove:
-                newPosition->whitePawns ^= (0x1ULL << bestPredictedMove.getFromSquare()) | (0x1ULL << bestPredictedMove.getToSquare());
+                newPosition->whiteBishops ^= (0x1ULL << bestPredictedMove.getFromSquare()) | (0x1ULL << bestPredictedMove.getToSquare());
+                newPosition->whitePieces ^= (0x1ULL << bestPredictedMove.getFromSquare()) | (0x1ULL << bestPredictedMove.getToSquare());
                 break;
             case Move::rookMove:
-                newPosition->whitePawns ^= (0x1ULL << bestPredictedMove.getFromSquare()) | (0x1ULL << bestPredictedMove.getToSquare());
+                newPosition->whiteRooks ^= (0x1ULL << bestPredictedMove.getFromSquare()) | (0x1ULL << bestPredictedMove.getToSquare());
+                newPosition->whitePieces ^= (0x1ULL << bestPredictedMove.getFromSquare()) | (0x1ULL << bestPredictedMove.getToSquare());
+                if (bestPredictedMove.getFromSquare() == 0) {
+                    newCastleStatus.disenableWhiteKingCastleLeft();
+                } else if (bestPredictedMove.getFromSquare() == 7) {
+                    newCastleStatus.disenableWhiteKingCastleRight();
+                }
                 break;
             case Move::queenMove:
-                newPosition->whitePawns ^= (0x1ULL << bestPredictedMove.getFromSquare()) | (0x1ULL << bestPredictedMove.getToSquare());
+                newPosition->whiteQueens ^= (0x1ULL << bestPredictedMove.getFromSquare()) | (0x1ULL << bestPredictedMove.getToSquare());
+                newPosition->whitePieces ^= (0x1ULL << bestPredictedMove.getFromSquare()) | (0x1ULL << bestPredictedMove.getToSquare());
                 break;
             case Move::kingMove:
-                newPosition->whitePawns ^= (0x1ULL << bestPredictedMove.getFromSquare()) | (0x1ULL << bestPredictedMove.getToSquare());
+                newPosition->whiteKing ^= (0x1ULL << bestPredictedMove.getFromSquare()) | (0x1ULL << bestPredictedMove.getToSquare());
+                newPosition->whitePieces ^= (0x1ULL << bestPredictedMove.getFromSquare()) | (0x1ULL << bestPredictedMove.getToSquare());
+                newCastleStatus.disenableWhiteKingCastleLeft();
+                newCastleStatus.disenableWhiteKingCastleRight();
                 break;
             default:
                 throw logic_error("Undefined flag");
                 break;
-            }
+        }
     } else {
-
+        switch (flag) {
+            case Move::noFlag:
+                throw logic_error("No flag");
+                break;
+            case Move::castle:
+                newCastleStatus.disenableBlackKingCastleLeft();
+                newCastleStatus.disenableBlackKingCastleRight();
+                break;
+            case Move::enPassant:
+                break;
+            case Move::pawnDoubleMove:
+                newPosition->blackPawns ^= (0x1ULL << bestPredictedMove.getFromSquare()) | (0x1ULL << bestPredictedMove.getToSquare());
+                newPosition->blackPieces ^= (0x1ULL << bestPredictedMove.getFromSquare()) | (0x1ULL << bestPredictedMove.getToSquare());
+                newLastDoublePawnMoveIndex = bestPredictedMove.getToSquare();
+                return;
+            case Move::queenPromotion:
+                clearBit(newPosition->blackPawns, bestPredictedMove.getFromSquare());
+                setBit(newPosition->blackQueens, bestPredictedMove.getToSquare());
+                newPosition->blackPieces ^= (0x1ULL << bestPredictedMove.getFromSquare()) | (0x1ULL << bestPredictedMove.getToSquare());
+                children.emplace_back(new BoardNode(newPosition, newLastDoublePawnMoveIndex, newCastleStatus, pins));
+                return;
+            case Move::rookPromotion:
+                break;
+            case Move::knightPromotion:
+                break;
+            case Move::bishopPromotion:
+                break;
+            case Move::pawnMove:
+                newPosition->blackPawns ^= (0x1ULL << bestPredictedMove.getFromSquare()) | (0x1ULL << bestPredictedMove.getToSquare());
+                newPosition->blackPieces ^= (0x1ULL << bestPredictedMove.getFromSquare()) | (0x1ULL << bestPredictedMove.getToSquare());
+                break;
+            case Move::knightMove:
+                newPosition->blackKnights ^= (0x1ULL << bestPredictedMove.getFromSquare()) | (0x1ULL << bestPredictedMove.getToSquare());
+                newPosition->blackPieces ^= (0x1ULL << bestPredictedMove.getFromSquare()) | (0x1ULL << bestPredictedMove.getToSquare());
+                break;
+            case Move::bishopMove:
+                newPosition->blackBishops ^= (0x1ULL << bestPredictedMove.getFromSquare()) | (0x1ULL << bestPredictedMove.getToSquare());
+                newPosition->blackPieces ^= (0x1ULL << bestPredictedMove.getFromSquare()) | (0x1ULL << bestPredictedMove.getToSquare());
+                break;
+            case Move::rookMove:
+                newPosition->blackRooks ^= (0x1ULL << bestPredictedMove.getFromSquare()) | (0x1ULL << bestPredictedMove.getToSquare());
+                newPosition->blackPieces ^= (0x1ULL << bestPredictedMove.getFromSquare()) | (0x1ULL << bestPredictedMove.getToSquare());
+                if (bestPredictedMove.getFromSquare() == 56) {
+                    newCastleStatus.disenableBlackKingCastleLeft();
+                } else if (bestPredictedMove.getFromSquare() == 63) {
+                    newCastleStatus.disenableBlackKingCastleRight();
+                }
+                break;
+            case Move::queenMove:
+                newPosition->blackQueens ^= (0x1ULL << bestPredictedMove.getFromSquare()) | (0x1ULL << bestPredictedMove.getToSquare());
+                newPosition->blackPieces ^= (0x1ULL << bestPredictedMove.getFromSquare()) | (0x1ULL << bestPredictedMove.getToSquare());
+                break;
+            case Move::kingMove:
+                newPosition->blackKing ^= (0x1ULL << bestPredictedMove.getFromSquare()) | (0x1ULL << bestPredictedMove.getToSquare());
+                newPosition->blackPieces ^= (0x1ULL << bestPredictedMove.getFromSquare()) | (0x1ULL << bestPredictedMove.getToSquare());
+                newCastleStatus.disenableBlackKingCastleLeft();
+                newCastleStatus.disenableBlackKingCastleRight();
+                break;
+            default:
+                throw logic_error("Undefined flag");
+                break;
+        }
     }
+
+    // REMINDER: You should return instead of break for special move cases
+
+    int captureFlag = bestPredictedMove.getCapture();
+    if (captureFlag != Move::noCapture) {
+        if (colour == Colour::WHITE) {
+            switch (captureFlag) {
+                case Move::pawnCapture:
+                    newPosition->blackPawns ^= (0x1ULL << bestPredictedMove.getToSquare());
+                    newPosition->blackPieces ^= (0x1ULL << bestPredictedMove.getToSquare());
+                    break;
+                case Move::knightCapture:
+                    newPosition->blackKnights ^= (0x1ULL << bestPredictedMove.getToSquare());
+                    newPosition->blackPieces ^= (0x1ULL << bestPredictedMove.getToSquare());
+                    break;
+                case Move::bishopCapture:
+                    newPosition->blackBishops ^= (0x1ULL << bestPredictedMove.getToSquare());
+                    newPosition->blackPieces ^= (0x1ULL << bestPredictedMove.getToSquare());
+                    break;
+                case Move::rookCapture:
+                    newPosition->blackRooks ^= (0x1ULL << bestPredictedMove.getToSquare());
+                    newPosition->blackPieces ^= (0x1ULL << bestPredictedMove.getToSquare());
+                    break;
+                case Move::queenCapture:
+                    newPosition->blackQueens ^= (0x1ULL << bestPredictedMove.getToSquare());
+                    newPosition->blackPieces ^= (0x1ULL << bestPredictedMove.getToSquare());
+                    break;
+                default:
+                    throw logic_error("Undefined capture flag");
+                    break;
+            }
+        } else {
+            switch (captureFlag) {
+                case Move::pawnCapture:
+                    newPosition->whitePawns ^= (0x1ULL << bestPredictedMove.getToSquare());
+                    newPosition->whitePieces ^= (0x1ULL << bestPredictedMove.getToSquare());
+                    break;
+                case Move::knightCapture:
+                    newPosition->whiteKnights ^= (0x1ULL << bestPredictedMove.getToSquare());
+                    newPosition->whitePieces ^= (0x1ULL << bestPredictedMove.getToSquare());
+                    break;
+                case Move::bishopCapture:
+                    newPosition->whiteBishops ^= (0x1ULL << bestPredictedMove.getToSquare());
+                    newPosition->whitePieces ^= (0x1ULL << bestPredictedMove.getToSquare());
+                    break;
+                case Move::rookCapture:
+                    newPosition->whiteRooks ^= (0x1ULL << bestPredictedMove.getToSquare());
+                    newPosition->whitePieces ^= (0x1ULL << bestPredictedMove.getToSquare());
+                    break;
+                case Move::queenCapture:
+                    newPosition->whiteQueens ^= (0x1ULL << bestPredictedMove.getToSquare());
+                    newPosition->whitePieces ^= (0x1ULL << bestPredictedMove.getToSquare());
+                    break;
+                default:
+                    throw logic_error("Undefined capture flag");
+                    break;
+            }
+        }
+    }
+
+    children.emplace_back(new BoardNode(newPosition, newLastDoublePawnMoveIndex, newCastleStatus, pins));
 }
 
 ostream& operator<<(ostream& out, BoardNode& boardNode) {
@@ -394,7 +602,6 @@ ostream& operator<<(ostream& out, BoardNode& boardNode) {
         cout << *child;
     }
     out << "END CHILDREN OF PARENT ID: " << boardNode.id << endl;
-    cout << "Value: " << boardNode.value << endl;
     cout << "Can white king castle right? " << ((boardNode.castleStatus.canWhiteKingCastleRight() == true) ? "Yes" : "No") << endl;
     cout << "Can white king castle right? " << ((boardNode.castleStatus.canWhiteKingCastleLeft() == true) ? "Yes" : "No") << endl;
     cout << "Can white king castle right? " << ((boardNode.castleStatus.canBlackKingCastleRight() == true) ? "Yes" : "No") << endl;
@@ -417,16 +624,21 @@ ostream& BoardNode::printChildren(ostream& out) {
     return out;
 }
 
+string indexToChessSquare(int index) {
+    char file = 'a' + (index % 8);
+    int rank = 1 + (index / 8);
+    return string(1, file) + to_string(rank);
+}
+
+ostream& BoardNode::printChildrenMoveNotation(ostream& out) {
+    for (auto move : moves) {
+        cout << indexToChessSquare(move.second.getFromSquare()) << " " << indexToChessSquare(move.second.getToSquare()) << endl;
+    }
+    return out;
+}
+
 vector<BoardNode*> BoardNode::getChildren() {
     return children;
-}
-
-void BoardNode::setNewValue(double newValue) {
-    value = newValue;
-}
-
-double BoardNode::getValue() const {
-    return value;
 }
 
 BoardNode::~BoardNode() {
@@ -445,6 +657,15 @@ void BoardNode::deleteChildren() {
         delete child;
     }
     children.clear();
+}
+
+bool BoardNode::containsMove(int fromSquare, int toSquare) {
+    for (auto move : moves) {
+        if (move.second.getFromSquare() == fromSquare && move.second.getFromSquare() == fromSquare) {
+            return true;
+        }
+    }
+    return false;
 }
 
 void branchToChild(BoardNode*& boardNode, size_t childIndex) {
