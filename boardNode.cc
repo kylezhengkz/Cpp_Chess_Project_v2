@@ -118,17 +118,12 @@ void BoardNode::searchLegalMusks(Colour colour, unordered_map<int, U64>& pins, b
             if (sourceIndex == -1) {
                 throw logic_error("Expected a checking piece, but it doesn't exist");
             }
-            cout << "Possible check from: " << endl;
-            printBitboard(0x1ULL << sourceIndex, cout);
             U64 inBetweenRay = clearBitsGreaterThanIndex(ray, sourceIndex);
             if (inBetweenRay & oppositionPieces) { // opponent piece in the way
                 continue;
             } else if ((inBetweenRay & teamPieces) == 0) { // check
-                cout << "CHECK" << endl;
                 kingLegalMoves &= ~inBetweenRay;
                 kingLegalMoves &= ~LookupTable::lookupRayMusk(kingSquare, -direction);
-                cout << "After cutting some king squares:" << endl;
-                printBitboard(kingLegalMoves, cout);
                 if (check) {
                     doubleCheck = true;
                     return;
@@ -157,17 +152,12 @@ void BoardNode::searchLegalMusks(Colour colour, unordered_map<int, U64>& pins, b
             if (sourceIndex == -1) {
                 throw logic_error("Expected a checking piece, but it doesn't exist");
             }
-            cout << "Possible check from: " << endl;
-            printBitboard(0x1ULL << sourceIndex, cout);
             U64 inBetweenRay = clearBitsLessThanIndex(ray, sourceIndex);
             if (inBetweenRay & oppositionPieces) { // no check or pin due to opponent piece interference
                 continue;
             } else if ((inBetweenRay & teamPieces) == 0) { // check
-                cout << "CHECK" << endl;
                 kingLegalMoves &= ~inBetweenRay;
                 kingLegalMoves &= ~LookupTable::lookupRayMusk(kingSquare, -direction);
-                cout << "After cutting some king squares:" << endl;
-                printBitboard(kingLegalMoves, cout);
                 if (check) {
                     doubleCheck = true;
                     return;
@@ -240,10 +230,10 @@ U64 BoardNode::generateUnsafeMusk(Colour teamColour) {
     vector<Piece> pieceGenerationOrder;
     U64 teamPieces;
     if (oppositionColour == Colour::WHITE) {
-        pieceGenerationOrder = {Piece::WHITEPAWN, Piece::KNIGHT, Piece::BISHOP, Piece::ROOK, Piece::QUEEN};
+        pieceGenerationOrder = {Piece::WHITEPAWN, Piece::KNIGHT, Piece::BISHOP, Piece::ROOK, Piece::QUEEN, Piece::KING};
         teamPieces = board->whitePieces;
     } else {
-        pieceGenerationOrder = {Piece::BLACKPAWN, Piece::KNIGHT, Piece::BISHOP, Piece::ROOK, Piece::QUEEN};
+        pieceGenerationOrder = {Piece::BLACKPAWN, Piece::KNIGHT, Piece::BISHOP, Piece::ROOK, Piece::QUEEN, Piece::KING};
         teamPieces = board->blackPieces;
     }
 
@@ -254,7 +244,7 @@ U64 BoardNode::generateUnsafeMusk(Colour teamColour) {
             int initialSquare = popLSB(existingPieces);
             if (piece == Piece::WHITEPAWN || piece == Piece::BLACKPAWN) {
                 controlMusk |= LookupTable::lookupPawnControlMusk(initialSquare, oppositionColour);
-            } else if (piece == Piece::KNIGHT) {
+            } else if ((piece == Piece::KNIGHT) || (piece == Piece::KING)) {
                 controlMusk |= LookupTable::lookupMusk(initialSquare, piece);
             } else {
                 controlMusk |= LookupTable::lookupMove(initialSquare, piece, allPieces);
@@ -455,24 +445,28 @@ void BoardNode::generateMoves(Colour colour) {
     // check castling
     if (colour == Colour::WHITE) {
         if (castleStatus.canWhiteKingCastleLeft() && ((whiteLeftCastle & allPieces) == 0)) {
-            if (isSquareSafe(1, colour) && isSquareSafe(2, colour) && isSquareSafe(3, colour)) {
+            if (isSquareSafe(4, colour) && isSquareSafe(1, colour) && isSquareSafe(2, colour) && isSquareSafe(3, colour)) {
                 Move move{kingSquare, 2, Move::castle, Move::noCapture};
                 moves.emplace(1.1, move);
             }
-        } else if (castleStatus.canWhiteKingCastleRight() && ((whiteRightCastle & allPieces) == 0)) {
-            if (isSquareSafe(5, colour) && isSquareSafe(6, colour)) {
+        }
+        
+        if (castleStatus.canWhiteKingCastleRight() && ((whiteRightCastle & allPieces) == 0)) {
+            if (isSquareSafe(4, colour) && isSquareSafe(5, colour) && isSquareSafe(6, colour)) {
                 Move move{kingSquare, 6, Move::castle, Move::noCapture};
                 moves.emplace(1.1, move);
             }
         }
     } else {
         if (castleStatus.canBlackKingCastleLeft() && ((blackLeftCastle & allPieces) == 0)) {
-            if (isSquareSafe(57, colour) && isSquareSafe(58, colour) && isSquareSafe(59, colour)) {
+            if (isSquareSafe(60, colour) &&  isSquareSafe(57, colour) && isSquareSafe(58, colour) && isSquareSafe(59, colour)) {
                 Move move{kingSquare, 58, Move::castle, Move::noCapture};
                 moves.emplace(1.1, move);
             }
-        } else if (castleStatus.canBlackKingCastleRight() && ((blackRightCastle & allPieces) == 0)) {
-            if (isSquareSafe(61, colour) && isSquareSafe(62, colour)) {
+        }
+        
+        if (castleStatus.canBlackKingCastleRight() && ((blackRightCastle & allPieces) == 0)) {
+            if (isSquareSafe(60, colour) && isSquareSafe(61, colour) && isSquareSafe(62, colour)) {
                 Move move{kingSquare, 62, Move::castle, Move::noCapture};
                 moves.emplace(1.1, move);
             }
@@ -675,6 +669,11 @@ void BoardNode::addPredictedBestMove(Colour colour) {
                 case Move::rookCapture:
                     newPosition->blackRooks ^= (0x1ULL << bestPredictedMove.getToSquare());
                     newPosition->blackPieces ^= (0x1ULL << bestPredictedMove.getToSquare());
+                    if (bestPredictedMove.getToSquare() == 56) {
+                        newCastleStatus.disenableBlackKingCastleLeft();
+                    } else if (bestPredictedMove.getToSquare() == 63) {
+                        newCastleStatus.disenableBlackKingCastleRight();
+                    }
                     break;
                 case Move::queenCapture:
                     newPosition->blackQueens ^= (0x1ULL << bestPredictedMove.getToSquare());
@@ -701,6 +700,11 @@ void BoardNode::addPredictedBestMove(Colour colour) {
                 case Move::rookCapture:
                     newPosition->whiteRooks ^= (0x1ULL << bestPredictedMove.getToSquare());
                     newPosition->whitePieces ^= (0x1ULL << bestPredictedMove.getToSquare());
+                    if (bestPredictedMove.getToSquare() == 0) {
+                        newCastleStatus.disenableBlackKingCastleLeft();
+                    } else if (bestPredictedMove.getToSquare() == 7) {
+                        newCastleStatus.disenableBlackKingCastleRight();
+                    }
                     break;
                 case Move::queenCapture:
                     newPosition->whiteQueens ^= (0x1ULL << bestPredictedMove.getToSquare());
@@ -779,6 +783,10 @@ void BoardNode::deleteChildren() {
         delete child;
     }
     children.clear();
+}
+
+void BoardNode::clearMoves() {
+    moves.clear();
 }
 
 bool BoardNode::containsMove(int fromSquare, int toSquare) {

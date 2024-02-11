@@ -35,6 +35,7 @@ class BoardNode {
     double getValue() const;
     ~BoardNode();
     void deleteChildren();
+    void clearMoves();
     void deleteBoard();
     bool containsMove(int fromSquare, int toSquare);
     friend void branchToChild(BoardNode*& boardNode, size_t index);

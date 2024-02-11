@@ -4,6 +4,7 @@
 class StartPosition {
     public:
     static BoardNode* defaultPosition(Board* board);
+    static BoardNode* castleTestSetup(Board* board);
     static BoardNode* manualSetup(Board* board);
 };
 #endif

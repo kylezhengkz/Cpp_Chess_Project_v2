@@ -15,19 +15,18 @@ void User::pickMove(BoardNode*& pos) {
         cout << "BLACK TO MOVE:" << endl;
     }
 
-    cout << "Input command as follows: (move OR list)" << endl;
+    cout << "Input command as follows: (move OR list OR display)" << endl;
     string command;
     cin >> command;
     while (command != "move") {
         if (command == "list") {
             pos->generateMoves(colour);
             pos->printChildrenMoveNotation(cout);
-            while (!pos->moveListEmpty()) {
-                pos->addPredictedBestMove(colour);
-            }
-            pos->deleteChildren();
+            pos->clearMoves();
+        } else if (command == "display") {
+            pos->printBoardOnly(cout);
         }
-        cout << "Input command as follows: (move OR list)" << endl;
+        cout << "Input command as follows: (move OR list OR display)" << endl;
         cin >> command;
     }
 

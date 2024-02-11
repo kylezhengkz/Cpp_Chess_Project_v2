@@ -23,10 +23,11 @@ int main() {
     LookupTable::setMusks();
     LookupTable::mapBlockerKeys();
     Board* board = new Board();
-    BoardNode* currentPosition = StartPosition::defaultPosition(board);
+    // BoardNode* currentPosition = StartPosition::defaultPosition(board);
+    BoardNode* currentPosition = StartPosition::castleTestSetup(board);
     Player* player1 = choosePlayerType(Colour::WHITE);
     Player* player2 = choosePlayerType(Colour::BLACK);
-    for (int i = 0; i < 300; i++) {
+    for (int i = 0; i < 10; i++) {
         while (true) {
             try {
                 player1->pickMove(currentPosition);
