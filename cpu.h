@@ -15,6 +15,7 @@ class CPU: public Player {
     void pickMove(BoardNode*& pos) override;
     void iterativeDeepening(BoardNode*& pos);
     double alphaBetaPruning(BoardNode* pos, int depth, double alpha, double beta, bool maximizingPlayer);
+    void quiescenceSearch();
     private:
     static const double negativeInfinity;
     static const double positiveInfinity;

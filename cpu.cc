@@ -62,17 +62,9 @@ double CPU::alphaBetaPruning(BoardNode* pos, int depth, double alpha, double bet
         }
     }
 
-    cout << "printing node with id: " << pos->getID() << endl;
-    pos->printBoardOnly(cout);
-    if (pos->getChildren().size() > 0) {
-        cout << "yeah children exists" << endl;
-        for (auto child : pos->getChildren()) {
-            cout << child->getID() << endl;
-        }
-    }
-
     if (depth == 0) {
         double staticEval = pos->staticEval();
+        pos->setValue(staticEval);
         return staticEval;
     }
 
@@ -139,4 +131,8 @@ double CPU::alphaBetaPruning(BoardNode* pos, int depth, double alpha, double bet
         pos->setValue(minEval);
         return minEval;
     }
+}
+
+void CPU::quiescenceSearch() {
+    
 }

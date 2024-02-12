@@ -6,10 +6,6 @@ Board* BoardNode::getBoard() { // TEMP
 }
 */
 
-string BoardNode::getID() {
-    return id;
-}
-
 bool BoardNode::moveListEmpty() {
     return moves.empty();
 }
@@ -27,9 +23,7 @@ string generateRandomID() { // TEMP
 }
 
 BoardNode::BoardNode(Board* board, int lastDoublePawnMoveIndex, CastleStatus castleStatus, unordered_map<int, U64> opponentPins):
-board{board}, lastDoublePawnMoveIndex{lastDoublePawnMoveIndex}, castleStatus{castleStatus}, opponentPins{opponentPins} {
-    id = generateRandomID();
-};
+board{board}, lastDoublePawnMoveIndex{lastDoublePawnMoveIndex}, castleStatus{castleStatus}, opponentPins{opponentPins} {};
 
 U64 BoardNode::getColourPieces(Colour colour) {
     if (colour == Colour::WHITE) {
@@ -277,27 +271,26 @@ U64 BoardNode::generateUnsafeMusk(Colour teamColour) {
         pieceGenerationOrder = {Piece::BLACKPAWN, Piece::KNIGHT, Piece::BISHOP, Piece::ROOK, Piece::QUEEN, Piece::KING};
         teamPieces = board->blackPieces;
     }
-
+    
     U64 controlMusk = 0x0ULL;
     for (Piece piece : pieceGenerationOrder) {
         U64 existingPieces = board->getPieces(piece, oppositionColour);
         while (existingPieces != 0) {
             int initialSquare = popLSB(existingPieces);
+            if (opponentPins.count(initialSquare) > 0) {
+                controlMusk |= opponentPins[initialSquare];
+                continue;
+            }
             if (piece == Piece::WHITEPAWN || piece == Piece::BLACKPAWN) {
                 controlMusk |= LookupTable::lookupPawnControlMusk(initialSquare, oppositionColour);
             } else if ((piece == Piece::KNIGHT) || (piece == Piece::KING)) {
-                cout << "Inspect unsafe musks" << endl;
-                printBitboard(LookupTable::lookupMusk(initialSquare, piece), cout);
                 controlMusk |= LookupTable::lookupMusk(initialSquare, piece);
             } else {
                 controlMusk |= LookupTable::lookupMove(initialSquare, piece, allPieces);
             }
-
-            if (opponentPins.count(initialSquare) > 0) {
-                controlMusk &= opponentPins[initialSquare];
-            }
         }
     }
+
     return controlMusk;
 }
 
@@ -331,8 +324,6 @@ Make sure you add pinned piece if blocking check
 // Also need to add move val for en passant (FIX LATER)
 
 void BoardNode::generateMoves(Colour colour) {
-    cout << "Inspect position:" << endl;
-    printBoardOnly(cout);
     bool check = false;
     U64 checkPath;
     bool doubleCheck = false;
@@ -427,19 +418,16 @@ void BoardNode::generateMoves(Colour colour) {
 
                 int8_t captureFlag = 0b0000;
                 if (getBit(oppositionPieces, newSquare)) { // if capture
-                    cout << "regular capture" << endl;
-                    cout << initialSquare << " to " << newSquare << endl;
-                    printBitboard(oppositionPieces, cout);
-                    printBoardOnly(cout);
-                    moveVal += board->findPiece(newSquare, !colour, captureFlag);
+                    try {
+                        moveVal += board->findPiece(newSquare, !colour, captureFlag);
+                    } catch (exception& e) {
+                        cout << e.what() << endl;
+                        cout << "tried capturing " << newSquare << " from " << initialSquare << endl;
+                        printBoardOnly(cout);
+                        throw;
+                    }
                 } else if (flag == Move::enPassant) {
                     moveVal += 1;
-                }
-
-                if (getBit(unsafeSquares, newSquare)) {
-                    moveVal -= board->getPieceValue(piece) * 0.75; // move to an unsafe square
-                } else if (getBit(unsafeSquares, initialSquare)) {
-                    moveVal += board->getPieceValue(piece); // evasions
                 }
 
                 U64 futureMuskDestinations;
@@ -461,11 +449,15 @@ void BoardNode::generateMoves(Colour colour) {
                         moveVal += 3.5;
                     } else if (getBit(oppositionPieces, destinationSquare)) { // attack
                         int8_t dummyVar = 0b0000;
-                        printBitboard(oppositionPieces, cout);
-                        cout << "old square: " << initialSquare << endl;
-                        cout << "new square: " << newSquare << endl;
-                        cout << "destination square: " << destinationSquare << endl;
-                        double attackVal = board->findPiece(destinationSquare, !colour, dummyVar);
+                        double attackVal;
+                        try {
+                            attackVal = board->findPiece(destinationSquare, !colour, dummyVar);
+                        } catch (exception& e) {
+                            cout << e.what() << endl;
+                            cout << "tried capturing " << destinationSquare << " from " << newSquare << " from " << initialSquare << endl;
+                            printBoardOnly(cout);
+                            throw;
+                        }
                         if (getBit(unsafeSquares, destinationSquare) && attackVal < board->getPieceValue(piece)) { // attacked piece is being defended and isn't worth pursuing
                             attackVal *= 0.1;
                         }
@@ -474,19 +466,31 @@ void BoardNode::generateMoves(Colour colour) {
                     }
                 }
 
+                if (getBit(unsafeSquares, newSquare)) { // move to an unsafe square
+                    moveVal *= 0.3;
+                    moveVal -= board->getPieceValue(piece) * 0.75;
+                } else if (getBit(unsafeSquares, initialSquare)) { // evasions
+                    moveVal += board->getPieceValue(piece);
+                }
+
                 Move move{initialSquare, newSquare, flag, captureFlag};
                 moves.emplace(moveVal, move);
             }
         }
     }
 
-    cout << "look! unsafe musk!" << endl;
-    printBitboard(unsafeSquares, cout);
-
     // generate king moves below
     while (kingLegalMoves != 0) {
         int newSquare = popLSB(kingLegalMoves);
-        cout << "look it's a new square for king! over here: " << newSquare << endl;
+
+        if (newSquare == 52 && getBit(board->whiteKnights, 37) && !getBit(unsafeSquares, 52)) {
+            cout << "CHECK" << endl;
+            cout << "position:" << endl;
+            printBoardOnly(cout);
+            cout << "unsafe sqaures:" << endl;
+            printBitboard(unsafeSquares, cout);
+        }
+
         if (getBit(unsafeSquares, newSquare)) {
             continue;
         }
@@ -496,11 +500,14 @@ void BoardNode::generateMoves(Colour colour) {
         int8_t captureFlag = 0b0000;
 
         if (getBit(oppositionPieces, newSquare)) { // if capture
-            cout << "king capture" << endl;
-            printBoardOnly(cout);
-            cout << kingSquare << " to " << newSquare << endl;
-            printBitboard(oppositionPieces, cout);
-            moveVal += board->findPiece(newSquare, !colour, captureFlag);
+            try {
+                moveVal += board->findPiece(newSquare, !colour, captureFlag);
+            } catch (exception& e) {
+                cout << e.what() << endl;
+                cout << "tried capturing " << newSquare << " from " << kingSquare << endl;
+                printBoardOnly(cout);
+                throw;
+            }
         }
 
         Move move{kingSquare, newSquare, flag, captureFlag};
@@ -558,7 +565,6 @@ void BoardNode::addPredictedBestMove(Colour colour) {
                 throw logic_error("No flag");
                 break;
             case Move::castle:
-                cout << "CASTLE" << endl;
                 newCastleStatus.disenableWhiteKingCastleLeft();
                 newCastleStatus.disenableWhiteKingCastleRight();
                 newPosition->whiteKing ^= (0x1ULL << bestPredictedMove.getFromSquare()) | (0x1ULL << bestPredictedMove.getToSquare());
@@ -638,7 +644,6 @@ void BoardNode::addPredictedBestMove(Colour colour) {
                 throw logic_error("No flag");
                 break;
             case Move::castle:
-                cout << "CASTLE" << endl;
                 newCastleStatus.disenableBlackKingCastleLeft();
                 newCastleStatus.disenableBlackKingCastleRight();
                 newPosition->blackKing ^= (0x1ULL << bestPredictedMove.getFromSquare()) | (0x1ULL << bestPredictedMove.getToSquare());
@@ -787,13 +792,13 @@ void BoardNode::addPredictedBestMove(Colour colour) {
 }
 
 ostream& operator<<(ostream& out, BoardNode& boardNode) {
-    out << "BOARD NODE ID: " << boardNode.id << "——————————————————————————————————————————————————————————————————————————" << endl;
+    out << "BOARD NODE: " << "——————————————————————————————————————————————————————————————————————————" << endl;
     out << *(boardNode.board);
-    out << "CHILDREN OF PARENT ID (SIZE: " << boardNode.children.size() << "): " << boardNode.id << endl;
+    out << "CHILDREN OF PARENT (SIZE: " << boardNode.children.size() << ")" << endl;
     for (auto child : boardNode.children) {
         cout << *child;
     }
-    out << "END CHILDREN OF PARENT ID: " << boardNode.id << endl;
+    out << "END CHILDREN" << endl;
     cout << "Can white king castle right? " << ((boardNode.castleStatus.canWhiteKingCastleRight() == true) ? "Yes" : "No") << endl;
     cout << "Can white king castle right? " << ((boardNode.castleStatus.canWhiteKingCastleLeft() == true) ? "Yes" : "No") << endl;
     cout << "Can white king castle right? " << ((boardNode.castleStatus.canBlackKingCastleRight() == true) ? "Yes" : "No") << endl;
