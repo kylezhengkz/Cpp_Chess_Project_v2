@@ -19,6 +19,7 @@ void CPU::pickMove(BoardNode*& pos) {
         cout << "BLACK TO MOVE:" << endl;
     }
     /*
+    // pick best predicted move
     pos->generateMoves(colour);
     pos->printChildrenMoveNotation(cout);
     pos->addPredictedBestMove(colour);
@@ -63,7 +64,6 @@ double CPU::alphaBetaPruning(BoardNode* pos, int depth, double alpha, double bet
 
     if (depth == 0) {
         double staticEval = pos->staticEval();
-        pos->setValue(staticEval);
         return staticEval;
     }
 
@@ -72,13 +72,17 @@ double CPU::alphaBetaPruning(BoardNode* pos, int depth, double alpha, double bet
         if (pos->getChildren().size() == 0) {
             pos->generateMoves(Colour::WHITE);
         } else {
-            sort(pos->getChildren().begin(), pos->getChildren().end(), [](const BoardNode* lhs, const BoardNode* rhs) {
+            vector<BoardNode*> vec = pos->getChildren();
+            sort(vec.begin(), vec.end(), [](const BoardNode* lhs, const BoardNode* rhs) {
                 return lhs->getValue() > rhs->getValue();
             });
         }
-
-        for (size_t i = 0; i < pos->getChildren().size(); i++) {
-            double eval = alphaBetaPruning(pos->getChildren()[i], depth - 1, alpha, beta, false);
+        
+        int index = -1;
+        while (!pos->moveListEmpty()) {
+            pos->addPredictedBestMove(Colour::WHITE);
+            index++;
+            double eval = alphaBetaPruning(pos->getChildren()[index], depth - 1, alpha, beta, false);
             maxEval = max(maxEval, eval);
             alpha = max(alpha, eval);
             if (beta <= alpha) {
@@ -92,13 +96,17 @@ double CPU::alphaBetaPruning(BoardNode* pos, int depth, double alpha, double bet
         if (pos->getChildren().size() == 0) {
             pos->generateMoves(Colour::BLACK);
         } else {
-            sort(pos->getChildren().begin(), pos->getChildren().end(), [](const BoardNode* lhs, const BoardNode* rhs) {
+            vector<BoardNode*> vec = pos->getChildren();
+            sort(vec.begin(), vec.end(), [](const BoardNode* lhs, const BoardNode* rhs) {
                 return lhs->getValue() < rhs->getValue();
             });
         }
 
-        for (size_t i = 0; i < pos->getChildren().size(); i++) {
-            double eval = alphaBetaPruning(pos->getChildren()[i], depth - 1, alpha, beta, true);
+        int index = -1;
+        while (!pos->moveListEmpty()) {
+            pos->addPredictedBestMove(Colour::BLACK);
+            index++;
+            double eval = alphaBetaPruning(pos->getChildren()[index], depth - 1, alpha, beta, true);
             minEval = min(minEval, eval);
             beta = min(beta, eval);
             if (beta <= alpha) {

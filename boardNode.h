@@ -32,7 +32,7 @@ class BoardNode {
     ostream& printBoardOnly(ostream& out);
     ostream& printChildren(ostream& out);
     ostream& printChildrenMoveNotation(ostream& out);
-    vector<BoardNode*> getChildren();
+    vector<BoardNode*>& getChildren();
     ~BoardNode();
     void deleteChildren();
     void clearMoves();
@@ -41,5 +41,6 @@ class BoardNode {
     friend void branchToChild(BoardNode*& boardNode, size_t index);
     void setValue(double val);
     double getValue() const;
+    multimap<double, Move, greater<double>>& getMoves();
 };
 #endif

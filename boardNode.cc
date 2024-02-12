@@ -804,7 +804,7 @@ ostream& BoardNode::printChildrenMoveNotation(ostream& out) {
     return out;
 }
 
-vector<BoardNode*> BoardNode::getChildren() {
+vector<BoardNode*>& BoardNode::getChildren() {
     return children;
 }
 
@@ -858,4 +858,8 @@ void BoardNode::setValue(double value) {
 
 double BoardNode::getValue() const {
     return value;
+}
+
+multimap<double, Move, greater<double>>& BoardNode::getMoves() {
+    return moves;
 }
