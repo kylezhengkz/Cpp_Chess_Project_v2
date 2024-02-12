@@ -6,6 +6,10 @@ Board* BoardNode::getBoard() { // TEMP
 }
 */
 
+string BoardNode::getID() {
+    return id;
+}
+
 bool BoardNode::moveListEmpty() {
     return moves.empty();
 }
@@ -282,6 +286,8 @@ U64 BoardNode::generateUnsafeMusk(Colour teamColour) {
             if (piece == Piece::WHITEPAWN || piece == Piece::BLACKPAWN) {
                 controlMusk |= LookupTable::lookupPawnControlMusk(initialSquare, oppositionColour);
             } else if ((piece == Piece::KNIGHT) || (piece == Piece::KING)) {
+                cout << "Inspect unsafe musks" << endl;
+                printBitboard(LookupTable::lookupMusk(initialSquare, piece), cout);
                 controlMusk |= LookupTable::lookupMusk(initialSquare, piece);
             } else {
                 controlMusk |= LookupTable::lookupMove(initialSquare, piece, allPieces);
@@ -325,6 +331,8 @@ Make sure you add pinned piece if blocking check
 // Also need to add move val for en passant (FIX LATER)
 
 void BoardNode::generateMoves(Colour colour) {
+    cout << "Inspect position:" << endl;
+    printBoardOnly(cout);
     bool check = false;
     U64 checkPath;
     bool doubleCheck = false;
@@ -419,6 +427,10 @@ void BoardNode::generateMoves(Colour colour) {
 
                 int8_t captureFlag = 0b0000;
                 if (getBit(oppositionPieces, newSquare)) { // if capture
+                    cout << "regular capture" << endl;
+                    cout << initialSquare << " to " << newSquare << endl;
+                    printBitboard(oppositionPieces, cout);
+                    printBoardOnly(cout);
                     moveVal += board->findPiece(newSquare, !colour, captureFlag);
                 } else if (flag == Move::enPassant) {
                     moveVal += 1;
@@ -449,6 +461,10 @@ void BoardNode::generateMoves(Colour colour) {
                         moveVal += 3.5;
                     } else if (getBit(oppositionPieces, destinationSquare)) { // attack
                         int8_t dummyVar = 0b0000;
+                        printBitboard(oppositionPieces, cout);
+                        cout << "old square: " << initialSquare << endl;
+                        cout << "new square: " << newSquare << endl;
+                        cout << "destination square: " << destinationSquare << endl;
                         double attackVal = board->findPiece(destinationSquare, !colour, dummyVar);
                         if (getBit(unsafeSquares, destinationSquare) && attackVal < board->getPieceValue(piece)) { // attacked piece is being defended and isn't worth pursuing
                             attackVal *= 0.1;
@@ -464,9 +480,13 @@ void BoardNode::generateMoves(Colour colour) {
         }
     }
 
+    cout << "look! unsafe musk!" << endl;
+    printBitboard(unsafeSquares, cout);
+
     // generate king moves below
     while (kingLegalMoves != 0) {
         int newSquare = popLSB(kingLegalMoves);
+        cout << "look it's a new square for king! over here: " << newSquare << endl;
         if (getBit(unsafeSquares, newSquare)) {
             continue;
         }
@@ -476,6 +496,10 @@ void BoardNode::generateMoves(Colour colour) {
         int8_t captureFlag = 0b0000;
 
         if (getBit(oppositionPieces, newSquare)) { // if capture
+            cout << "king capture" << endl;
+            printBoardOnly(cout);
+            cout << kingSquare << " to " << newSquare << endl;
+            printBitboard(oppositionPieces, cout);
             moveVal += board->findPiece(newSquare, !colour, captureFlag);
         }
 
@@ -630,6 +654,7 @@ void BoardNode::addPredictedBestMove(Colour colour) {
                 return;
             case Move::enPassant:
                 newPosition->blackPawns ^= (0x1ULL << bestPredictedMove.getFromSquare()) | (0x1ULL << bestPredictedMove.getToSquare());
+                newPosition->blackPieces ^= (0x1ULL << bestPredictedMove.getFromSquare()) | (0x1ULL << bestPredictedMove.getToSquare());
                 clearBit(newPosition->whitePawns, lastDoublePawnMoveIndex);
                 clearBit(newPosition->whitePieces, lastDoublePawnMoveIndex);
                 children.emplace_back(new BoardNode(newPosition, newLastDoublePawnMoveIndex, newCastleStatus, pins));

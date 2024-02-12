@@ -18,6 +18,7 @@ class BoardNode {
     vector<BoardNode*> children;
     double value;
     public:
+    string getID(); // TEMP
     // Board* getBoard(); // TEMP
     bool moveListEmpty(); // TEMP
     BoardNode(Board* board, int lastDoublePawnMoveIndex, CastleStatus castleStatus, unordered_map<int, U64> opponentPins);
