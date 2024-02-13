@@ -52,7 +52,7 @@ double BoardNode::staticEval() {
     return eval;
 }
 
-void BoardNode::searchLegalMusks(Colour colour, unordered_map<int, U64>& pins, bool& check, U64& checkPath, bool& doubleCheck, U64& kingLegalMoves, int& kingSquare) {
+void BoardNode::searchLegalMusks(Colour colour, unordered_map<int, U64>& pins, bool& check, bool& doubleCheck, U64& kingLegalMoves, int& kingSquare, U64& pinBlockMusk) {
     U64 oppositionPawns;
     U64 oppositionKnights;
     U64 oppositionBishops;
@@ -86,14 +86,14 @@ void BoardNode::searchLegalMusks(Colour colour, unordered_map<int, U64>& pins, b
     U64 checkMusk = LookupTable::lookupPawnControlMusk(kingSquare, colour);
     if ((checkMusk & oppositionPawns) != 0) {
         check = true;
-        checkPath = checkMusk & oppositionPawns;
+        checkPathMusk = checkMusk & oppositionPawns;
     }
 
     // look for knight checks
     checkMusk = LookupTable::lookupMusk(kingSquare, Piece::KNIGHT);
     if (!check && (checkMusk & oppositionKnights) != 0) {
         check = true;
-        checkPath = checkMusk & oppositionKnights;
+        checkPathMusk = checkMusk & oppositionKnights;
     }
     
     // quick way to ensure that check is possible
@@ -126,10 +126,14 @@ void BoardNode::searchLegalMusks(Colour colour, unordered_map<int, U64>& pins, b
                     return;
                 } else {
                     check = true;
-                    checkPath = inBetweenRay | (0X1ULL << sourceIndex);
+                    checkPathMusk = inBetweenRay | (0X1ULL << sourceIndex);
                 }
             } else if (__builtin_popcountll(inBetweenRay & teamPieces) == 1) { // pin
-                pins[getLSB(inBetweenRay & teamPieces)] = inBetweenRay | (0x1ULL << sourceIndex);
+                int pinnedPieceIndex = getLSB(inBetweenRay & teamPieces);
+                U64 pinLegalMusk =  inBetweenRay | (0x1ULL << sourceIndex);
+                clearBit(pinLegalMusk, pinnedPieceIndex);
+                pins[getLSB(inBetweenRay & teamPieces)] = pinLegalMusk;
+                pinBlockMusk |= clearBitsLessThanIndex(pinLegalMusk, pinnedPieceIndex);
             }
         }
     }
@@ -157,10 +161,14 @@ void BoardNode::searchLegalMusks(Colour colour, unordered_map<int, U64>& pins, b
                     return;
                 } else {
                     check = true;
-                    checkPath = inBetweenRay | (0X1ULL << sourceIndex);
+                    checkPathMusk = inBetweenRay | (0X1ULL << sourceIndex);
                 }
             } else if (__builtin_popcountll(inBetweenRay & teamPieces) == 1) { // pin
-                pins[getLSB(inBetweenRay & teamPieces)] = inBetweenRay | (0x1ULL << sourceIndex);
+                int pinnedPieceIndex = getLSB(inBetweenRay & teamPieces);
+                U64 pinLegalMusk =  inBetweenRay | (0x1ULL << sourceIndex);
+                clearBit(pinLegalMusk, pinnedPieceIndex);
+                pins[getLSB(inBetweenRay & teamPieces)] = pinLegalMusk;
+                pinBlockMusk |= clearBitsGreaterThanIndex(pinLegalMusk, pinnedPieceIndex);
             }
         }
     }
@@ -316,7 +324,7 @@ Algorithm:
 - Add 25% of piece value for each attack (accounts for forks)
 
 Note that:
-Pinned pieces remain pinned on your turn unless you move king or you move piece in the way of pin (we can ignore for now, but FIX LATER)
+Pinned pieces remain pinned after your turn unless you move king or you move piece in the way of pin (we can ignore for now, but FIX LATER)
 So you have access to opponent's pinned pieces
 Make sure you add pinned piece if blocking check
 */
@@ -325,11 +333,11 @@ Make sure you add pinned piece if blocking check
 
 void BoardNode::generateMoves(Colour colour) {
     bool check = false;
-    U64 checkPath;
     bool doubleCheck = false;
     U64 kingLegalMoves;
     int kingSquare;
-    searchLegalMusks(colour, pins, check, checkPath, doubleCheck, kingLegalMoves, kingSquare);
+    U64 pinBlockMusk = 0x0ULL;
+    searchLegalMusks(colour, pins, check, doubleCheck, kingLegalMoves, kingSquare, pinBlockMusk);
 
     U64 unsafeSquares = generateUnsafeMusk(colour);
     U64 allPieces = board->whitePieces | board->blackPieces;
@@ -353,6 +361,9 @@ void BoardNode::generateMoves(Colour colour) {
         }
     }
     for (Piece piece : pieceGenerationOrder) {
+        if (doubleCheck) { // must move king only
+            break;
+        }
         U64 existingPieces = board->getPieces(piece, colour);
         while (existingPieces != 0) {
             int initialSquare = popLSB(existingPieces);
@@ -365,8 +376,14 @@ void BoardNode::generateMoves(Colour colour) {
                 legalMoves = LookupTable::lookupMove(initialSquare, piece, allPieces) & ~teamPieces;
             }
 
-            if (check && !doubleCheck) {
-                legalMoves &= checkPath;
+            if (check) {
+                // consider edge case where you can stop pawn check via en passant
+                if ((lastDoublePawnMoveIndex != -1) && getBit(checkPathMusk, lastDoublePawnMoveIndex) && getBit(legalMoves, enPassantCaptureIndex)) {
+                    legalMoves = 0x0ULL;
+                    setBit(legalMoves, enPassantCaptureIndex);
+                } else {
+                    legalMoves &= checkPathMusk;
+                }
             }
 
             if (pins.count(initialSquare) > 0) {
@@ -385,6 +402,30 @@ void BoardNode::generateMoves(Colour colour) {
                             flag = Move::pawnDoubleMove;
                         } else if (newSquare == enPassantCaptureIndex) {
                             flag = Move::enPassant;
+                            // also need to consider edge case where en passant is pinned from side (extremely rare but possible)
+                            if (RANK_5 & kingSquare) {
+                                if (kingSquare > lastDoublePawnMoveIndex) { // king is on the right side
+                                    U64 ray = LookupTable::lookupRayMusk(kingSquare, -HORIZONTAL);
+                                    if (ray & ((board->blackRooks) | (board->blackQueens))) {
+                                        int nearestThreat = getLSB((board->blackRooks) | (board->blackQueens));
+                                        clearBitsLessThanIndex(ray, nearestThreat);
+                                        ray &= allPieces;
+                                        if (__builtin_popcount(ray) == 2) {
+                                            continue;
+                                        }
+                                    }
+                                } else { // king is on the left side
+                                    U64 ray = LookupTable::lookupRayMusk(kingSquare, HORIZONTAL);
+                                    if (ray & ((board->blackRooks) | (board->blackQueens))) {
+                                        int nearestThreat = getLSB((board->blackRooks) | (board->blackQueens));
+                                        clearBitsGreaterThanIndex(ray, nearestThreat);
+                                        ray &= allPieces;
+                                        if (__builtin_popcount(ray) == 2) {
+                                            continue;
+                                        }
+                                    }
+                                }
+                            }
                         } else {
                             flag = Move::pawnMove;
                         }
@@ -396,6 +437,30 @@ void BoardNode::generateMoves(Colour colour) {
                             flag = Move::pawnDoubleMove;
                         } else if (newSquare == enPassantCaptureIndex) {
                             flag = Move::enPassant;
+                            // also need to consider edge case where en passant is pinned from side (extremely rare but possible)
+                            if (RANK_4 & kingSquare) {
+                                if (kingSquare > lastDoublePawnMoveIndex) { // king is on the right side
+                                    U64 ray = LookupTable::lookupRayMusk(kingSquare, -HORIZONTAL);
+                                    if (ray & ((board->whiteRooks) | (board->whiteQueens))) {
+                                        int nearestThreat = getLSB((board->whiteRooks) | (board->whiteQueens));
+                                        clearBitsLessThanIndex(ray, nearestThreat);
+                                        ray &= allPieces;
+                                        if (__builtin_popcount(ray) == 2) {
+                                            continue;
+                                        }
+                                    }
+                                } else { // king is on the left side
+                                    U64 ray = LookupTable::lookupRayMusk(kingSquare, HORIZONTAL);
+                                    if (ray & ((board->whiteRooks) | (board->whiteQueens))) {
+                                        int nearestThreat = getLSB((board->whiteRooks) | (board->whiteQueens));
+                                        clearBitsGreaterThanIndex(ray, nearestThreat);
+                                        ray &= allPieces;
+                                        if (__builtin_popcount(ray) == 2) {
+                                            continue;
+                                        }
+                                    }
+                                }
+                            }
                         } else {
                             flag = Move::pawnMove;
                         }
@@ -467,13 +532,30 @@ void BoardNode::generateMoves(Colour colour) {
                 }
 
                 if (getBit(unsafeSquares, newSquare)) { // move to an unsafe square
-                    moveVal *= 0.3;
+                    moveVal *= 0.1; // the benefits of move rendered irrelevant
                     moveVal -= board->getPieceValue(piece) * 0.75;
                 } else if (getBit(unsafeSquares, initialSquare)) { // evasions
                     moveVal += board->getPieceValue(piece);
                 }
 
-                Move move{initialSquare, newSquare, flag, captureFlag};
+                int removePinIndex = -1;
+                bool isAddPin = false;
+
+                if (pinBlockMusk) {
+                    if (getBit(pinBlockMusk, newSquare)) { // remove pin
+                        for (auto pin : pins) {
+                            if (getBit(pin.second, newSquare)) {
+                                removePinIndex = pin.first;
+                            }
+                        }
+                    }
+                }
+
+                if (check && (captureFlag != Move::noCapture)) { // add pin
+                    isAddPin = true;
+                }
+
+                Move move{initialSquare, newSquare, flag, captureFlag, removePinIndex, isAddPin};
                 moves.emplace(moveVal, move);
             }
         }
@@ -482,14 +564,6 @@ void BoardNode::generateMoves(Colour colour) {
     // generate king moves below
     while (kingLegalMoves != 0) {
         int newSquare = popLSB(kingLegalMoves);
-
-        if (newSquare == 52 && getBit(board->whiteKnights, 37) && !getBit(unsafeSquares, 52)) {
-            cout << "CHECK" << endl;
-            cout << "position:" << endl;
-            printBoardOnly(cout);
-            cout << "unsafe sqaures:" << endl;
-            printBitboard(unsafeSquares, cout);
-        }
 
         if (getBit(unsafeSquares, newSquare)) {
             continue;
@@ -510,7 +584,7 @@ void BoardNode::generateMoves(Colour colour) {
             }
         }
 
-        Move move{kingSquare, newSquare, flag, captureFlag};
+        Move move{kingSquare, newSquare, flag, captureFlag, -1, false};
         moves.emplace(moveVal, move);
     }
 
@@ -518,28 +592,28 @@ void BoardNode::generateMoves(Colour colour) {
     if (colour == Colour::WHITE) {
         if (castleStatus.canWhiteKingCastleLeft() && ((whiteLeftCastle & allPieces) == 0)) {
             if (isSquareSafe(4, colour) && isSquareSafe(1, colour) && isSquareSafe(2, colour) && isSquareSafe(3, colour)) {
-                Move move{kingSquare, 2, Move::castle, Move::noCapture};
+                Move move{kingSquare, 2, Move::castle, Move::noCapture, -1, false};
                 moves.emplace(1, move);
             }
         }
         
         if (castleStatus.canWhiteKingCastleRight() && ((whiteRightCastle & allPieces) == 0)) {
             if (isSquareSafe(4, colour) && isSquareSafe(5, colour) && isSquareSafe(6, colour)) {
-                Move move{kingSquare, 6, Move::castle, Move::noCapture};
+                Move move{kingSquare, 6, Move::castle, Move::noCapture, -1, false};
                 moves.emplace(1.1, move);
             }
         }
     } else {
         if (castleStatus.canBlackKingCastleLeft() && ((blackLeftCastle & allPieces) == 0)) {
             if (isSquareSafe(60, colour) &&  isSquareSafe(57, colour) && isSquareSafe(58, colour) && isSquareSafe(59, colour)) {
-                Move move{kingSquare, 58, Move::castle, Move::noCapture};
+                Move move{kingSquare, 58, Move::castle, Move::noCapture, -1, false};
                 moves.emplace(1, move);
             }
         }
         
         if (castleStatus.canBlackKingCastleRight() && ((blackRightCastle & allPieces) == 0)) {
             if (isSquareSafe(60, colour) && isSquareSafe(61, colour) && isSquareSafe(62, colour)) {
-                Move move{kingSquare, 62, Move::castle, Move::noCapture};
+                Move move{kingSquare, 62, Move::castle, Move::noCapture, -1, false};
                 moves.emplace(1.1, move);
             }
         }
@@ -555,6 +629,17 @@ void BoardNode::addPredictedBestMove(Colour colour) {
     auto bestPredictedMove = moves.begin()->second;
     moves.erase(moves.begin());
     int flag = bestPredictedMove.getFlag();
+
+    unordered_map<int, U64> pinsCopy = pins;
+    if (bestPredictedMove.removePinIndex != -1) {
+        pinsCopy.erase(bestPredictedMove.removePinIndex);
+    }
+
+    if (bestPredictedMove.addPin) {
+        U64 checkPathMuskCopy = checkPathMusk;
+        clearBit(checkPathMuskCopy, bestPredictedMove.getToSquare());
+        pinsCopy[bestPredictedMove.getToSquare()] = checkPathMuskCopy;
+    }
 
     CastleStatus newCastleStatus = castleStatus;
     int newLastDoublePawnMoveIndex = -1;
@@ -576,26 +661,26 @@ void BoardNode::addPredictedBestMove(Colour colour) {
                     newPosition->whiteRooks ^= (0x1ULL << 5) | (0x1ULL << 7);
                     newPosition->whitePieces ^= (0x1ULL << 5) | (0x1ULL << 7);
                 }
-                children.emplace_back(new BoardNode(newPosition, newLastDoublePawnMoveIndex, newCastleStatus, pins));
+                children.emplace_back(new BoardNode(newPosition, newLastDoublePawnMoveIndex, newCastleStatus, pinsCopy));
                 return;
-            case Move::enPassant: // FIX: need to consider edge case where en passant is pinned 
+            case Move::enPassant:
                 newPosition->whitePawns ^= (0x1ULL << bestPredictedMove.getFromSquare()) | (0x1ULL << bestPredictedMove.getToSquare());
                 newPosition->whitePieces ^= (0x1ULL << bestPredictedMove.getFromSquare()) | (0x1ULL << bestPredictedMove.getToSquare());
                 clearBit(newPosition->blackPawns, lastDoublePawnMoveIndex);
                 clearBit(newPosition->blackPieces, lastDoublePawnMoveIndex);
-                children.emplace_back(new BoardNode(newPosition, newLastDoublePawnMoveIndex, newCastleStatus, pins));
+                children.emplace_back(new BoardNode(newPosition, newLastDoublePawnMoveIndex, newCastleStatus, pinsCopy));
                 return;
             case Move::pawnDoubleMove:
                 newPosition->whitePawns ^= (0x1ULL << bestPredictedMove.getFromSquare()) | (0x1ULL << bestPredictedMove.getToSquare());
                 newPosition->whitePieces ^= (0x1ULL << bestPredictedMove.getFromSquare()) | (0x1ULL << bestPredictedMove.getToSquare());
                 newLastDoublePawnMoveIndex = bestPredictedMove.getToSquare();
-                children.emplace_back(new BoardNode(newPosition, newLastDoublePawnMoveIndex, newCastleStatus, pins));
+                children.emplace_back(new BoardNode(newPosition, newLastDoublePawnMoveIndex, newCastleStatus, pinsCopy));
                 return;
             case Move::queenPromotion:
                 clearBit(newPosition->whitePawns, bestPredictedMove.getFromSquare());
                 setBit(newPosition->whiteQueens, bestPredictedMove.getToSquare());
                 newPosition->whitePieces ^= (0x1ULL << bestPredictedMove.getFromSquare()) | (0x1ULL << bestPredictedMove.getToSquare());
-                children.emplace_back(new BoardNode(newPosition, newLastDoublePawnMoveIndex, newCastleStatus, pins));
+                children.emplace_back(new BoardNode(newPosition, newLastDoublePawnMoveIndex, newCastleStatus, pinsCopy));
                 return;
             case Move::rookPromotion:
                 break;
@@ -655,26 +740,26 @@ void BoardNode::addPredictedBestMove(Colour colour) {
                     newPosition->blackRooks ^= (0x1ULL << 61) | (0x1ULL << 63);
                     newPosition->blackPieces ^= (0x1ULL << 61) | (0x1ULL << 63);
                 }
-                children.emplace_back(new BoardNode(newPosition, newLastDoublePawnMoveIndex, newCastleStatus, pins));
+                children.emplace_back(new BoardNode(newPosition, newLastDoublePawnMoveIndex, newCastleStatus, pinsCopy));
                 return;
             case Move::enPassant:
                 newPosition->blackPawns ^= (0x1ULL << bestPredictedMove.getFromSquare()) | (0x1ULL << bestPredictedMove.getToSquare());
                 newPosition->blackPieces ^= (0x1ULL << bestPredictedMove.getFromSquare()) | (0x1ULL << bestPredictedMove.getToSquare());
                 clearBit(newPosition->whitePawns, lastDoublePawnMoveIndex);
                 clearBit(newPosition->whitePieces, lastDoublePawnMoveIndex);
-                children.emplace_back(new BoardNode(newPosition, newLastDoublePawnMoveIndex, newCastleStatus, pins));
+                children.emplace_back(new BoardNode(newPosition, newLastDoublePawnMoveIndex, newCastleStatus, pinsCopy));
                 return;
             case Move::pawnDoubleMove:
                 newPosition->blackPawns ^= (0x1ULL << bestPredictedMove.getFromSquare()) | (0x1ULL << bestPredictedMove.getToSquare());
                 newPosition->blackPieces ^= (0x1ULL << bestPredictedMove.getFromSquare()) | (0x1ULL << bestPredictedMove.getToSquare());
                 newLastDoublePawnMoveIndex = bestPredictedMove.getToSquare();
-                children.emplace_back(new BoardNode(newPosition, newLastDoublePawnMoveIndex, newCastleStatus, pins));
+                children.emplace_back(new BoardNode(newPosition, newLastDoublePawnMoveIndex, newCastleStatus, pinsCopy));
                 return;
             case Move::queenPromotion:
                 clearBit(newPosition->blackPawns, bestPredictedMove.getFromSquare());
                 setBit(newPosition->blackQueens, bestPredictedMove.getToSquare());
                 newPosition->blackPieces ^= (0x1ULL << bestPredictedMove.getFromSquare()) | (0x1ULL << bestPredictedMove.getToSquare());
-                children.emplace_back(new BoardNode(newPosition, newLastDoublePawnMoveIndex, newCastleStatus, pins));
+                children.emplace_back(new BoardNode(newPosition, newLastDoublePawnMoveIndex, newCastleStatus, pinsCopy));
                 return;
             case Move::rookPromotion:
                 break;
@@ -788,7 +873,18 @@ void BoardNode::addPredictedBestMove(Colour colour) {
         }
     }
 
-    children.emplace_back(new BoardNode(newPosition, newLastDoublePawnMoveIndex, newCastleStatus, pins));
+    children.emplace_back(new BoardNode(newPosition, newLastDoublePawnMoveIndex, newCastleStatus, pinsCopy));
+}
+
+int getRandomNumber(int n) {
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_int_distribution<> distrib(0, n);
+    return distrib(gen);
+}
+
+void BoardNode::addRandomMove() {
+    
 }
 
 ostream& operator<<(ostream& out, BoardNode& boardNode) {

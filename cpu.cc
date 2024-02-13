@@ -5,27 +5,19 @@ double const CPU::negativeInfinity = -9999;
 double const CPU::positiveInfinity = 9999;
 const int CPU::maxTimeSeconds = 10;
 
-int getRandomNumber(int n) {
-    std::random_device rd;
-    std::mt19937 gen(rd());
-    std::uniform_int_distribution<> distrib(0, n);
-    return distrib(gen);
-}
-
 void CPU::pickMove(BoardNode*& pos) {
     if (colour == Colour::WHITE) {
         cout << "WHITE TO MOVE:" << endl;
     } else {
         cout << "BLACK TO MOVE:" << endl;
     }
-    /*
     // pick best predicted move
     pos->generateMoves(colour);
     pos->printChildrenMoveNotation(cout);
     pos->addPredictedBestMove(colour);
     branchToChild(pos, 0);
-    */
-    iterativeDeepening(pos);
+
+    // iterativeDeepening(pos);
 }
 
 void CPU::iterativeDeepening(BoardNode*& pos) {
