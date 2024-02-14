@@ -1,0 +1,666 @@
+Generating moves for 64 bishop blocker patterns
+Generating moves for 32 bishop blocker patterns
+Generating moves for 32 bishop blocker patterns
+Generating moves for 32 bishop blocker patterns
+Generating moves for 32 bishop blocker patterns
+Generating moves for 32 bishop blocker patterns
+Generating moves for 32 bishop blocker patterns
+Generating moves for 64 bishop blocker patterns
+Generating moves for 32 bishop blocker patterns
+Generating moves for 32 bishop blocker patterns
+Generating moves for 32 bishop blocker patterns
+Generating moves for 32 bishop blocker patterns
+Generating moves for 32 bishop blocker patterns
+Generating moves for 32 bishop blocker patterns
+Generating moves for 32 bishop blocker patterns
+Generating moves for 32 bishop blocker patterns
+Generating moves for 32 bishop blocker patterns
+Generating moves for 32 bishop blocker patterns
+Generating moves for 128 bishop blocker patterns
+Generating moves for 128 bishop blocker patterns
+Generating moves for 128 bishop blocker patterns
+Generating moves for 128 bishop blocker patterns
+Generating moves for 32 bishop blocker patterns
+Generating moves for 32 bishop blocker patterns
+Generating moves for 32 bishop blocker patterns
+Generating moves for 32 bishop blocker patterns
+Generating moves for 128 bishop blocker patterns
+Generating moves for 512 bishop blocker patterns
+Generating moves for 512 bishop blocker patterns
+Generating moves for 128 bishop blocker patterns
+Generating moves for 32 bishop blocker patterns
+Generating moves for 32 bishop blocker patterns
+Generating moves for 32 bishop blocker patterns
+Generating moves for 32 bishop blocker patterns
+Generating moves for 128 bishop blocker patterns
+Generating moves for 512 bishop blocker patterns
+Generating moves for 512 bishop blocker patterns
+Generating moves for 128 bishop blocker patterns
+Generating moves for 32 bishop blocker patterns
+Generating moves for 32 bishop blocker patterns
+Generating moves for 32 bishop blocker patterns
+Generating moves for 32 bishop blocker patterns
+Generating moves for 128 bishop blocker patterns
+Generating moves for 128 bishop blocker patterns
+Generating moves for 128 bishop blocker patterns
+Generating moves for 128 bishop blocker patterns
+Generating moves for 32 bishop blocker patterns
+Generating moves for 32 bishop blocker patterns
+Generating moves for 32 bishop blocker patterns
+Generating moves for 32 bishop blocker patterns
+Generating moves for 32 bishop blocker patterns
+Generating moves for 32 bishop blocker patterns
+Generating moves for 32 bishop blocker patterns
+Generating moves for 32 bishop blocker patterns
+Generating moves for 32 bishop blocker patterns
+Generating moves for 32 bishop blocker patterns
+Generating moves for 64 bishop blocker patterns
+Generating moves for 32 bishop blocker patterns
+Generating moves for 32 bishop blocker patterns
+Generating moves for 32 bishop blocker patterns
+Generating moves for 32 bishop blocker patterns
+Generating moves for 32 bishop blocker patterns
+Generating moves for 32 bishop blocker patterns
+Generating moves for 64 bishop blocker patterns
+Generating moves for 4096 rook blocker patterns
+Generating moves for 2048 rook blocker patterns
+Generating moves for 2048 rook blocker patterns
+Generating moves for 2048 rook blocker patterns
+Generating moves for 2048 rook blocker patterns
+Generating moves for 2048 rook blocker patterns
+Generating moves for 2048 rook blocker patterns
+Generating moves for 4096 rook blocker patterns
+Generating moves for 2048 rook blocker patterns
+Generating moves for 1024 rook blocker patterns
+Generating moves for 1024 rook blocker patterns
+Generating moves for 1024 rook blocker patterns
+Generating moves for 1024 rook blocker patterns
+Generating moves for 1024 rook blocker patterns
+Generating moves for 1024 rook blocker patterns
+Generating moves for 2048 rook blocker patterns
+Generating moves for 2048 rook blocker patterns
+Generating moves for 1024 rook blocker patterns
+Generating moves for 1024 rook blocker patterns
+Generating moves for 1024 rook blocker patterns
+Generating moves for 1024 rook blocker patterns
+Generating moves for 1024 rook blocker patterns
+Generating moves for 1024 rook blocker patterns
+Generating moves for 2048 rook blocker patterns
+Generating moves for 2048 rook blocker patterns
+Generating moves for 1024 rook blocker patterns
+Generating moves for 1024 rook blocker patterns
+Generating moves for 1024 rook blocker patterns
+Generating moves for 1024 rook blocker patterns
+Generating moves for 1024 rook blocker patterns
+Generating moves for 1024 rook blocker patterns
+Generating moves for 2048 rook blocker patterns
+Generating moves for 2048 rook blocker patterns
+Generating moves for 1024 rook blocker patterns
+Generating moves for 1024 rook blocker patterns
+Generating moves for 1024 rook blocker patterns
+Generating moves for 1024 rook blocker patterns
+Generating moves for 1024 rook blocker patterns
+Generating moves for 1024 rook blocker patterns
+Generating moves for 2048 rook blocker patterns
+Generating moves for 2048 rook blocker patterns
+Generating moves for 1024 rook blocker patterns
+Generating moves for 1024 rook blocker patterns
+Generating moves for 1024 rook blocker patterns
+Generating moves for 1024 rook blocker patterns
+Generating moves for 1024 rook blocker patterns
+Generating moves for 1024 rook blocker patterns
+Generating moves for 2048 rook blocker patterns
+Generating moves for 2048 rook blocker patterns
+Generating moves for 1024 rook blocker patterns
+Generating moves for 1024 rook blocker patterns
+Generating moves for 1024 rook blocker patterns
+Generating moves for 1024 rook blocker patterns
+Generating moves for 1024 rook blocker patterns
+Generating moves for 1024 rook blocker patterns
+Generating moves for 2048 rook blocker patterns
+Generating moves for 4096 rook blocker patterns
+Generating moves for 2048 rook blocker patterns
+Generating moves for 2048 rook blocker patterns
+Generating moves for 2048 rook blocker patterns
+Generating moves for 2048 rook blocker patterns
+Generating moves for 2048 rook blocker patterns
+Generating moves for 2048 rook blocker patterns
+Generating moves for 4096 rook blocker patterns
+Generating moves for 262144 queen blocker patterns
+Generating moves for 65536 queen blocker patterns
+Generating moves for 65536 queen blocker patterns
+Generating moves for 65536 queen blocker patterns
+Generating moves for 65536 queen blocker patterns
+Generating moves for 65536 queen blocker patterns
+Generating moves for 65536 queen blocker patterns
+Generating moves for 262144 queen blocker patterns
+Generating moves for 65536 queen blocker patterns
+Generating moves for 32768 queen blocker patterns
+Generating moves for 32768 queen blocker patterns
+Generating moves for 32768 queen blocker patterns
+Generating moves for 32768 queen blocker patterns
+Generating moves for 32768 queen blocker patterns
+Generating moves for 32768 queen blocker patterns
+Generating moves for 65536 queen blocker patterns
+Generating moves for 65536 queen blocker patterns
+Generating moves for 32768 queen blocker patterns
+Generating moves for 131072 queen blocker patterns
+Generating moves for 131072 queen blocker patterns
+Generating moves for 131072 queen blocker patterns
+Generating moves for 131072 queen blocker patterns
+Generating moves for 32768 queen blocker patterns
+Generating moves for 65536 queen blocker patterns
+Generating moves for 65536 queen blocker patterns
+Generating moves for 32768 queen blocker patterns
+Generating moves for 131072 queen blocker patterns
+Generating moves for 524288 queen blocker patterns
+Generating moves for 524288 queen blocker patterns
+Generating moves for 131072 queen blocker patterns
+Generating moves for 32768 queen blocker patterns
+Generating moves for 65536 queen blocker patterns
+Generating moves for 65536 queen blocker patterns
+Generating moves for 32768 queen blocker patterns
+Generating moves for 131072 queen blocker patterns
+Generating moves for 524288 queen blocker patterns
+Generating moves for 524288 queen blocker patterns
+Generating moves for 131072 queen blocker patterns
+Generating moves for 32768 queen blocker patterns
+Generating moves for 65536 queen blocker patterns
+Generating moves for 65536 queen blocker patterns
+Generating moves for 32768 queen blocker patterns
+Generating moves for 131072 queen blocker patterns
+Generating moves for 131072 queen blocker patterns
+Generating moves for 131072 queen blocker patterns
+Generating moves for 131072 queen blocker patterns
+Generating moves for 32768 queen blocker patterns
+Generating moves for 65536 queen blocker patterns
+Generating moves for 65536 queen blocker patterns
+Generating moves for 32768 queen blocker patterns
+Generating moves for 32768 queen blocker patterns
+Generating moves for 32768 queen blocker patterns
+Generating moves for 32768 queen blocker patterns
+Generating moves for 32768 queen blocker patterns
+Generating moves for 32768 queen blocker patterns
+Generating moves for 65536 queen blocker patterns
+Generating moves for 262144 queen blocker patterns
+Generating moves for 65536 queen blocker patterns
+Generating moves for 65536 queen blocker patterns
+Generating moves for 65536 queen blocker patterns
+Generating moves for 65536 queen blocker patterns
+Generating moves for 65536 queen blocker patterns
+Generating moves for 65536 queen blocker patterns
+Generating moves for 262144 queen blocker patterns
+Generating moves for 8 white pawn blocker patterns
+Generating moves for 16 white pawn blocker patterns
+Generating moves for 16 white pawn blocker patterns
+Generating moves for 16 white pawn blocker patterns
+Generating moves for 16 white pawn blocker patterns
+Generating moves for 16 white pawn blocker patterns
+Generating moves for 16 white pawn blocker patterns
+Generating moves for 8 white pawn blocker patterns
+Generating moves for 4 white pawn blocker patterns
+Generating moves for 8 white pawn blocker patterns
+Generating moves for 8 white pawn blocker patterns
+Generating moves for 8 white pawn blocker patterns
+Generating moves for 8 white pawn blocker patterns
+Generating moves for 8 white pawn blocker patterns
+Generating moves for 8 white pawn blocker patterns
+Generating moves for 4 white pawn blocker patterns
+Generating moves for 4 white pawn blocker patterns
+Generating moves for 8 white pawn blocker patterns
+Generating moves for 8 white pawn blocker patterns
+Generating moves for 8 white pawn blocker patterns
+Generating moves for 8 white pawn blocker patterns
+Generating moves for 8 white pawn blocker patterns
+Generating moves for 8 white pawn blocker patterns
+Generating moves for 4 white pawn blocker patterns
+Generating moves for 4 white pawn blocker patterns
+Generating moves for 8 white pawn blocker patterns
+Generating moves for 8 white pawn blocker patterns
+Generating moves for 8 white pawn blocker patterns
+Generating moves for 8 white pawn blocker patterns
+Generating moves for 8 white pawn blocker patterns
+Generating moves for 8 white pawn blocker patterns
+Generating moves for 4 white pawn blocker patterns
+Generating moves for 4 white pawn blocker patterns
+Generating moves for 8 white pawn blocker patterns
+Generating moves for 8 white pawn blocker patterns
+Generating moves for 8 white pawn blocker patterns
+Generating moves for 8 white pawn blocker patterns
+Generating moves for 8 white pawn blocker patterns
+Generating moves for 8 white pawn blocker patterns
+Generating moves for 4 white pawn blocker patterns
+Generating moves for 4 white pawn blocker patterns
+Generating moves for 8 white pawn blocker patterns
+Generating moves for 8 white pawn blocker patterns
+Generating moves for 8 white pawn blocker patterns
+Generating moves for 8 white pawn blocker patterns
+Generating moves for 8 white pawn blocker patterns
+Generating moves for 8 white pawn blocker patterns
+Generating moves for 4 white pawn blocker patterns
+Generating moves for 4 black pawn blocker patterns
+Generating moves for 8 black pawn blocker patterns
+Generating moves for 8 black pawn blocker patterns
+Generating moves for 8 black pawn blocker patterns
+Generating moves for 8 black pawn blocker patterns
+Generating moves for 8 black pawn blocker patterns
+Generating moves for 8 black pawn blocker patterns
+Generating moves for 4 black pawn blocker patterns
+Generating moves for 4 black pawn blocker patterns
+Generating moves for 8 black pawn blocker patterns
+Generating moves for 8 black pawn blocker patterns
+Generating moves for 8 black pawn blocker patterns
+Generating moves for 8 black pawn blocker patterns
+Generating moves for 8 black pawn blocker patterns
+Generating moves for 8 black pawn blocker patterns
+Generating moves for 4 black pawn blocker patterns
+Generating moves for 4 black pawn blocker patterns
+Generating moves for 8 black pawn blocker patterns
+Generating moves for 8 black pawn blocker patterns
+Generating moves for 8 black pawn blocker patterns
+Generating moves for 8 black pawn blocker patterns
+Generating moves for 8 black pawn blocker patterns
+Generating moves for 8 black pawn blocker patterns
+Generating moves for 4 black pawn blocker patterns
+Generating moves for 4 black pawn blocker patterns
+Generating moves for 8 black pawn blocker patterns
+Generating moves for 8 black pawn blocker patterns
+Generating moves for 8 black pawn blocker patterns
+Generating moves for 8 black pawn blocker patterns
+Generating moves for 8 black pawn blocker patterns
+Generating moves for 8 black pawn blocker patterns
+Generating moves for 4 black pawn blocker patterns
+Generating moves for 4 black pawn blocker patterns
+Generating moves for 8 black pawn blocker patterns
+Generating moves for 8 black pawn blocker patterns
+Generating moves for 8 black pawn blocker patterns
+Generating moves for 8 black pawn blocker patterns
+Generating moves for 8 black pawn blocker patterns
+Generating moves for 8 black pawn blocker patterns
+Generating moves for 4 black pawn blocker patterns
+Generating moves for 8 black pawn blocker patterns
+Generating moves for 16 black pawn blocker patterns
+Generating moves for 16 black pawn blocker patterns
+Generating moves for 16 black pawn blocker patterns
+Generating moves for 16 black pawn blocker patterns
+Generating moves for 16 black pawn blocker patterns
+Generating moves for 16 black pawn blocker patterns
+Generating moves for 8 black pawn blocker patterns
+Choose players as follows: (user OR cpu) (user OR cpu)
+Choose players as follows: (user OR cpu) (user OR cpu)
+WHITE TO MOVE:
+WHITE'S MOVE:
+  ABCDEFGH
+  --------
+8|rnbqkbnr|8
+7|pppppppp|7
+6|--------|6
+5|--------|5
+4|--------|4
+3|-----P--|3
+2|PPPPP-PP|2
+1|RNBQKBNR|1
+  --------
+  ABCDEFGH
+
+BLACK TO MOVE:
+BLACK'S MOVE:
+  ABCDEFGH
+  --------
+8|rnbqkbnr|8
+7|-ppppppp|7
+6|--------|6
+5|p-------|5
+4|--------|4
+3|-----P--|3
+2|PPPPP-PP|2
+1|RNBQKBNR|1
+  --------
+  ABCDEFGH
+
+WHITE TO MOVE:
+WHITE'S MOVE:
+  ABCDEFGH
+  --------
+8|rnbqkbnr|8
+7|-ppppppp|7
+6|--------|6
+5|p-------|5
+4|--------|4
+3|-----P-N|3
+2|PPPPP-PP|2
+1|RNBQKB-R|1
+  --------
+  ABCDEFGH
+
+BLACK TO MOVE:
+BLACK'S MOVE:
+  ABCDEFGH
+  --------
+8|rnbqkbnr|8
+7|-ppppppp|7
+6|--------|6
+5|--------|5
+4|p-------|4
+3|-----P-N|3
+2|PPPPP-PP|2
+1|RNBQKB-R|1
+  --------
+  ABCDEFGH
+
+WHITE TO MOVE:
+WHITE'S MOVE:
+  ABCDEFGH
+  --------
+8|rnbqkbnr|8
+7|-ppppppp|7
+6|--------|6
+5|--------|5
+4|p---P---|4
+3|-----P-N|3
+2|PPPP--PP|2
+1|RNBQKB-R|1
+  --------
+  ABCDEFGH
+
+BLACK TO MOVE:
+BLACK'S MOVE:
+  ABCDEFGH
+  --------
+8|rnbqkb-r|8
+7|-ppppppp|7
+6|-----n--|6
+5|--------|5
+4|p---P---|4
+3|-----P-N|3
+2|PPPP--PP|2
+1|RNBQKB-R|1
+  --------
+  ABCDEFGH
+
+WHITE TO MOVE:
+WHITE'S MOVE:
+  ABCDEFGH
+  --------
+8|rnbqkb-r|8
+7|-ppppppp|7
+6|-----n--|6
+5|--------|5
+4|p-B-P---|4
+3|-----P-N|3
+2|PPPP--PP|2
+1|RNBQK--R|1
+  --------
+  ABCDEFGH
+
+BLACK TO MOVE:
+BLACK'S MOVE:
+  ABCDEFGH
+  --------
+8|rnbqkb-r|8
+7|--pppppp|7
+6|-p---n--|6
+5|--------|5
+4|p-B-P---|4
+3|-----P-N|3
+2|PPPP--PP|2
+1|RNBQK--R|1
+  --------
+  ABCDEFGH
+
+WHITE TO MOVE:
+WHITE'S MOVE:
+  ABCDEFGH
+  --------
+8|rnbqkb-r|8
+7|--pppppp|7
+6|-p---n--|6
+5|------N-|5
+4|p-B-P---|4
+3|-----P--|3
+2|PPPP--PP|2
+1|RNBQK--R|1
+  --------
+  ABCDEFGH
+
+BLACK TO MOVE:
+BLACK'S MOVE:
+  ABCDEFGH
+  --------
+8|rnbqkb-r|8
+7|--ppppp-|7
+6|-p---n-p|6
+5|------N-|5
+4|p-B-P---|4
+3|-----P--|3
+2|PPPP--PP|2
+1|RNBQK--R|1
+  --------
+  ABCDEFGH
+
+WHITE TO MOVE:
+WHITE'S MOVE:
+  ABCDEFGH
+  --------
+8|rnbqkb-r|8
+7|--pppNp-|7
+6|-p---n-p|6
+5|--------|5
+4|p-B-P---|4
+3|-----P--|3
+2|PPPP--PP|2
+1|RNBQK--R|1
+  --------
+  ABCDEFGH
+
+BLACK TO MOVE:
+BLACK'S MOVE:
+  ABCDEFGH
+  --------
+8|rnbqkb--|8
+7|--pppNpr|7
+6|-p---n-p|6
+5|--------|5
+4|p-B-P---|4
+3|-----P--|3
+2|PPPP--PP|2
+1|RNBQK--R|1
+  --------
+  ABCDEFGH
+
+WHITE TO MOVE:
+WHITE'S MOVE:
+  ABCDEFGH
+  --------
+8|rnbqkb--|8
+7|--ppp-pr|7
+6|-p---n-p|6
+5|------N-|5
+4|p-B-P---|4
+3|-----P--|3
+2|PPPP--PP|2
+1|RNBQK--R|1
+  --------
+  ABCDEFGH
+
+BLACK TO MOVE:
+BLACK'S MOVE:
+  ABCDEFGH
+  --------
+8|rnbqkb-r|8
+7|--ppp-p-|7
+6|-p---n-p|6
+5|------N-|5
+4|p-B-P---|4
+3|-----P--|3
+2|PPPP--PP|2
+1|RNBQK--R|1
+  --------
+  ABCDEFGH
+
+WHITE TO MOVE:
+WHITE'S MOVE:
+  ABCDEFGH
+  --------
+8|rnbqkb-r|8
+7|--ppp-p-|7
+6|-p---n-p|6
+5|----P-N-|5
+4|p-B-----|4
+3|-----P--|3
+2|PPPP--PP|2
+1|RNBQK--R|1
+  --------
+  ABCDEFGH
+
+BLACK TO MOVE:
+BLACK'S MOVE:
+  ABCDEFGH
+  --------
+8|rnbqkb-r|8
+7|--ppp-p-|7
+6|-p-----p|6
+5|----P-Nn|5
+4|p-B-----|4
+3|-----P--|3
+2|PPPP--PP|2
+1|RNBQK--R|1
+  --------
+  ABCDEFGH
+
+WHITE TO MOVE:
+WHITE'S MOVE:
+  ABCDEFGH
+  --------
+8|rnbqkb-r|8
+7|--ppp-p-|7
+6|-p-----p|6
+5|----P-Nn|5
+4|p-BP----|4
+3|-----P--|3
+2|PPP---PP|2
+1|RNBQK--R|1
+  --------
+  ABCDEFGH
+
+BLACK TO MOVE:
+BLACK'S MOVE:
+  ABCDEFGH
+  --------
+8|r-bqkb-r|8
+7|--ppp-p-|7
+6|-pn----p|6
+5|----P-Nn|5
+4|p-BP----|4
+3|-----P--|3
+2|PPP---PP|2
+1|RNBQK--R|1
+  --------
+  ABCDEFGH
+
+WHITE TO MOVE:
+WHITE'S MOVE:
+  ABCDEFGH
+  --------
+8|r-bqkb-r|8
+7|--ppp-p-|7
+6|-pn----p|6
+5|---BP-Nn|5
+4|p--P----|4
+3|-----P--|3
+2|PPP---PP|2
+1|RNBQK--R|1
+  --------
+  ABCDEFGH
+
+BLACK TO MOVE:
+BLACK'S MOVE:
+  ABCDEFGH
+  --------
+8|r-bqkb-r|8
+7|--ppp-p-|7
+6|-p-----p|6
+5|---BP-Nn|5
+4|pn-P----|4
+3|-----P--|3
+2|PPP---PP|2
+1|RNBQK--R|1
+  --------
+  ABCDEFGH
+
+WHITE TO MOVE:
+WHITE'S MOVE:
+  ABCDEFGH
+  --------
+8|r-bqkb-r|8
+7|--ppp-p-|7
+6|-p-----p|6
+5|---BP-Nn|5
+4|pn-P-P--|4
+3|--------|3
+2|PPP---PP|2
+1|RNBQK--R|1
+  --------
+  ABCDEFGH
+
+BLACK TO MOVE:
+BLACK'S MOVE:
+  ABCDEFGH
+  --------
+8|--bqkb-r|8
+7|--ppp-p-|7
+6|-p-----p|6
+5|r--BP-Nn|5
+4|pn-P-P--|4
+3|--------|3
+2|PPP---PP|2
+1|RNBQK--R|1
+  --------
+  ABCDEFGH
+
+WHITE TO MOVE:
+WHITE'S MOVE:
+  ABCDEFGH
+  --------
+8|--bqkb-r|8
+7|--ppp-p-|7
+6|-p-----p|6
+5|r--BP-NQ|5
+4|pn-P-P--|4
+3|--------|3
+2|PPP---PP|2
+1|RNB-K--R|1
+  --------
+  ABCDEFGH
+
+BLACK TO MOVE:
+BLACK'S MOVE:
+  ABCDEFGH
+  --------
+8|--bqkb-r|8
+7|--ppp---|7
+6|-p----pp|6
+5|r--BP-NQ|5
+4|pn-P-P--|4
+3|--------|3
+2|PPP---PP|2
+1|RNB-K--R|1
+  --------
+  ABCDEFGH
+
+WHITE TO MOVE:
+WHITE'S MOVE:
+  ABCDEFGH
+  --------
+8|--bqkb-r|8
+7|--ppp---|7
+6|-p----Qp|6
+5|r--BP-N-|5
+4|pn-P-P--|4
+3|--------|3
+2|PPP---PP|2
+1|RNB-K--R|1
+  --------
+  ABCDEFGH
+
+BLACK TO MOVE:

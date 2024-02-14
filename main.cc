@@ -27,7 +27,8 @@ int main() {
     // BoardNode* currentPosition = StartPosition::castleTestSetup(board);
     Player* player1 = choosePlayerType(Colour::WHITE);
     Player* player2 = choosePlayerType(Colour::BLACK);
-    for (int i = 0; i < numeric_limits<int>::max(); i++) {
+    int maxTurns = numeric_limits<int>::max();
+    for (int i = 0; i < maxTurns; i++) {
         while (true) {
             try {
                 player1->pickMove(currentPosition);

@@ -7,6 +7,7 @@
 #include <random>
 #include "move.h"
 #include "castleStatus.h"
+#include <iterator>
 class BoardNode {
     Board* board;
     int lastDoublePawnMoveIndex;
@@ -28,11 +29,12 @@ class BoardNode {
     U64 generateUnsafeMusk(Colour teamColour);
     void generateMoves(Colour colour);
     void addPredictedBestMove(Colour colour);
-    void addRandomMove();
     friend ostream& operator<<(ostream& out, BoardNode& boardNode);
     ostream& printBoardOnly(ostream& out);
     ostream& printChildren(ostream& out);
     ostream& printChildrenMoveNotation(ostream& out);
+    ostream& printChildrenTree(ostream& out);
+    ostream& printChildrenValue(ostream& out);
     vector<BoardNode*>& getChildren();
     ~BoardNode();
     void deleteChildren();

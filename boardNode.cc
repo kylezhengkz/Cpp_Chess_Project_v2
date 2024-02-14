@@ -48,6 +48,71 @@ double BoardNode::staticEval() {
     eval -= __builtin_popcountll(board->blackRooks) * 5;
     eval -= __builtin_popcountll(board->blackQueens) * 9;
 
+    // note that we have access to opponent pins
+    // need to generate pins for you
+
+    // generate control musks for each piece and search for opposition checks from that to extend search
+
+    // king safety
+    // take away points for every square king is exposed to
+    // if queen is protected poorly (i.e. queen on back rank or in general or rook on diagonal), extend ray and triple the points taken away 
+    // note: only extend ray if opposition directional piece exists
+    // extend search if opposition directional piece can pin it down on next move
+
+    // if major points is <= 5, we do not need to consider king safety, as king should be active
+
+    // need to extend search for pins
+    
+    // square control (omit king) — note that we will need to generate prediction squares for move generation
+    const double SQUARE_VALUE_FACTOR = 0.005; 
+    U64 allPieces = board->whitePieces | board->blackPieces;
+    vector<Piece> pieceGenerationOrder = {Piece::WHITEPAWN, Piece::KNIGHT, Piece::BISHOP, Piece::ROOK, Piece::QUEEN};
+    for (Piece piece : pieceGenerationOrder) {
+        U64 existingPieces = board->getPieces(piece, Colour::WHITE);
+        while (existingPieces != 0) {
+            int initialSquare = popLSB(existingPieces);
+            U64 controlSquares;
+            if (piece == Piece::WHITEPAWN) {
+                controlSquares = (LookupTable::lookupPawnControlMusk(initialSquare, Colour::WHITE));
+            } else if (piece == Piece::KNIGHT) {
+                controlSquares = (LookupTable::lookupMusk(initialSquare, Piece::KNIGHT));
+            } else if (piece != Piece::KING) {
+                controlSquares = LookupTable::lookupMove(initialSquare, piece, allPieces);
+            }
+
+            eval += __builtin_popcountll(controlSquares & sevenSquares) * 7 * SQUARE_VALUE_FACTOR;
+            eval += __builtin_popcountll(controlSquares & sixSquares) * 6 * SQUARE_VALUE_FACTOR;
+            eval += __builtin_popcountll(controlSquares & fiveSquares) * 5 * SQUARE_VALUE_FACTOR;
+            eval += __builtin_popcountll(controlSquares & fourSquares) * 4 * SQUARE_VALUE_FACTOR;
+            eval += __builtin_popcountll(controlSquares & threeSquares) * 3 * SQUARE_VALUE_FACTOR;
+            eval += __builtin_popcountll(controlSquares & twoSquares) * 2 * SQUARE_VALUE_FACTOR;
+            eval += __builtin_popcountll(controlSquares & oneSquares) * 1 * SQUARE_VALUE_FACTOR;
+        }
+    }
+
+    pieceGenerationOrder[0] = Piece::BLACKPAWN;
+    for (Piece piece : pieceGenerationOrder) {
+        U64 existingPieces = board->getPieces(piece, Colour::BLACK);
+        while (existingPieces != 0) {
+            int initialSquare = popLSB(existingPieces);
+            U64 controlSquares;
+            if (piece == Piece::BLACKPAWN) {
+                controlSquares = (LookupTable::lookupPawnControlMusk(initialSquare, Colour::BLACK));
+            } else if (piece == Piece::KNIGHT) {
+                controlSquares = (LookupTable::lookupMusk(initialSquare, Piece::KNIGHT));
+            } else if (piece != Piece::KING) {
+                controlSquares = LookupTable::lookupMove(initialSquare, piece, allPieces);
+            }
+
+            eval -= __builtin_popcountll(controlSquares & sevenSquares) * 7 * SQUARE_VALUE_FACTOR;
+            eval -= __builtin_popcountll(controlSquares & sixSquares) * 6 * SQUARE_VALUE_FACTOR;
+            eval -= __builtin_popcountll(controlSquares & fiveSquares) * 5 * SQUARE_VALUE_FACTOR;
+            eval -= __builtin_popcountll(controlSquares & fourSquares) * 4 * SQUARE_VALUE_FACTOR;
+            eval -= __builtin_popcountll(controlSquares & threeSquares) * 3 * SQUARE_VALUE_FACTOR;
+            eval -= __builtin_popcountll(controlSquares & twoSquares) * 2 * SQUARE_VALUE_FACTOR;
+            eval -= __builtin_popcountll(controlSquares & oneSquares) * 1 * SQUARE_VALUE_FACTOR;
+        }
+    }
 
     return eval;
 }
@@ -298,7 +363,7 @@ U64 BoardNode::generateUnsafeMusk(Colour teamColour) {
             }
         }
     }
-
+    
     return controlMusk;
 }
 
@@ -876,17 +941,6 @@ void BoardNode::addPredictedBestMove(Colour colour) {
     children.emplace_back(new BoardNode(newPosition, newLastDoublePawnMoveIndex, newCastleStatus, pinsCopy));
 }
 
-int getRandomNumber(int n) {
-    std::random_device rd;
-    std::mt19937 gen(rd());
-    std::uniform_int_distribution<> distrib(0, n);
-    return distrib(gen);
-}
-
-void BoardNode::addRandomMove() {
-    
-}
-
 ostream& operator<<(ostream& out, BoardNode& boardNode) {
     out << "BOARD NODE: " << "——————————————————————————————————————————————————————————————————————————" << endl;
     out << *(boardNode.board);
@@ -925,7 +979,33 @@ string indexToChessSquare(int index) {
 
 ostream& BoardNode::printChildrenMoveNotation(ostream& out) {
     for (auto move : moves) {
-        cout << "move value: " << move.first  << " " << indexToChessSquare(move.second.getFromSquare()) << " " << indexToChessSquare(move.second.getToSquare()) << endl;
+        cout << "(move value " << move.first  << ") " << indexToChessSquare(move.second.getFromSquare()) << " " << indexToChessSquare(move.second.getToSquare()) << endl;
+    }
+    return out;
+}
+
+ostream& BoardNode::printChildrenTree(ostream& out) {
+    string randomID = generateRandomID();
+    cout << randomID << endl;
+    printBoardOnly(cout);
+    cout << "children of " <<  randomID << endl;
+    for (auto child : children) {
+        cout << "Value of following board ID (from parent id " << randomID << "): " << child->getValue() << endl;
+        child->printBoardOnly(cout);
+        if (child->getChildren().size() == 0) {
+            cout << "This board does not have any children" << endl;
+            continue;
+        } else {
+            cout << "Branch into child displayed below" << endl;
+            child->printChildrenTree(out);
+        }
+    }
+    return out;
+}
+
+ostream& BoardNode::printChildrenValue(ostream& out) {
+    for (auto child : children) {
+        cout << child->getValue() << endl;
     }
     return out;
 }

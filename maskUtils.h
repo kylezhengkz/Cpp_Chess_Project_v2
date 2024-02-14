@@ -108,6 +108,27 @@ namespace MaskUtils {
     const U64 blackLeftCastle = (0x1ULL << 57) | (0x1ULL << 58) | (0x1ULL << 59);
     const U64 blackRightCastle = (0x1ULL << 61) | (0x1ULL << 62);
 
+    // square values
+    const U64 sevenSquares = (0x1ULL << 27) | (0x1ULL << 28) | (0x1ULL << 35) | (0x1ULL << 36);
+    const U64 sixSquares = (0x1ULL << 43) | (0x1ULL << 44) | (0x1ULL << 26) | (0x1ULL << 34) 
+    | (0x1ULL << 19) | (0x1ULL << 20) | (0x1ULL << 29) | (0x1ULL << 37);
+    const U64 fiveSquares = (0x1ULL << 18) | (0x1ULL << 25) | (0x1ULL << 33) 
+    | (0x1ULL << 42) | (0x1ULL << 21) | (0x1ULL << 30) 
+    | (0x1ULL << 38) | (0x1ULL << 45)
+    | (0x1ULL << 11) | (0x1ULL << 12)
+    | (0x1ULL << 51) | (0x1ULL << 52);
+    const U64 fourSquares = (0x1ULL << 24) | (0x1ULL << 17) | (0x1ULL << 10) | (0x1ULL << 3)
+    | (0x1ULL << 4) | (0x1ULL << 13) | (0x1ULL << 22) | (0x1ULL << 31)
+    | (0x1ULL << 39) | (0x1ULL << 46) | (0x1ULL << 53) | (0x1ULL << 60)
+    | (0x1ULL << 59) | (0x1ULL << 50) | (0x1ULL << 41) | (0x1ULL << 32);
+    const U64 threeSquares = (0x1ULL << 16) | (0x1ULL << 9) | (0x1ULL << 2) 
+    | (0x1ULL << 5) | (0x1ULL << 14) | (0x1ULL << 23) 
+    | (0x1ULL << 47) | (0x1ULL << 54) | (0x1ULL << 61)
+    | (0x1ULL << 40) | (0x1ULL << 49) | (0x1ULL << 58);
+    const U64 twoSquares = (0x1ULL << 8) | (0x1ULL << 1) | (0x1ULL << 6) | (0x1ULL << 15)
+    | (0x1ULL << 48) | (0x1ULL << 57) | (0x1ULL << 62) | (0x1ULL << 55);
+    const U64 oneSquares = (0x1ULL << 56) | (0x1ULL << 63) | (0x1ULL << 0) | (0x1ULL << 7);
+
     int getBit(const U64& b, int i);
     void setBit(U64& b, int i);
     void clearBit(U64& b, int i);

@@ -12,18 +12,23 @@ void CPU::pickMove(BoardNode*& pos) {
         cout << "BLACK TO MOVE:" << endl;
     }
     // pick best predicted move
+    /*
     pos->generateMoves(colour);
     pos->printChildrenMoveNotation(cout);
     pos->addPredictedBestMove(colour);
     branchToChild(pos, 0);
-
-    // iterativeDeepening(pos);
+    */
+    iterativeDeepening(pos);
+    // pos->printChildrenTree(cout);
 }
 
 void CPU::iterativeDeepening(BoardNode*& pos) {
     startTime = high_resolution_clock::now();
-    for (int depth = 1; depth < numeric_limits<int>::max(); depth++) {
-        cout << "Searching depth " << depth << endl;
+    // int maxDepth = numeric_limits<int>::max();
+    int maxDepth = 256;
+    // cout << "Begin iterative deepening search" << endl;
+    for (int depth = 1; depth < maxDepth; depth++) {
+        // cout << "Searching depth " << depth << endl;
         if (colour == Colour::WHITE) {
             alphaBetaPruning(pos, depth, negativeInfinity, positiveInfinity, true);
         } else {
@@ -31,12 +36,23 @@ void CPU::iterativeDeepening(BoardNode*& pos) {
         }
         auto currentTime = high_resolution_clock::now();
         auto timeElasped = (duration_cast<seconds>(currentTime - startTime)).count();
-        cout << "Time elasped: " << timeElasped << endl;
+        // cout << "Time elasped: " << timeElasped << endl;
         if (timeElasped >= maxTimeSeconds) {
-            cout << "Halted search at depth " << depth << endl;
+            // cout << "Halted search at depth " << depth << endl;
             break;
         }
-        cout << "Finished searching depth " << depth << endl;
+        // cout << "Finished searching depth " << depth << endl;
+    }
+    // cout << "End iterative deepening search" << endl;
+    
+    if (colour == Colour::WHITE) {
+        sort(pos->getChildren().begin(), pos->getChildren().end(), [](const BoardNode* lhs, const BoardNode* rhs) {
+            return lhs->getValue() > rhs->getValue();
+        });
+    } else {
+        sort(pos->getChildren().begin(), pos->getChildren().end(), [](const BoardNode* lhs, const BoardNode* rhs) {
+            return lhs->getValue() < rhs->getValue();
+        });
     }
     branchToChild(pos, 0);
 }
@@ -75,9 +91,11 @@ double CPU::alphaBetaPruning(BoardNode* pos, int depth, double alpha, double bet
                     break;
                 }
             }
+            if (index == -1) {
+                return negativeInfinity;
+            }
         } else {
-            vector<BoardNode*> vec = pos->getChildren();
-            sort(vec.begin(), vec.end(), [](const BoardNode* lhs, const BoardNode* rhs) {
+            sort(pos->getChildren().begin(), pos->getChildren().end(), [](const BoardNode* lhs, const BoardNode* rhs) {
                 return lhs->getValue() > rhs->getValue();
             });
             for (BoardNode* child : pos->getChildren()) {
@@ -106,9 +124,11 @@ double CPU::alphaBetaPruning(BoardNode* pos, int depth, double alpha, double bet
                     break;
                 }
             }
+            if (index == -1) {
+                return positiveInfinity;
+            }
         } else {
-            vector<BoardNode*> vec = pos->getChildren();
-            sort(vec.begin(), vec.end(), [](const BoardNode* lhs, const BoardNode* rhs) {
+            sort(pos->getChildren().begin(), pos->getChildren().end(), [](const BoardNode* lhs, const BoardNode* rhs) {
                 return lhs->getValue() < rhs->getValue();
             });
             for (BoardNode* child : pos->getChildren()) {
