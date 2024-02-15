@@ -22,8 +22,8 @@ string generateRandomID() { // TEMP
     return id;
 }
 
-BoardNode::BoardNode(Board* board, int lastDoublePawnMoveIndex, CastleStatus castleStatus, unordered_map<int, U64> opponentPins):
-board{board}, lastDoublePawnMoveIndex{lastDoublePawnMoveIndex}, castleStatus{castleStatus}, opponentPins{opponentPins} {};
+BoardNode::BoardNode(Board* board, int lastDoublePawnMoveIndex, CastleStatus castleStatus, unordered_map<int, U64> opponentPins, BoardNode* parent):
+board{board}, lastDoublePawnMoveIndex{lastDoublePawnMoveIndex}, castleStatus{castleStatus}, opponentPins{opponentPins}, parent{parent} {};
 
 U64 BoardNode::getColourPieces(Colour colour) {
     if (colour == Colour::WHITE) {
@@ -326,7 +326,7 @@ bool BoardNode::isSquareSafe(int square, Colour colour) { // castling purposes
     return true;
 }
 
-U64 BoardNode::generateUnsafeMusk(Colour teamColour) {
+U64 BoardNode::generateUnsafeMusk(Colour teamColour, bool print) {
     Colour oppositionColour;
     if (teamColour == Colour::WHITE) {
         oppositionColour = Colour::BLACK;
@@ -360,6 +360,10 @@ U64 BoardNode::generateUnsafeMusk(Colour teamColour) {
                 controlMusk |= LookupTable::lookupMusk(initialSquare, piece);
             } else {
                 controlMusk |= LookupTable::lookupMove(initialSquare, piece, allPieces);
+                if (print && piece == Piece::QUEEN) {
+                    printBitboard(allPieces, cout);
+                    printBitboard(LookupTable::lookupMove(initialSquare, piece, allPieces), cout);
+                }
             }
         }
     }
@@ -404,7 +408,7 @@ void BoardNode::generateMoves(Colour colour) {
     U64 pinBlockMusk = 0x0ULL;
     searchLegalMusks(colour, pins, check, doubleCheck, kingLegalMoves, kingSquare, pinBlockMusk);
 
-    U64 unsafeSquares = generateUnsafeMusk(colour);
+    U64 unsafeSquares = generateUnsafeMusk(colour, false);
     U64 allPieces = board->whitePieces | board->blackPieces;
     vector<Piece> pieceGenerationOrder;
     U64 teamPieces;
@@ -551,8 +555,9 @@ void BoardNode::generateMoves(Colour colour) {
                     try {
                         moveVal += board->findPiece(newSquare, !colour, captureFlag);
                     } catch (exception& e) {
+                        cout << "heheheha capture debug" << endl;
                         cout << e.what() << endl;
-                        cout << "tried capturing " << newSquare << " from " << initialSquare << endl;
+                        cout << "tried capturing from " << initialSquare << " to " << newSquare << endl;
                         printBoardOnly(cout);
                         throw;
                     }
@@ -583,8 +588,9 @@ void BoardNode::generateMoves(Colour colour) {
                         try {
                             attackVal = board->findPiece(destinationSquare, !colour, dummyVar);
                         } catch (exception& e) {
+                            cout << "heheheha attack debug" << endl;
                             cout << e.what() << endl;
-                            cout << "tried capturing " << destinationSquare << " from " << newSquare << " from " << initialSquare << endl;
+                            cout << initialSquare << " to " << newSquare << " to " << destinationSquare << endl;
                             printBoardOnly(cout);
                             throw;
                         }
@@ -615,8 +621,8 @@ void BoardNode::generateMoves(Colour colour) {
                         }
                     }
                 }
-
-                if (check && (captureFlag != Move::noCapture)) { // add pin
+                
+                if (check && (captureFlag == Move::noCapture)) { // add pin
                     isAddPin = true;
                 }
 
@@ -643,7 +649,7 @@ void BoardNode::generateMoves(Colour colour) {
                 moveVal += board->findPiece(newSquare, !colour, captureFlag);
             } catch (exception& e) {
                 cout << e.what() << endl;
-                cout << "tried capturing " << newSquare << " from " << kingSquare << endl;
+                cout << "tried capturing from " << kingSquare << " to " << newSquare << endl;
                 printBoardOnly(cout);
                 throw;
             }
@@ -726,26 +732,26 @@ void BoardNode::addPredictedBestMove(Colour colour) {
                     newPosition->whiteRooks ^= (0x1ULL << 5) | (0x1ULL << 7);
                     newPosition->whitePieces ^= (0x1ULL << 5) | (0x1ULL << 7);
                 }
-                children.emplace_back(new BoardNode(newPosition, newLastDoublePawnMoveIndex, newCastleStatus, pinsCopy));
+                children.emplace_back(new BoardNode(newPosition, newLastDoublePawnMoveIndex, newCastleStatus, pinsCopy, this));
                 return;
             case Move::enPassant:
                 newPosition->whitePawns ^= (0x1ULL << bestPredictedMove.getFromSquare()) | (0x1ULL << bestPredictedMove.getToSquare());
                 newPosition->whitePieces ^= (0x1ULL << bestPredictedMove.getFromSquare()) | (0x1ULL << bestPredictedMove.getToSquare());
                 clearBit(newPosition->blackPawns, lastDoublePawnMoveIndex);
                 clearBit(newPosition->blackPieces, lastDoublePawnMoveIndex);
-                children.emplace_back(new BoardNode(newPosition, newLastDoublePawnMoveIndex, newCastleStatus, pinsCopy));
+                children.emplace_back(new BoardNode(newPosition, newLastDoublePawnMoveIndex, newCastleStatus, pinsCopy, this));
                 return;
             case Move::pawnDoubleMove:
                 newPosition->whitePawns ^= (0x1ULL << bestPredictedMove.getFromSquare()) | (0x1ULL << bestPredictedMove.getToSquare());
                 newPosition->whitePieces ^= (0x1ULL << bestPredictedMove.getFromSquare()) | (0x1ULL << bestPredictedMove.getToSquare());
                 newLastDoublePawnMoveIndex = bestPredictedMove.getToSquare();
-                children.emplace_back(new BoardNode(newPosition, newLastDoublePawnMoveIndex, newCastleStatus, pinsCopy));
+                children.emplace_back(new BoardNode(newPosition, newLastDoublePawnMoveIndex, newCastleStatus, pinsCopy, this));
                 return;
             case Move::queenPromotion:
                 clearBit(newPosition->whitePawns, bestPredictedMove.getFromSquare());
                 setBit(newPosition->whiteQueens, bestPredictedMove.getToSquare());
                 newPosition->whitePieces ^= (0x1ULL << bestPredictedMove.getFromSquare()) | (0x1ULL << bestPredictedMove.getToSquare());
-                children.emplace_back(new BoardNode(newPosition, newLastDoublePawnMoveIndex, newCastleStatus, pinsCopy));
+                children.emplace_back(new BoardNode(newPosition, newLastDoublePawnMoveIndex, newCastleStatus, pinsCopy, this));
                 return;
             case Move::rookPromotion:
                 break;
@@ -805,26 +811,26 @@ void BoardNode::addPredictedBestMove(Colour colour) {
                     newPosition->blackRooks ^= (0x1ULL << 61) | (0x1ULL << 63);
                     newPosition->blackPieces ^= (0x1ULL << 61) | (0x1ULL << 63);
                 }
-                children.emplace_back(new BoardNode(newPosition, newLastDoublePawnMoveIndex, newCastleStatus, pinsCopy));
+                children.emplace_back(new BoardNode(newPosition, newLastDoublePawnMoveIndex, newCastleStatus, pinsCopy, this));
                 return;
             case Move::enPassant:
                 newPosition->blackPawns ^= (0x1ULL << bestPredictedMove.getFromSquare()) | (0x1ULL << bestPredictedMove.getToSquare());
                 newPosition->blackPieces ^= (0x1ULL << bestPredictedMove.getFromSquare()) | (0x1ULL << bestPredictedMove.getToSquare());
                 clearBit(newPosition->whitePawns, lastDoublePawnMoveIndex);
                 clearBit(newPosition->whitePieces, lastDoublePawnMoveIndex);
-                children.emplace_back(new BoardNode(newPosition, newLastDoublePawnMoveIndex, newCastleStatus, pinsCopy));
+                children.emplace_back(new BoardNode(newPosition, newLastDoublePawnMoveIndex, newCastleStatus, pinsCopy, this));
                 return;
             case Move::pawnDoubleMove:
                 newPosition->blackPawns ^= (0x1ULL << bestPredictedMove.getFromSquare()) | (0x1ULL << bestPredictedMove.getToSquare());
                 newPosition->blackPieces ^= (0x1ULL << bestPredictedMove.getFromSquare()) | (0x1ULL << bestPredictedMove.getToSquare());
                 newLastDoublePawnMoveIndex = bestPredictedMove.getToSquare();
-                children.emplace_back(new BoardNode(newPosition, newLastDoublePawnMoveIndex, newCastleStatus, pinsCopy));
+                children.emplace_back(new BoardNode(newPosition, newLastDoublePawnMoveIndex, newCastleStatus, pinsCopy, this));
                 return;
             case Move::queenPromotion:
                 clearBit(newPosition->blackPawns, bestPredictedMove.getFromSquare());
                 setBit(newPosition->blackQueens, bestPredictedMove.getToSquare());
                 newPosition->blackPieces ^= (0x1ULL << bestPredictedMove.getFromSquare()) | (0x1ULL << bestPredictedMove.getToSquare());
-                children.emplace_back(new BoardNode(newPosition, newLastDoublePawnMoveIndex, newCastleStatus, pinsCopy));
+                children.emplace_back(new BoardNode(newPosition, newLastDoublePawnMoveIndex, newCastleStatus, pinsCopy, this));
                 return;
             case Move::rookPromotion:
                 break;
@@ -938,7 +944,7 @@ void BoardNode::addPredictedBestMove(Colour colour) {
         }
     }
 
-    children.emplace_back(new BoardNode(newPosition, newLastDoublePawnMoveIndex, newCastleStatus, pinsCopy));
+    children.emplace_back(new BoardNode(newPosition, newLastDoublePawnMoveIndex, newCastleStatus, pinsCopy, this));
 }
 
 ostream& operator<<(ostream& out, BoardNode& boardNode) {

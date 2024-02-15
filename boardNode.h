@@ -18,15 +18,17 @@ class BoardNode {
     vector<BoardNode*> children;
     double value;
     U64 checkPathMusk;
+    // TEMP (debugging purposes only)
+    BoardNode* parent;
     public:
     // Board* getBoard(); // TEMP
     bool moveListEmpty(); // TEMP
-    BoardNode(Board* board, int lastDoublePawnMoveIndex, CastleStatus castleStatus, unordered_map<int, U64> opponentPins);
+    BoardNode(Board* board, int lastDoublePawnMoveIndex, CastleStatus castleStatus, unordered_map<int, U64> opponentPins, BoardNode* parent);
     U64 getColourPieces(Colour colour);
     double staticEval();
     void searchLegalMusks(Colour colour, unordered_map<int, U64>& pins, bool& check, bool& doubleCheck, U64& kingLegalMoves, int& kingSquare, U64& pinBlockMusk);
     bool isSquareSafe(int square, Colour colour);
-    U64 generateUnsafeMusk(Colour teamColour);
+    U64 generateUnsafeMusk(Colour teamColour, bool print);
     void generateMoves(Colour colour);
     void addPredictedBestMove(Colour colour);
     friend ostream& operator<<(ostream& out, BoardNode& boardNode);
