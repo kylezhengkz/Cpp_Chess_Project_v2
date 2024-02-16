@@ -64,7 +64,6 @@ double BoardNode::staticEval() {
     // need to extend search for pins
     
     // square control (omit king) — note that we will need to generate prediction squares for move generation
-    const double SQUARE_VALUE_FACTOR = 0.005; 
     U64 allPieces = board->whitePieces | board->blackPieces;
     vector<Piece> pieceGenerationOrder = {Piece::WHITEPAWN, Piece::KNIGHT, Piece::BISHOP, Piece::ROOK, Piece::QUEEN};
     for (Piece piece : pieceGenerationOrder) {
@@ -198,7 +197,8 @@ void BoardNode::searchLegalMusks(Colour colour, unordered_map<int, U64>& pins, b
                 U64 pinLegalMusk =  inBetweenRay | (0x1ULL << sourceIndex);
                 clearBit(pinLegalMusk, pinnedPieceIndex);
                 pins[getLSB(inBetweenRay & teamPieces)] = pinLegalMusk;
-                pinBlockMusk |= clearBitsLessThanIndex(pinLegalMusk, pinnedPieceIndex);
+                pinBlockMusk |= pinLegalMusk;
+                clearBit(pinBlockMusk, pinnedPieceIndex);
             }
         }
     }
@@ -233,7 +233,8 @@ void BoardNode::searchLegalMusks(Colour colour, unordered_map<int, U64>& pins, b
                 U64 pinLegalMusk =  inBetweenRay | (0x1ULL << sourceIndex);
                 clearBit(pinLegalMusk, pinnedPieceIndex);
                 pins[getLSB(inBetweenRay & teamPieces)] = pinLegalMusk;
-                pinBlockMusk |= clearBitsGreaterThanIndex(pinLegalMusk, pinnedPieceIndex);
+                pinBlockMusk |= pinLegalMusk;
+                clearBit(pinBlockMusk, pinnedPieceIndex);
             }
         }
     }
@@ -315,7 +316,7 @@ bool BoardNode::isSquareSafe(int square, Colour colour) { // castling purposes
         if ((ray & oppositionAttackers) != 0) {
             int sourceIndex = getMSB(ray & oppositionAttackers);
             U64 inBetweenRay = clearBitsLessThanIndex(ray, sourceIndex);
-            if (inBetweenRay & allPieces) { // piece in the way
+            if (ray & allPieces) { // piece in the way
                 continue;
             } else {
                 return false;
@@ -360,10 +361,6 @@ U64 BoardNode::generateUnsafeMusk(Colour teamColour, bool print) {
                 controlMusk |= LookupTable::lookupMusk(initialSquare, piece);
             } else {
                 controlMusk |= LookupTable::lookupMove(initialSquare, piece, allPieces);
-                if (print && piece == Piece::QUEEN) {
-                    printBitboard(allPieces, cout);
-                    printBitboard(LookupTable::lookupMove(initialSquare, piece, allPieces), cout);
-                }
             }
         }
     }
@@ -445,6 +442,10 @@ void BoardNode::generateMoves(Colour colour) {
                 legalMoves = LookupTable::lookupMove(initialSquare, piece, allPieces) & ~teamPieces;
             }
 
+            if (pins.count(initialSquare) > 0) {
+                legalMoves &= pins[initialSquare];
+            }
+
             if (check) {
                 // consider edge case where you can stop pawn check via en passant
                 if ((lastDoublePawnMoveIndex != -1) && getBit(checkPathMusk, lastDoublePawnMoveIndex) && getBit(legalMoves, enPassantCaptureIndex)) {
@@ -455,9 +456,14 @@ void BoardNode::generateMoves(Colour colour) {
                 }
             }
 
-            if (pins.count(initialSquare) > 0) {
-                legalMoves &= pins[initialSquare];
-            }
+            double oldSquareControlVal = 0;
+            oldSquareControlVal += __builtin_popcountll(legalMoves & sevenSquares) * 7 * SQUARE_VALUE_FACTOR;
+            oldSquareControlVal += __builtin_popcountll(legalMoves & sixSquares) * 6 * SQUARE_VALUE_FACTOR;
+            oldSquareControlVal += __builtin_popcountll(legalMoves & fiveSquares) * 5 * SQUARE_VALUE_FACTOR;
+            oldSquareControlVal += __builtin_popcountll(legalMoves & fourSquares) * 4 * SQUARE_VALUE_FACTOR;
+            oldSquareControlVal += __builtin_popcountll(legalMoves & threeSquares) * 3 * SQUARE_VALUE_FACTOR;
+            oldSquareControlVal += __builtin_popcountll(legalMoves & twoSquares) * 2 * SQUARE_VALUE_FACTOR;
+            oldSquareControlVal += __builtin_popcountll(legalMoves & oneSquares) * 1 * SQUARE_VALUE_FACTOR;
 
             while (legalMoves != 0) {
                 int newSquare = popLSB(legalMoves);
@@ -472,14 +478,14 @@ void BoardNode::generateMoves(Colour colour) {
                         } else if (newSquare == enPassantCaptureIndex) {
                             flag = Move::enPassant;
                             // also need to consider edge case where en passant is pinned from side (extremely rare but possible)
-                            if (RANK_5 & kingSquare) {
+                            if (getBit(RANK_5, kingSquare)) {
                                 if (kingSquare > lastDoublePawnMoveIndex) { // king is on the right side
                                     U64 ray = LookupTable::lookupRayMusk(kingSquare, -HORIZONTAL);
                                     if (ray & ((board->blackRooks) | (board->blackQueens))) {
                                         int nearestThreat = getLSB((board->blackRooks) | (board->blackQueens));
-                                        clearBitsLessThanIndex(ray, nearestThreat);
-                                        ray &= allPieces;
-                                        if (__builtin_popcount(ray) == 2) {
+                                        U64 inBetweenRay = clearBitsLessThanIndex(ray, nearestThreat);
+                                        inBetweenRay &= allPieces;
+                                        if (__builtin_popcountll(inBetweenRay) == 2) {
                                             continue;
                                         }
                                     }
@@ -487,9 +493,9 @@ void BoardNode::generateMoves(Colour colour) {
                                     U64 ray = LookupTable::lookupRayMusk(kingSquare, HORIZONTAL);
                                     if (ray & ((board->blackRooks) | (board->blackQueens))) {
                                         int nearestThreat = getLSB((board->blackRooks) | (board->blackQueens));
-                                        clearBitsGreaterThanIndex(ray, nearestThreat);
-                                        ray &= allPieces;
-                                        if (__builtin_popcount(ray) == 2) {
+                                        U64 inBetweenRay = clearBitsGreaterThanIndex(ray, nearestThreat);
+                                        inBetweenRay &= allPieces;
+                                        if (__builtin_popcountll(inBetweenRay) == 2) {
                                             continue;
                                         }
                                     }
@@ -507,14 +513,14 @@ void BoardNode::generateMoves(Colour colour) {
                         } else if (newSquare == enPassantCaptureIndex) {
                             flag = Move::enPassant;
                             // also need to consider edge case where en passant is pinned from side (extremely rare but possible)
-                            if (RANK_4 & kingSquare) {
+                            if (getBit(RANK_4, kingSquare)) {
                                 if (kingSquare > lastDoublePawnMoveIndex) { // king is on the right side
                                     U64 ray = LookupTable::lookupRayMusk(kingSquare, -HORIZONTAL);
                                     if (ray & ((board->whiteRooks) | (board->whiteQueens))) {
                                         int nearestThreat = getLSB((board->whiteRooks) | (board->whiteQueens));
-                                        clearBitsLessThanIndex(ray, nearestThreat);
-                                        ray &= allPieces;
-                                        if (__builtin_popcount(ray) == 2) {
+                                        U64 inBetweenRay = clearBitsLessThanIndex(ray, nearestThreat);
+                                        inBetweenRay &= allPieces;
+                                        if (__builtin_popcountll(inBetweenRay) == 2) {
                                             continue;
                                         }
                                     }
@@ -522,9 +528,9 @@ void BoardNode::generateMoves(Colour colour) {
                                     U64 ray = LookupTable::lookupRayMusk(kingSquare, HORIZONTAL);
                                     if (ray & ((board->whiteRooks) | (board->whiteQueens))) {
                                         int nearestThreat = getLSB((board->whiteRooks) | (board->whiteQueens));
-                                        clearBitsGreaterThanIndex(ray, nearestThreat);
-                                        ray &= allPieces;
-                                        if (__builtin_popcount(ray) == 2) {
+                                        U64 inBetweenRay = clearBitsGreaterThanIndex(ray, nearestThreat);
+                                        inBetweenRay &= allPieces;
+                                        if (__builtin_popcountll(inBetweenRay) == 2) {
                                             continue;
                                         }
                                     }
@@ -550,21 +556,6 @@ void BoardNode::generateMoves(Colour colour) {
                         break;
                 }
 
-                int8_t captureFlag = 0b0000;
-                if (getBit(oppositionPieces, newSquare)) { // if capture
-                    try {
-                        moveVal += board->findPiece(newSquare, !colour, captureFlag);
-                    } catch (exception& e) {
-                        cout << "heheheha capture debug" << endl;
-                        cout << e.what() << endl;
-                        cout << "tried capturing from " << initialSquare << " to " << newSquare << endl;
-                        printBoardOnly(cout);
-                        throw;
-                    }
-                } else if (flag == Move::enPassant) {
-                    moveVal += 1;
-                }
-
                 U64 futureMuskDestinations;
                 if (piece == Piece::WHITEPAWN) {
                     futureMuskDestinations = LookupTable::lookupPawnControlMusk(newSquare, colour);
@@ -575,6 +566,17 @@ void BoardNode::generateMoves(Colour colour) {
                 } else {
                     futureMuskDestinations = LookupTable::lookupMove(newSquare, piece, allPieces) & ~teamPieces;
                 }
+
+                double newSquareControlVal = 0;
+                newSquareControlVal += __builtin_popcountll(futureMuskDestinations & sevenSquares) * 7 * SQUARE_VALUE_FACTOR;
+                newSquareControlVal += __builtin_popcountll(futureMuskDestinations & sixSquares) * 6 * SQUARE_VALUE_FACTOR;
+                newSquareControlVal += __builtin_popcountll(futureMuskDestinations & fiveSquares) * 5 * SQUARE_VALUE_FACTOR;
+                newSquareControlVal += __builtin_popcountll(futureMuskDestinations & fourSquares) * 4 * SQUARE_VALUE_FACTOR;
+                newSquareControlVal += __builtin_popcountll(futureMuskDestinations & threeSquares) * 3 * SQUARE_VALUE_FACTOR;
+                newSquareControlVal += __builtin_popcountll(futureMuskDestinations & twoSquares) * 2 * SQUARE_VALUE_FACTOR;
+                newSquareControlVal += __builtin_popcountll(futureMuskDestinations & oneSquares) * 1 * SQUARE_VALUE_FACTOR;
+
+                moveVal += (newSquareControlVal - oldSquareControlVal);
 
                 while (futureMuskDestinations != 0) {
                     int destinationSquare = popLSB(futureMuskDestinations);
@@ -591,22 +593,56 @@ void BoardNode::generateMoves(Colour colour) {
                             cout << "heheheha attack debug" << endl;
                             cout << e.what() << endl;
                             cout << initialSquare << " to " << newSquare << " to " << destinationSquare << endl;
-                            printBoardOnly(cout);
                             throw;
                         }
                         if (getBit(unsafeSquares, destinationSquare) && attackVal < board->getPieceValue(piece)) { // attacked piece is being defended and isn't worth pursuing
                             attackVal *= 0.1;
                         }
 
-                        moveVal += attackVal * 0.25;
+                        moveVal += attackVal * 0.2;
                     }
                 }
 
                 if (getBit(unsafeSquares, newSquare)) { // move to an unsafe square
-                    moveVal *= 0.1; // the benefits of move rendered irrelevant
-                    moveVal -= board->getPieceValue(piece) * 0.75;
+                    moveVal *= 0.3;
+                    moveVal -= board->getPieceValue(piece);
                 } else if (getBit(unsafeSquares, initialSquare)) { // evasions
                     moveVal += board->getPieceValue(piece);
+                }
+
+                int8_t captureFlag = 0b0000;
+                if (getBit(oppositionPieces, newSquare)) { // if capture
+                    try {
+                        moveVal += board->findPiece(newSquare, !colour, captureFlag);
+                    } catch (exception& e) {
+                        cout << "heheheha capture debug" << endl;
+                        cout << e.what() << endl;
+                        cout << "tried capturing from " << initialSquare << " to " << newSquare << endl;
+                        printBoardOnly(cout);
+                        parent->printBoardOnly(cout);
+                        BoardNode* grandParent = parent->parent;
+                        Colour switchColour = colour;
+                        while (grandParent) {
+                            bool check1 = false;
+                            bool doubleCheck1 = false;
+                            U64 kingLegalMoves1;
+                            int kingSquare1;
+                            U64 pinBlockMusk1 = 0x0ULL;
+                            grandParent->searchLegalMusks(switchColour, pins, check1, doubleCheck1, kingLegalMoves1, kingSquare1, pinBlockMusk1);
+                            grandParent->printBoardOnly(cout);
+                            grandParent = grandParent->parent;
+                            cout << "pin block musk" << endl;
+                            printBitboard(pinBlockMusk1, cout);
+                            if (switchColour == Colour::WHITE) {
+                                switchColour = Colour::BLACK;
+                            } else {
+                                switchColour = Colour::WHITE;
+                            }
+                        }
+                        throw;
+                    }
+                } else if (flag == Move::enPassant) {
+                    moveVal += 1;
                 }
 
                 int removePinIndex = -1;
@@ -928,9 +964,9 @@ void BoardNode::addPredictedBestMove(Colour colour) {
                     newPosition->whiteRooks ^= (0x1ULL << bestPredictedMove.getToSquare());
                     newPosition->whitePieces ^= (0x1ULL << bestPredictedMove.getToSquare());
                     if (bestPredictedMove.getToSquare() == 0) {
-                        newCastleStatus.disenableBlackKingCastleLeft();
+                        newCastleStatus.disenableWhiteKingCastleLeft();
                     } else if (bestPredictedMove.getToSquare() == 7) {
-                        newCastleStatus.disenableBlackKingCastleRight();
+                        newCastleStatus.disenableWhiteKingCastleRight();
                     }
                     break;
                 case Move::queenCapture:

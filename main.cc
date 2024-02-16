@@ -23,8 +23,8 @@ int main() {
     LookupTable::setMusks();
     LookupTable::mapBlockerKeys();
     Board* board = new Board();
-    BoardNode* currentPosition = StartPosition::defaultPosition(board);
-    // BoardNode* currentPosition = StartPosition::castleTestSetup(board);
+    // BoardNode* currentPosition = StartPosition::manualSetup(board);
+    BoardNode* currentPosition = StartPosition::castleTestSetup(board);
     Player* player1 = choosePlayerType(Colour::WHITE);
     Player* player2 = choosePlayerType(Colour::BLACK);
     int maxTurns = numeric_limits<int>::max();

@@ -109,6 +109,7 @@ namespace MaskUtils {
     const U64 blackRightCastle = (0x1ULL << 61) | (0x1ULL << 62);
 
     // square values
+    const double SQUARE_VALUE_FACTOR = 0.007;
     const U64 sevenSquares = (0x1ULL << 27) | (0x1ULL << 28) | (0x1ULL << 35) | (0x1ULL << 36);
     const U64 sixSquares = (0x1ULL << 43) | (0x1ULL << 44) | (0x1ULL << 26) | (0x1ULL << 34) 
     | (0x1ULL << 19) | (0x1ULL << 20) | (0x1ULL << 29) | (0x1ULL << 37);

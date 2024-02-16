@@ -47,6 +47,14 @@ BoardNode* StartPosition::castleTestSetup(Board* board) {
 }
 
 BoardNode* StartPosition::manualSetup(Board* board) {
+    setBit(board->whiteKing, 39);
+    setBit(board->whiteBishops, 38);
+    setBit(board->blackKing, 60);
+    setBit(board->blackPawns, 49);
+    setBit(board->whitePawns, 34);
+    setBit(board->blackRooks, 32);
+    board->whitePieces = board->whitePawns | board->whiteKnights | board->whiteBishops | board->whiteRooks | board->whiteQueens | board->whiteKing;
+    board->blackPieces = board->blackPawns | board->blackKnights | board->blackBishops | board->blackRooks | board->blackQueens | board->blackKing;
     unordered_map<int, U64> emptyMap;
     CastleStatus castleStatus(true, true, true, true);
     BoardNode* boardNode = new BoardNode(board, -1, castleStatus, emptyMap, nullptr);
