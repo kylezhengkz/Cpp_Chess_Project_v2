@@ -12,5 +12,6 @@ struct CastleStatus {
     void disenableWhiteKingCastleLeft();
     void disenableBlackKingCastleRight();
     void disenableBlackKingCastleLeft();
+    void printStatuses();
 };
 #endif

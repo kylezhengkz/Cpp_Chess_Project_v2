@@ -45,14 +45,45 @@ void CPU::iterativeDeepening(BoardNode*& pos) {
     }
     // cout << "End iterative deepening search" << endl;
     
-    if (colour == Colour::WHITE) {
+    cout << "View leftmost path" << endl;
+    BoardNode* currentNode = pos;
+    cout << "value of position below: " << pos->getValue() << endl;
+    currentNode->printBoardOnly(cout);
+    /*
+    Colour switchColour = colour;
+    while (currentNode->getChildren().size() != 0) {
+        if (switchColour == Colour::WHITE) {
+            sort(pos->getChildren().begin(), pos->getChildren().end(), [](const BoardNode* lhs, const BoardNode* rhs) {
+                return lhs->getValue() > rhs->getValue();
+            });
+            switchColour = Colour::BLACK;
+        } else {
+            sort(pos->getChildren().begin(), pos->getChildren().end(), [](const BoardNode* lhs, const BoardNode* rhs) {
+                return lhs->getValue() < rhs->getValue();
+            });
+            switchColour = Colour::WHITE;
+        }
+        currentNode = currentNode->getChildren()[0];
+        cout << "value of position below: " << pos->getValue() << endl;
+        currentNode->printBoardOnly(cout);
+    }
+    */
+   if (colour == Colour::WHITE) {
+        cout << "before" << endl;
+        pos->printChildrenValues(cout);
         sort(pos->getChildren().begin(), pos->getChildren().end(), [](const BoardNode* lhs, const BoardNode* rhs) {
             return lhs->getValue() > rhs->getValue();
         });
+        cout << "after" << endl;
+        pos->printChildrenValues(cout);
     } else {
+        cout << "before" << endl;
+        pos->printChildrenValues(cout);
         sort(pos->getChildren().begin(), pos->getChildren().end(), [](const BoardNode* lhs, const BoardNode* rhs) {
             return lhs->getValue() < rhs->getValue();
         });
+        cout << "after" << endl;
+        pos->printChildrenValues(cout);
     }
     branchToChild(pos, 0);
 }
@@ -99,6 +130,9 @@ double CPU::alphaBetaPruning(BoardNode* pos, int depth, double alpha, double bet
                 return lhs->getValue() > rhs->getValue();
             });
             for (BoardNode* child : pos->getChildren()) {
+                if (pos->getMoves().begin()->first > child->getValue()) {
+                    pos->addPredictedBestMove(Colour::WHITE);
+                }
                 double eval = alphaBetaPruning(child, depth - 1, alpha, beta, false);
                 maxEval = max(maxEval, eval);
                 alpha = max(alpha, eval);

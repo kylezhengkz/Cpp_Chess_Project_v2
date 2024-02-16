@@ -52,7 +52,7 @@ BoardNode* StartPosition::manualSetup(Board* board) {
     setBit(board->blackKing, 60);
     setBit(board->blackPawns, 49);
     setBit(board->whitePawns, 34);
-    setBit(board->blackRooks, 32);
+    setBit(board->blackRooks, 48);
     board->whitePieces = board->whitePawns | board->whiteKnights | board->whiteBishops | board->whiteRooks | board->whiteQueens | board->whiteKing;
     board->blackPieces = board->blackPawns | board->blackKnights | board->blackBishops | board->blackRooks | board->blackQueens | board->blackKing;
     unordered_map<int, U64> emptyMap;

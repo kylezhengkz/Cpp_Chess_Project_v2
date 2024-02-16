@@ -116,7 +116,7 @@ double BoardNode::staticEval() {
     return eval;
 }
 
-void BoardNode::searchLegalMusks(Colour colour, unordered_map<int, U64>& pins, bool& check, bool& doubleCheck, U64& kingLegalMoves, int& kingSquare, U64& pinBlockMusk) {
+void BoardNode::searchLegalMusks(Colour colour, bool& check, bool& doubleCheck, U64& kingLegalMoves, int& kingSquare, U64& pinBlockMusk) {
     U64 oppositionPawns;
     U64 oppositionKnights;
     U64 oppositionBishops;
@@ -196,7 +196,7 @@ void BoardNode::searchLegalMusks(Colour colour, unordered_map<int, U64>& pins, b
                 int pinnedPieceIndex = getLSB(inBetweenRay & teamPieces);
                 U64 pinLegalMusk =  inBetweenRay | (0x1ULL << sourceIndex);
                 clearBit(pinLegalMusk, pinnedPieceIndex);
-                pins[getLSB(inBetweenRay & teamPieces)] = pinLegalMusk;
+                pins[pinnedPieceIndex] = pinLegalMusk;
                 pinBlockMusk |= pinLegalMusk;
                 clearBit(pinBlockMusk, pinnedPieceIndex);
             }
@@ -232,9 +232,95 @@ void BoardNode::searchLegalMusks(Colour colour, unordered_map<int, U64>& pins, b
                 int pinnedPieceIndex = getLSB(inBetweenRay & teamPieces);
                 U64 pinLegalMusk =  inBetweenRay | (0x1ULL << sourceIndex);
                 clearBit(pinLegalMusk, pinnedPieceIndex);
-                pins[getLSB(inBetweenRay & teamPieces)] = pinLegalMusk;
+                pins[pinnedPieceIndex] = pinLegalMusk;
                 pinBlockMusk |= pinLegalMusk;
                 clearBit(pinBlockMusk, pinnedPieceIndex);
+            }
+        }
+    }
+}
+
+void BoardNode::searchNewPinsOnly(Colour colour, int oldKingSquare, int newKingSquare, unordered_map<int, U64> newPins) {
+    U64 oppositionPawns;
+    U64 oppositionKnights;
+    U64 oppositionBishops;
+    U64 oppositionRooks;
+    U64 oppositionQueens;
+    U64 teamPieces;
+    U64 oppositionPieces;
+    if (colour == Colour::WHITE) {
+        oppositionPawns = board->blackPawns;
+        oppositionKnights = board->blackKnights;
+        oppositionBishops = board->blackBishops;
+        oppositionRooks = board->blackRooks;
+        oppositionQueens = board->blackQueens;
+        oppositionPieces = board->blackPieces;
+        teamPieces = board->whitePieces;
+        clearBit(teamPieces, oldKingSquare);
+    } else {
+        oppositionPawns = board->whitePawns;
+        oppositionKnights = board->whiteKnights;
+        oppositionBishops = board->whiteBishops;
+        oppositionRooks = board->whiteRooks;
+        oppositionQueens = board->whiteQueens;
+        oppositionPieces = board->whitePieces;
+        teamPieces = board->blackPieces;
+        clearBit(teamPieces, oldKingSquare);
+    }
+    
+    U64 kingLegalMoves = LookupTable::lookupMusk(newKingSquare, Piece::KING) & ~teamPieces;
+    
+    // quick way to ensure that pin is possible
+    U64 potentialCheckPaths = LookupTable::lookupMove(newKingSquare, Piece::QUEEN, 0);
+    if ((potentialCheckPaths & (oppositionBishops | oppositionRooks | oppositionQueens)) == 0) {
+        return;
+    }
+
+    // search each check ray direction one-by-one
+    vector<int> increasingRays = {VERTICAL, POSITIVE_DIAGONAL, NEGATIVE_DIAGONAL, HORIZONTAL};
+    for (int direction : increasingRays) {
+        U64 ray = LookupTable::lookupRayMusk(newKingSquare, direction);
+        U64 oppositionAttackers;
+        if (isDiagonal(direction)) {
+            oppositionAttackers = oppositionBishops | oppositionQueens;
+        } else {
+            oppositionAttackers = oppositionRooks | oppositionQueens;
+        }
+
+        if ((ray & oppositionAttackers) != 0) {
+            int sourceIndex = getLSB(ray & oppositionAttackers);
+            U64 inBetweenRay = clearBitsGreaterThanIndex(ray, sourceIndex);
+            if (inBetweenRay & oppositionPieces) { // opponent piece in the way
+                continue;
+            } else if (__builtin_popcountll(inBetweenRay & teamPieces) == 1) { // pin
+                int pinnedPieceIndex = getLSB(inBetweenRay & teamPieces);
+                U64 pinLegalMusk =  inBetweenRay | (0x1ULL << sourceIndex);
+                clearBit(pinLegalMusk, pinnedPieceIndex);
+                newPins[pinnedPieceIndex] = pinLegalMusk;
+            }
+        }
+    }
+
+    vector<int> decreasingRays = {-VERTICAL, -POSITIVE_DIAGONAL, -NEGATIVE_DIAGONAL, -HORIZONTAL};
+    for (int direction : decreasingRays) {
+        U64 ray = LookupTable::lookupRayMusk(newKingSquare, direction);
+        U64 oppositionAttackers;
+        if (isDiagonal(direction)) {
+            oppositionAttackers = oppositionBishops | oppositionQueens;
+        } else {
+            oppositionAttackers = oppositionRooks | oppositionQueens;
+        }
+
+        if ((ray & oppositionAttackers) != 0) {
+            int sourceIndex = getMSB(ray & oppositionAttackers);
+            U64 inBetweenRay = clearBitsLessThanIndex(ray, sourceIndex);
+            if (inBetweenRay & oppositionPieces) { // no check or pin due to opponent piece interference
+                continue;
+            } else if (__builtin_popcountll(inBetweenRay & teamPieces) == 1) { // pin
+                int pinnedPieceIndex = getLSB(inBetweenRay & teamPieces);
+                U64 pinLegalMusk =  inBetweenRay | (0x1ULL << sourceIndex);
+                clearBit(pinLegalMusk, pinnedPieceIndex);
+                newPins[pinnedPieceIndex] = pinLegalMusk;
             }
         }
     }
@@ -316,7 +402,7 @@ bool BoardNode::isSquareSafe(int square, Colour colour) { // castling purposes
         if ((ray & oppositionAttackers) != 0) {
             int sourceIndex = getMSB(ray & oppositionAttackers);
             U64 inBetweenRay = clearBitsLessThanIndex(ray, sourceIndex);
-            if (ray & allPieces) { // piece in the way
+            if (inBetweenRay & allPieces) { // piece in the way
                 continue;
             } else {
                 return false;
@@ -403,7 +489,7 @@ void BoardNode::generateMoves(Colour colour) {
     U64 kingLegalMoves;
     int kingSquare;
     U64 pinBlockMusk = 0x0ULL;
-    searchLegalMusks(colour, pins, check, doubleCheck, kingLegalMoves, kingSquare, pinBlockMusk);
+    searchLegalMusks(colour, check, doubleCheck, kingLegalMoves, kingSquare, pinBlockMusk);
 
     U64 unsafeSquares = generateUnsafeMusk(colour, false);
     U64 allPieces = board->whitePieces | board->blackPieces;
@@ -592,7 +678,17 @@ void BoardNode::generateMoves(Colour colour) {
                         } catch (exception& e) {
                             cout << "heheheha attack debug" << endl;
                             cout << e.what() << endl;
+                            printBitboard(board->blackPieces, cout);
                             cout << initialSquare << " to " << newSquare << " to " << destinationSquare << endl;
+                            printBoardOnly(cout);
+                            printBitboard(parent->board->blackPieces, cout);
+                            parent->printBoardOnly(cout);
+                            BoardNode* grandParent = parent->parent;
+                            while (grandParent) {
+                                printBitboard(grandParent->board->blackPieces, cout);
+                                grandParent->printBoardOnly(cout);
+                                grandParent = grandParent->parent;
+                            }
                             throw;
                         }
                         if (getBit(unsafeSquares, destinationSquare) && attackVal < board->getPieceValue(piece)) { // attacked piece is being defended and isn't worth pursuing
@@ -628,7 +724,7 @@ void BoardNode::generateMoves(Colour colour) {
                             U64 kingLegalMoves1;
                             int kingSquare1;
                             U64 pinBlockMusk1 = 0x0ULL;
-                            grandParent->searchLegalMusks(switchColour, pins, check1, doubleCheck1, kingLegalMoves1, kingSquare1, pinBlockMusk1);
+                            grandParent->searchLegalMusks(switchColour, check1, doubleCheck1, kingLegalMoves1, kingSquare1, pinBlockMusk1);
                             grandParent->printBoardOnly(cout);
                             grandParent = grandParent->parent;
                             cout << "pin block musk" << endl;
@@ -712,6 +808,7 @@ void BoardNode::generateMoves(Colour colour) {
         }
     } else {
         if (castleStatus.canBlackKingCastleLeft() && ((blackLeftCastle & allPieces) == 0)) {
+            printBoardOnly(cout);
             if (isSquareSafe(60, colour) &&  isSquareSafe(57, colour) && isSquareSafe(58, colour) && isSquareSafe(59, colour)) {
                 Move move{kingSquare, 58, Move::castle, Move::noCapture, -1, false};
                 moves.emplace(1, move);
@@ -737,15 +834,20 @@ void BoardNode::addPredictedBestMove(Colour colour) {
     moves.erase(moves.begin());
     int flag = bestPredictedMove.getFlag();
 
-    unordered_map<int, U64> pinsCopy = pins;
-    if (bestPredictedMove.removePinIndex != -1) {
-        pinsCopy.erase(bestPredictedMove.removePinIndex);
-    }
+    unordered_map<int, U64> pinsCopy;
+    if (flag == Move::kingMove) {
+        searchNewPinsOnly(colour, bestPredictedMove.getFromSquare(), bestPredictedMove.getToSquare(), pinsCopy);
+    } else {
+        pinsCopy = pins;
+        if (bestPredictedMove.removePinIndex != -1) {
+            pinsCopy.erase(bestPredictedMove.removePinIndex);
+        }
 
-    if (bestPredictedMove.addPin) {
-        U64 checkPathMuskCopy = checkPathMusk;
-        clearBit(checkPathMuskCopy, bestPredictedMove.getToSquare());
-        pinsCopy[bestPredictedMove.getToSquare()] = checkPathMuskCopy;
+        if (bestPredictedMove.addPin) {
+            U64 checkPathMuskCopy = checkPathMusk;
+            clearBit(checkPathMuskCopy, bestPredictedMove.getToSquare());
+            pinsCopy[bestPredictedMove.getToSquare()] = checkPathMuskCopy;
+        }
     }
 
     CastleStatus newCastleStatus = castleStatus;
@@ -788,7 +890,7 @@ void BoardNode::addPredictedBestMove(Colour colour) {
                 setBit(newPosition->whiteQueens, bestPredictedMove.getToSquare());
                 newPosition->whitePieces ^= (0x1ULL << bestPredictedMove.getFromSquare()) | (0x1ULL << bestPredictedMove.getToSquare());
                 children.emplace_back(new BoardNode(newPosition, newLastDoublePawnMoveIndex, newCastleStatus, pinsCopy, this));
-                return;
+                break;
             case Move::rookPromotion:
                 break;
             case Move::knightPromotion:
@@ -867,7 +969,7 @@ void BoardNode::addPredictedBestMove(Colour colour) {
                 setBit(newPosition->blackQueens, bestPredictedMove.getToSquare());
                 newPosition->blackPieces ^= (0x1ULL << bestPredictedMove.getFromSquare()) | (0x1ULL << bestPredictedMove.getToSquare());
                 children.emplace_back(new BoardNode(newPosition, newLastDoublePawnMoveIndex, newCastleStatus, pinsCopy, this));
-                return;
+                break;
             case Move::rookPromotion:
                 break;
             case Move::knightPromotion:
@@ -993,8 +1095,8 @@ ostream& operator<<(ostream& out, BoardNode& boardNode) {
     out << "END CHILDREN" << endl;
     cout << "Can white king castle right? " << ((boardNode.castleStatus.canWhiteKingCastleRight() == true) ? "Yes" : "No") << endl;
     cout << "Can white king castle right? " << ((boardNode.castleStatus.canWhiteKingCastleLeft() == true) ? "Yes" : "No") << endl;
-    cout << "Can white king castle right? " << ((boardNode.castleStatus.canBlackKingCastleRight() == true) ? "Yes" : "No") << endl;
-    cout << "Can white king castle right? " << ((boardNode.castleStatus.canBlackKingCastleLeft() == true) ? "Yes" : "No") << endl;
+    cout << "Can black king castle right? " << ((boardNode.castleStatus.canBlackKingCastleRight() == true) ? "Yes" : "No") << endl;
+    cout << "Can black king castle right? " << ((boardNode.castleStatus.canBlackKingCastleLeft() == true) ? "Yes" : "No") << endl;
     cout << "Last Double Pawn Move Index: " << boardNode.lastDoublePawnMoveIndex << endl;
     out << "END BOARD NODE ——————————————————————————————————————————————————————————————————————————" << endl;
     return out;
@@ -1005,10 +1107,9 @@ ostream& BoardNode::printBoardOnly(ostream& out) {
     return out;
 }
 
-ostream& BoardNode::printChildren(ostream& out) {
+ostream& BoardNode::printChildrenValues(ostream& out) {
     for (size_t i = 0; i < children.size(); i++) {
-        out << "Move " << i + 1 << ":" << endl;
-        children[i]->printBoardOnly(out);
+        cout << children[i]->getValue() << endl;
     }
     return out;
 }

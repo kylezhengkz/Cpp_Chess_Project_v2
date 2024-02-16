@@ -34,3 +34,10 @@ void CastleStatus::disenableBlackKingCastleRight() {
 void CastleStatus::disenableBlackKingCastleLeft() {
     castleStatus &= ~0b1000;
 }
+
+void CastleStatus::printStatuses() {
+    cout << "Can white king castle right? " << ((canWhiteKingCastleRight() == true) ? "Yes" : "No") << endl;
+    cout << "Can white king castle right? " << ((canWhiteKingCastleLeft() == true) ? "Yes" : "No") << endl;
+    cout << "Can black king castle right? " << ((canBlackKingCastleRight() == true) ? "Yes" : "No") << endl;
+    cout << "Can black king castle right? " << ((canBlackKingCastleLeft() == true) ? "Yes" : "No") << endl;
+}
