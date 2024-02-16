@@ -806,7 +806,6 @@ void BoardNode::generateMoves(Colour colour) {
         }
     } else {
         if (castleStatus.canBlackKingCastleLeft() && ((blackLeftCastle & allPieces) == 0)) {
-            printBoardOnly(cout);
             if (isSquareSafe(60, colour) &&  isSquareSafe(57, colour) && isSquareSafe(58, colour) && isSquareSafe(59, colour)) {
                 Move move{kingSquare, 58, Move::castle, Move::noCapture, -1, false};
                 moves.emplace(1, move);

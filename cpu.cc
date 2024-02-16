@@ -11,24 +11,15 @@ void CPU::pickMove(BoardNode*& pos) {
     } else {
         cout << "BLACK TO MOVE:" << endl;
     }
-    // pick best predicted move
-    /*
-    pos->generateMoves(colour);
-    pos->printChildrenMoveNotation(cout);
-    pos->addPredictedBestMove(colour);
-    branchToChild(pos, 0);
-    */
     iterativeDeepening(pos);
-    // pos->printChildrenTree(cout);
 }
 
 void CPU::iterativeDeepening(BoardNode*& pos) {
     startTime = high_resolution_clock::now();
-    // int maxDepth = numeric_limits<int>::max();
-    int maxDepth = 256;
-    // cout << "Begin iterative deepening search" << endl;
+    int maxDepth = numeric_limits<int>::max();
+    cout << "Begin iterative deepening search" << endl;
     for (int depth = 1; depth < maxDepth; depth++) {
-        // cout << "Searching depth " << depth << endl;
+        cout << "Searching depth " << depth << endl;
         if (colour == Colour::WHITE) {
             alphaBetaPruning(pos, depth, negativeInfinity, positiveInfinity, true);
         } else {
@@ -36,39 +27,15 @@ void CPU::iterativeDeepening(BoardNode*& pos) {
         }
         auto currentTime = high_resolution_clock::now();
         auto timeElasped = (duration_cast<seconds>(currentTime - startTime)).count();
-        // cout << "Time elasped: " << timeElasped << endl;
+        cout << "Time elasped: " << timeElasped << endl;
         if (timeElasped >= maxTimeSeconds) {
-            // cout << "Halted search at depth " << depth << endl;
+            cout << "Halted search at depth " << depth << endl;
             break;
         }
-        // cout << "Finished searching depth " << depth << endl;
+        cout << "Finished searching depth " << depth << endl;
     }
-    // cout << "End iterative deepening search" << endl;
-    
-    /*
-    cout << "View leftmost path" << endl;
-    BoardNode* currentNode = pos;
-    cout << "value of position below: " << pos->getValue() << endl;
-    currentNode->printBoardOnly(cout);
-    Colour switchColour = colour;
-    while (currentNode->getChildren().size() != 0) {
-        if (switchColour == Colour::WHITE) {
-            sort(pos->getChildren().begin(), pos->getChildren().end(), [](const BoardNode* lhs, const BoardNode* rhs) {
-                return lhs->getValue() > rhs->getValue();
-            });
-            switchColour = Colour::BLACK;
-        } else {
-            sort(pos->getChildren().begin(), pos->getChildren().end(), [](const BoardNode* lhs, const BoardNode* rhs) {
-                return lhs->getValue() < rhs->getValue();
-            });
-            switchColour = Colour::WHITE;
-        }
-        currentNode = currentNode->getChildren()[0];
-        cout << "value of position below: " << pos->getValue() << endl;
-        currentNode->printBoardOnly(cout);
-    }
-    */
-   if (colour == Colour::WHITE) {
+    cout << "End iterative deepening search" << endl;
+    if (colour == Colour::WHITE) {
         sort(pos->getChildren().begin(), pos->getChildren().end(), [](const BoardNode* lhs, const BoardNode* rhs) {
             return lhs->getValue() > rhs->getValue();
         });
