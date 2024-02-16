@@ -481,8 +481,6 @@ So you have access to opponent's pinned pieces
 Make sure you add pinned piece if blocking check
 */
 
-// Also need to add move val for en passant (FIX LATER)
-
 void BoardNode::generateMoves(Colour colour) {
     bool check = false;
     bool doubleCheck = false;
