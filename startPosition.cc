@@ -27,7 +27,7 @@ BoardNode* StartPosition::defaultPosition(Board* board) {
     board->blackPieces = board->blackPawns | board->blackKnights | board->blackBishops | board->blackRooks | board->blackQueens | board->blackKing;
     unordered_map<int, U64> emptyMap;
     CastleStatus castleStatus(true, true, true, true);
-    BoardNode* boardNode = new BoardNode(board, -1, castleStatus, emptyMap, nullptr);
+    BoardNode* boardNode = new BoardNode(board, -1, castleStatus, emptyMap);
     return boardNode;
 }
 
@@ -42,7 +42,7 @@ BoardNode* StartPosition::castleTestSetup(Board* board) {
     board->blackPieces = board->blackRooks | board->blackKing;
     unordered_map<int, U64> emptyMap;
     CastleStatus castleStatus(true, true, true, true);
-    BoardNode* boardNode = new BoardNode(board, -1, castleStatus, emptyMap, nullptr);
+    BoardNode* boardNode = new BoardNode(board, -1, castleStatus, emptyMap);
     return boardNode;
 }
 
@@ -57,6 +57,6 @@ BoardNode* StartPosition::manualSetup(Board* board) {
     board->blackPieces = board->blackPawns | board->blackKnights | board->blackBishops | board->blackRooks | board->blackQueens | board->blackKing;
     unordered_map<int, U64> emptyMap;
     CastleStatus castleStatus(true, true, true, true);
-    BoardNode* boardNode = new BoardNode(board, -1, castleStatus, emptyMap, nullptr);
+    BoardNode* boardNode = new BoardNode(board, -1, castleStatus, emptyMap);
     return boardNode;
 }
