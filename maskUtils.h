@@ -2,6 +2,7 @@
 #define MASKUTIL_H
 #include <cstdint>
 #include <iostream>
+#include <memory>
 using namespace std;
 namespace MaskUtils {
     typedef uint64_t U64;

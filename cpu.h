@@ -12,9 +12,9 @@ class CPU: public Player {
     public:
     CPU(Colour colour);
     void generateMoves();
-    void pickMove(BoardNode*& pos) override;
-    void iterativeDeepening(BoardNode*& pos);
-    double alphaBetaPruning(BoardNode* pos, int depth, double alpha, double beta, bool maximizingPlayer);
+    void pickMove(unique_ptr<BoardNode>& pos) override;
+    void iterativeDeepening(unique_ptr<BoardNode>& pos);
+    double alphaBetaPruning(unique_ptr<BoardNode>& pos, int depth, double alpha, double beta, bool maximizingPlayer);
     void quiescenceSearch();
     private:
     static const double negativeInfinity;

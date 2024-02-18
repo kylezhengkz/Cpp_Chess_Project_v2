@@ -22,10 +22,8 @@ int main() {
     LookupTable::setRayMusks();
     LookupTable::setMusks();
     LookupTable::mapBlockerKeys();
-    Board* board = new Board();
-    // BoardNode* currentPosition = StartPosition::manualSetup(board);
-    // BoardNode* currentPosition = StartPosition::castleTestSetup(board);
-    BoardNode* currentPosition = StartPosition::defaultPosition(board);
+    unique_ptr<Board> board{new Board()};
+    unique_ptr<BoardNode> currentPosition = StartPosition::defaultPosition(board);
     Player* player1 = choosePlayerType(Colour::WHITE);
     Player* player2 = choosePlayerType(Colour::BLACK);
     int maxTurns = numeric_limits<int>::max();
@@ -53,5 +51,4 @@ int main() {
         currentPosition->printBoardOnly(cout);
     }
     LookupTable::cleanup();
-    delete currentPosition;
 };

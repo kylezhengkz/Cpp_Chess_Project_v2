@@ -8,6 +8,6 @@ class Player {
     public:
     Player(Colour colour);
     Colour getColour();
-    virtual void pickMove(BoardNode*& pos) = 0; // DEBUGGING PURPOSES
+    virtual void pickMove(unique_ptr<BoardNode>& pos) = 0;
 };
 #endif

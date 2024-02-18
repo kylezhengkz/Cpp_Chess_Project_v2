@@ -5,7 +5,7 @@ double const CPU::negativeInfinity = -9999;
 double const CPU::positiveInfinity = 9999;
 const int CPU::maxTimeSeconds = 10;
 
-void CPU::pickMove(BoardNode*& pos) {
+void CPU::pickMove(unique_ptr<BoardNode>& pos) {
     if (colour == Colour::WHITE) {
         cout << "WHITE TO MOVE:" << endl;
     } else {
@@ -14,7 +14,7 @@ void CPU::pickMove(BoardNode*& pos) {
     iterativeDeepening(pos);
 }
 
-void CPU::iterativeDeepening(BoardNode*& pos) {
+void CPU::iterativeDeepening(unique_ptr<BoardNode>& pos) {
     startTime = high_resolution_clock::now();
     int maxDepth = numeric_limits<int>::max();
     cout << "Begin iterative deepening search" << endl;
@@ -36,18 +36,18 @@ void CPU::iterativeDeepening(BoardNode*& pos) {
     }
     cout << "End iterative deepening search" << endl;
     if (colour == Colour::WHITE) {
-        sort(pos->getChildren().begin(), pos->getChildren().end(), [](const BoardNode* lhs, const BoardNode* rhs) {
+        sort(pos->getChildren().begin(), pos->getChildren().end(), [](const unique_ptr<BoardNode>& lhs, const unique_ptr<BoardNode>& rhs) {
             return lhs->getValue() > rhs->getValue();
         });
     } else {
-        sort(pos->getChildren().begin(), pos->getChildren().end(), [](const BoardNode* lhs, const BoardNode* rhs) {
+        sort(pos->getChildren().begin(), pos->getChildren().end(), [](const unique_ptr<BoardNode>& lhs, const unique_ptr<BoardNode>& rhs) {
             return lhs->getValue() < rhs->getValue();
         });
     }
     branchToChild(pos, 0);
 }
 
-double CPU::alphaBetaPruning(BoardNode* pos, int depth, double alpha, double beta, bool maximizingPlayer) {
+double CPU::alphaBetaPruning(unique_ptr<BoardNode>& pos, int depth, double alpha, double beta, bool maximizingPlayer) {
     auto currentTime = high_resolution_clock::now();
     auto duration = duration_cast<seconds>(currentTime - startTime);
     if (duration.count() >= maxTimeSeconds) { // time is up! stop the search
@@ -85,16 +85,19 @@ double CPU::alphaBetaPruning(BoardNode* pos, int depth, double alpha, double bet
                 return negativeInfinity;
             }
         } else {
-            sort(pos->getChildren().begin(), pos->getChildren().end(), [](const BoardNode* lhs, const BoardNode* rhs) {
+            sort(pos->getChildren().begin(), pos->getChildren().end(), [](const unique_ptr<BoardNode>& lhs, const unique_ptr<BoardNode>& rhs) {
                 return lhs->getValue() > rhs->getValue();
             });
             for (int i = 0; i < pos->getChildren().size(); i++) {
-                BoardNode* child = pos->getChildren()[i];
+                unique_ptr<BoardNode>& child = pos->getChildren()[i];
+                double eval;
                 if ((pos->getMoves().size() > 0) && (pos->getMoves().begin()->first > child->getValue())) {
                     pos->addPredictedBestMove(Colour::WHITE);
-                    child = pos->getChildren()[i];
+                    unique_ptr<BoardNode>& insertedChild = pos->getChildren()[i];
+                    eval = alphaBetaPruning(insertedChild, depth - 1, alpha, beta, false);
+                } else {
+                    eval = alphaBetaPruning(child, depth - 1, alpha, beta, false);
                 }
-                double eval = alphaBetaPruning(child, depth - 1, alpha, beta, false);
                 maxEval = max(maxEval, eval);
                 alpha = max(alpha, eval);
                 if (beta <= alpha) {
@@ -123,16 +126,19 @@ double CPU::alphaBetaPruning(BoardNode* pos, int depth, double alpha, double bet
                 return positiveInfinity;
             }
         } else {
-            sort(pos->getChildren().begin(), pos->getChildren().end(), [](const BoardNode* lhs, const BoardNode* rhs) {
+            sort(pos->getChildren().begin(), pos->getChildren().end(), [](const unique_ptr<BoardNode>& lhs, const unique_ptr<BoardNode>& rhs) {
                 return lhs->getValue() < rhs->getValue();
             });
             for (int i = 0; i < pos->getChildren().size(); i++) {
-                BoardNode* child = pos->getChildren()[i];
+                unique_ptr<BoardNode>& child = pos->getChildren()[i];
+                double eval;
                 if ((pos->getMoves().size() > 0) && (pos->getMoves().begin()->first > (-child->getValue()))) {
                     pos->addPredictedBestMove(Colour::BLACK);
-                    child = pos->getChildren()[i];
+                    unique_ptr<BoardNode>& insertedChild = pos->getChildren()[i];
+                    eval = alphaBetaPruning(insertedChild, depth - 1, alpha, beta, false);
+                } else {
+                    eval = alphaBetaPruning(child, depth - 1, alpha, beta, false);
                 }
-                double eval = alphaBetaPruning(child, depth - 1, alpha, beta, true);
                 minEval = min(minEval, eval);
                 beta = min(beta, eval);
                 if (beta <= alpha) {

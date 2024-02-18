@@ -8,7 +8,7 @@ int strToIndex(string squareStr) {
     return squareIndex;
 }
 
-void User::pickMove(BoardNode*& pos) {
+void User::pickMove(unique_ptr<BoardNode>& pos) {
     if (colour == Colour::WHITE) {
         cout << "WHITE TO MOVE:" << endl;
     } else {

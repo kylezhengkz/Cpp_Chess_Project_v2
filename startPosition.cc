@@ -1,5 +1,5 @@
 #include "startPosition.h"
-BoardNode* StartPosition::defaultPosition(Board* board) {
+unique_ptr<BoardNode> StartPosition::defaultPosition(unique_ptr<Board>& board) {
     for (int i = 8; i < 16; i++) {
         setBit(board->whitePawns, i);
     }
@@ -27,11 +27,11 @@ BoardNode* StartPosition::defaultPosition(Board* board) {
     board->blackPieces = board->blackPawns | board->blackKnights | board->blackBishops | board->blackRooks | board->blackQueens | board->blackKing;
     unordered_map<int, U64> emptyMap;
     CastleStatus castleStatus(true, true, true, true);
-    BoardNode* boardNode = new BoardNode(board, -1, castleStatus, emptyMap);
+    unique_ptr<BoardNode> boardNode(new BoardNode(move(board), -1, castleStatus, emptyMap));
     return boardNode;
 }
 
-BoardNode* StartPosition::castleTestSetup(Board* board) {
+unique_ptr<BoardNode> StartPosition::castleTestSetup(unique_ptr<Board>& board) {
     setBit(board->whiteRooks, 0);
     setBit(board->whiteRooks, 7);
     setBit(board->blackRooks, 56);
@@ -42,11 +42,11 @@ BoardNode* StartPosition::castleTestSetup(Board* board) {
     board->blackPieces = board->blackRooks | board->blackKing;
     unordered_map<int, U64> emptyMap;
     CastleStatus castleStatus(true, true, true, true);
-    BoardNode* boardNode = new BoardNode(board, -1, castleStatus, emptyMap);
+    unique_ptr<BoardNode> boardNode(new BoardNode(move(board), -1, castleStatus, emptyMap));
     return boardNode;
 }
 
-BoardNode* StartPosition::manualSetup(Board* board) {
+unique_ptr<BoardNode> StartPosition::manualSetup(unique_ptr<Board>& board) {
     setBit(board->whiteKing, 39);
     setBit(board->whiteBishops, 38);
     setBit(board->blackKing, 60);
@@ -57,6 +57,6 @@ BoardNode* StartPosition::manualSetup(Board* board) {
     board->blackPieces = board->blackPawns | board->blackKnights | board->blackBishops | board->blackRooks | board->blackQueens | board->blackKing;
     unordered_map<int, U64> emptyMap;
     CastleStatus castleStatus(true, true, true, true);
-    BoardNode* boardNode = new BoardNode(board, -1, castleStatus, emptyMap);
+    unique_ptr<BoardNode> boardNode(new BoardNode(move(board), -1, castleStatus, emptyMap));
     return boardNode;
 }

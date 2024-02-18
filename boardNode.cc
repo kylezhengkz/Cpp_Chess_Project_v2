@@ -22,8 +22,8 @@ string generateRandomID() { // TEMP
     return id;
 }
 
-BoardNode::BoardNode(Board* board, int lastDoublePawnMoveIndex, CastleStatus castleStatus, unordered_map<int, U64> opponentPins):
-board{board}, lastDoublePawnMoveIndex{lastDoublePawnMoveIndex}, castleStatus{castleStatus}, opponentPins{opponentPins} {};
+BoardNode::BoardNode(unique_ptr<Board> board, int lastDoublePawnMoveIndex, CastleStatus castleStatus, unordered_map<int, U64> opponentPins):
+board{move(board)}, lastDoublePawnMoveIndex{lastDoublePawnMoveIndex}, castleStatus{castleStatus}, opponentPins{opponentPins} {};
 
 U64 BoardNode::getColourPieces(Colour colour) {
     if (colour == Colour::WHITE) {
@@ -727,8 +727,8 @@ void BoardNode::generateMoves(Colour colour) {
                     isAddPin = true;
                 }
 
-                Move move{initialSquare, newSquare, flag, captureFlag, removePinIndex, isAddPin};
-                moves.emplace(moveVal, move);
+                unique_ptr<Move> newMove = make_unique<Move>(initialSquare, newSquare, flag, captureFlag, removePinIndex, isAddPin);
+                moves.emplace(moveVal, move(newMove));
             }
         }
     }
@@ -756,37 +756,37 @@ void BoardNode::generateMoves(Colour colour) {
             }
         }
 
-        Move move{kingSquare, newSquare, flag, captureFlag, -1, false};
-        moves.emplace(moveVal, move);
+        unique_ptr<Move> newMove = make_unique<Move>(kingSquare, newSquare, flag, captureFlag, -1, false);
+        moves.emplace(moveVal, move(newMove));
     }
 
     // check castling
     if (colour == Colour::WHITE) {
         if (castleStatus.canWhiteKingCastleLeft() && ((whiteLeftCastle & allPieces) == 0)) {
             if (isSquareSafe(4, colour) && isSquareSafe(1, colour) && isSquareSafe(2, colour) && isSquareSafe(3, colour)) {
-                Move move{kingSquare, 2, Move::castle, Move::noCapture, -1, false};
-                moves.emplace(1, move);
+                unique_ptr<Move> newMove = make_unique<Move>(kingSquare, 2, Move::castle, Move::noCapture, -1, false);
+                moves.emplace(1.5, move(newMove));
             }
         }
         
         if (castleStatus.canWhiteKingCastleRight() && ((whiteRightCastle & allPieces) == 0)) {
             if (isSquareSafe(4, colour) && isSquareSafe(5, colour) && isSquareSafe(6, colour)) {
-                Move move{kingSquare, 6, Move::castle, Move::noCapture, -1, false};
-                moves.emplace(1.1, move);
+                unique_ptr<Move> newMove = make_unique<Move>(kingSquare, 6, Move::castle, Move::noCapture, -1, false);
+                moves.emplace(1.7, move(newMove));
             }
         }
     } else {
         if (castleStatus.canBlackKingCastleLeft() && ((blackLeftCastle & allPieces) == 0)) {
             if (isSquareSafe(60, colour) &&  isSquareSafe(57, colour) && isSquareSafe(58, colour) && isSquareSafe(59, colour)) {
-                Move move{kingSquare, 58, Move::castle, Move::noCapture, -1, false};
-                moves.emplace(1, move);
+                unique_ptr<Move> newMove = make_unique<Move>(kingSquare, 58, Move::castle, Move::noCapture, -1, false);
+                moves.emplace(1.5, move(newMove));
             }
         }
         
         if (castleStatus.canBlackKingCastleRight() && ((blackRightCastle & allPieces) == 0)) {
             if (isSquareSafe(60, colour) && isSquareSafe(61, colour) && isSquareSafe(62, colour)) {
-                Move move{kingSquare, 62, Move::castle, Move::noCapture, -1, false};
-                moves.emplace(1.1, move);
+                unique_ptr<Move> newMove = make_unique<Move>(kingSquare, 62, Move::castle, Move::noCapture, -1, false);
+                moves.emplace(1.7, move(newMove));
             }
         }
     }
@@ -797,24 +797,24 @@ void BoardNode::addPredictedBestMove(Colour colour) {
         throw logic_error("Attempted to branch but there are no moves to branch");
     }
 
-    Board* newPosition = new Board(*board);
-    auto bestPredictedMove = moves.begin()->second;
+    unique_ptr<Board> newPosition = make_unique<Board>(*board);
+    auto& bestPredictedMove = moves.begin()->second;
     moves.erase(moves.begin());
-    int flag = bestPredictedMove.getFlag();
+    int flag = bestPredictedMove->getFlag();
 
     unordered_map<int, U64> pinsCopy;
     if (flag == Move::kingMove) {
-        searchNewPinsOnly(colour, bestPredictedMove.getFromSquare(), bestPredictedMove.getToSquare(), pinsCopy);
+        searchNewPinsOnly(colour, bestPredictedMove->getFromSquare(), bestPredictedMove->getToSquare(), pinsCopy);
     } else {
         pinsCopy = pins;
-        if (bestPredictedMove.removePinIndex != -1) {
-            pinsCopy.erase(bestPredictedMove.removePinIndex);
+        if (bestPredictedMove->removePinIndex != -1) {
+            pinsCopy.erase(bestPredictedMove->removePinIndex);
         }
 
-        if (bestPredictedMove.addPin) {
+        if (bestPredictedMove->addPin) {
             U64 checkPathMuskCopy = checkPathMusk;
-            clearBit(checkPathMuskCopy, bestPredictedMove.getToSquare());
-            pinsCopy[bestPredictedMove.getToSquare()] = checkPathMuskCopy;
+            clearBit(checkPathMuskCopy, bestPredictedMove->getToSquare());
+            pinsCopy[bestPredictedMove->getToSquare()] = checkPathMuskCopy;
         }
     }
 
@@ -829,35 +829,35 @@ void BoardNode::addPredictedBestMove(Colour colour) {
             case Move::castle:
                 newCastleStatus.disenableWhiteKingCastleLeft();
                 newCastleStatus.disenableWhiteKingCastleRight();
-                newPosition->whiteKing ^= (0x1ULL << bestPredictedMove.getFromSquare()) | (0x1ULL << bestPredictedMove.getToSquare());
-                newPosition->whitePieces ^= (0x1ULL << bestPredictedMove.getFromSquare()) | (0x1ULL << bestPredictedMove.getToSquare());
-                if (bestPredictedMove.getToSquare() == 2) {
+                newPosition->whiteKing ^= (0x1ULL << bestPredictedMove->getFromSquare()) | (0x1ULL << bestPredictedMove->getToSquare());
+                newPosition->whitePieces ^= (0x1ULL << bestPredictedMove->getFromSquare()) | (0x1ULL << bestPredictedMove->getToSquare());
+                if (bestPredictedMove->getToSquare() == 2) {
                     newPosition->whiteRooks ^= (0x1ULL << 0) | (0x1ULL << 3);
                     newPosition->whitePieces ^= (0x1ULL << 0) | (0x1ULL << 3);
-                } else if (bestPredictedMove.getToSquare() == 6) {
+                } else if (bestPredictedMove->getToSquare() == 6) {
                     newPosition->whiteRooks ^= (0x1ULL << 5) | (0x1ULL << 7);
                     newPosition->whitePieces ^= (0x1ULL << 5) | (0x1ULL << 7);
                 }
-                children.emplace_back(new BoardNode(newPosition, newLastDoublePawnMoveIndex, newCastleStatus, pinsCopy));
+                children.emplace_back(new BoardNode(move(newPosition), newLastDoublePawnMoveIndex, newCastleStatus, pinsCopy));
                 return;
             case Move::enPassant:
-                newPosition->whitePawns ^= (0x1ULL << bestPredictedMove.getFromSquare()) | (0x1ULL << bestPredictedMove.getToSquare());
-                newPosition->whitePieces ^= (0x1ULL << bestPredictedMove.getFromSquare()) | (0x1ULL << bestPredictedMove.getToSquare());
+                newPosition->whitePawns ^= (0x1ULL << bestPredictedMove->getFromSquare()) | (0x1ULL << bestPredictedMove->getToSquare());
+                newPosition->whitePieces ^= (0x1ULL << bestPredictedMove->getFromSquare()) | (0x1ULL << bestPredictedMove->getToSquare());
                 clearBit(newPosition->blackPawns, lastDoublePawnMoveIndex);
                 clearBit(newPosition->blackPieces, lastDoublePawnMoveIndex);
-                children.emplace_back(new BoardNode(newPosition, newLastDoublePawnMoveIndex, newCastleStatus, pinsCopy));
+                children.emplace_back(new BoardNode(move(newPosition), newLastDoublePawnMoveIndex, newCastleStatus, pinsCopy));
                 return;
             case Move::pawnDoubleMove:
-                newPosition->whitePawns ^= (0x1ULL << bestPredictedMove.getFromSquare()) | (0x1ULL << bestPredictedMove.getToSquare());
-                newPosition->whitePieces ^= (0x1ULL << bestPredictedMove.getFromSquare()) | (0x1ULL << bestPredictedMove.getToSquare());
-                newLastDoublePawnMoveIndex = bestPredictedMove.getToSquare();
-                children.emplace_back(new BoardNode(newPosition, newLastDoublePawnMoveIndex, newCastleStatus, pinsCopy));
+                newPosition->whitePawns ^= (0x1ULL << bestPredictedMove->getFromSquare()) | (0x1ULL << bestPredictedMove->getToSquare());
+                newPosition->whitePieces ^= (0x1ULL << bestPredictedMove->getFromSquare()) | (0x1ULL << bestPredictedMove->getToSquare());
+                newLastDoublePawnMoveIndex = bestPredictedMove->getToSquare();
+                children.emplace_back(new BoardNode(move(newPosition), newLastDoublePawnMoveIndex, newCastleStatus, pinsCopy));
                 return;
             case Move::queenPromotion:
-                clearBit(newPosition->whitePawns, bestPredictedMove.getFromSquare());
-                setBit(newPosition->whiteQueens, bestPredictedMove.getToSquare());
-                newPosition->whitePieces ^= (0x1ULL << bestPredictedMove.getFromSquare()) | (0x1ULL << bestPredictedMove.getToSquare());
-                children.emplace_back(new BoardNode(newPosition, newLastDoublePawnMoveIndex, newCastleStatus, pinsCopy));
+                clearBit(newPosition->whitePawns, bestPredictedMove->getFromSquare());
+                setBit(newPosition->whiteQueens, bestPredictedMove->getToSquare());
+                newPosition->whitePieces ^= (0x1ULL << bestPredictedMove->getFromSquare()) | (0x1ULL << bestPredictedMove->getToSquare());
+                children.emplace_back(new BoardNode(move(newPosition), newLastDoublePawnMoveIndex, newCastleStatus, pinsCopy));
                 break;
             case Move::rookPromotion:
                 break;
@@ -866,33 +866,33 @@ void BoardNode::addPredictedBestMove(Colour colour) {
             case Move::bishopPromotion:
                 break;
             case Move::pawnMove:
-                newPosition->whitePawns ^= (0x1ULL << bestPredictedMove.getFromSquare()) | (0x1ULL << bestPredictedMove.getToSquare());
-                newPosition->whitePieces ^= (0x1ULL << bestPredictedMove.getFromSquare()) | (0x1ULL << bestPredictedMove.getToSquare());
+                newPosition->whitePawns ^= (0x1ULL << bestPredictedMove->getFromSquare()) | (0x1ULL << bestPredictedMove->getToSquare());
+                newPosition->whitePieces ^= (0x1ULL << bestPredictedMove->getFromSquare()) | (0x1ULL << bestPredictedMove->getToSquare());
                 break;
             case Move::knightMove:
-                newPosition->whiteKnights ^= (0x1ULL << bestPredictedMove.getFromSquare()) | (0x1ULL << bestPredictedMove.getToSquare());
-                newPosition->whitePieces ^= (0x1ULL << bestPredictedMove.getFromSquare()) | (0x1ULL << bestPredictedMove.getToSquare());
+                newPosition->whiteKnights ^= (0x1ULL << bestPredictedMove->getFromSquare()) | (0x1ULL << bestPredictedMove->getToSquare());
+                newPosition->whitePieces ^= (0x1ULL << bestPredictedMove->getFromSquare()) | (0x1ULL << bestPredictedMove->getToSquare());
                 break;
             case Move::bishopMove:
-                newPosition->whiteBishops ^= (0x1ULL << bestPredictedMove.getFromSquare()) | (0x1ULL << bestPredictedMove.getToSquare());
-                newPosition->whitePieces ^= (0x1ULL << bestPredictedMove.getFromSquare()) | (0x1ULL << bestPredictedMove.getToSquare());
+                newPosition->whiteBishops ^= (0x1ULL << bestPredictedMove->getFromSquare()) | (0x1ULL << bestPredictedMove->getToSquare());
+                newPosition->whitePieces ^= (0x1ULL << bestPredictedMove->getFromSquare()) | (0x1ULL << bestPredictedMove->getToSquare());
                 break;
             case Move::rookMove:
-                newPosition->whiteRooks ^= (0x1ULL << bestPredictedMove.getFromSquare()) | (0x1ULL << bestPredictedMove.getToSquare());
-                newPosition->whitePieces ^= (0x1ULL << bestPredictedMove.getFromSquare()) | (0x1ULL << bestPredictedMove.getToSquare());
-                if (bestPredictedMove.getFromSquare() == 0) {
+                newPosition->whiteRooks ^= (0x1ULL << bestPredictedMove->getFromSquare()) | (0x1ULL << bestPredictedMove->getToSquare());
+                newPosition->whitePieces ^= (0x1ULL << bestPredictedMove->getFromSquare()) | (0x1ULL << bestPredictedMove->getToSquare());
+                if (bestPredictedMove->getFromSquare() == 0) {
                     newCastleStatus.disenableWhiteKingCastleLeft();
-                } else if (bestPredictedMove.getFromSquare() == 7) {
+                } else if (bestPredictedMove->getFromSquare() == 7) {
                     newCastleStatus.disenableWhiteKingCastleRight();
                 }
                 break;
             case Move::queenMove:
-                newPosition->whiteQueens ^= (0x1ULL << bestPredictedMove.getFromSquare()) | (0x1ULL << bestPredictedMove.getToSquare());
-                newPosition->whitePieces ^= (0x1ULL << bestPredictedMove.getFromSquare()) | (0x1ULL << bestPredictedMove.getToSquare());
+                newPosition->whiteQueens ^= (0x1ULL << bestPredictedMove->getFromSquare()) | (0x1ULL << bestPredictedMove->getToSquare());
+                newPosition->whitePieces ^= (0x1ULL << bestPredictedMove->getFromSquare()) | (0x1ULL << bestPredictedMove->getToSquare());
                 break;
             case Move::kingMove:
-                newPosition->whiteKing ^= (0x1ULL << bestPredictedMove.getFromSquare()) | (0x1ULL << bestPredictedMove.getToSquare());
-                newPosition->whitePieces ^= (0x1ULL << bestPredictedMove.getFromSquare()) | (0x1ULL << bestPredictedMove.getToSquare());
+                newPosition->whiteKing ^= (0x1ULL << bestPredictedMove->getFromSquare()) | (0x1ULL << bestPredictedMove->getToSquare());
+                newPosition->whitePieces ^= (0x1ULL << bestPredictedMove->getFromSquare()) | (0x1ULL << bestPredictedMove->getToSquare());
                 newCastleStatus.disenableWhiteKingCastleLeft();
                 newCastleStatus.disenableWhiteKingCastleRight();
                 break;
@@ -908,35 +908,35 @@ void BoardNode::addPredictedBestMove(Colour colour) {
             case Move::castle:
                 newCastleStatus.disenableBlackKingCastleLeft();
                 newCastleStatus.disenableBlackKingCastleRight();
-                newPosition->blackKing ^= (0x1ULL << bestPredictedMove.getFromSquare()) | (0x1ULL << bestPredictedMove.getToSquare());
-                newPosition->blackPieces ^= (0x1ULL << bestPredictedMove.getFromSquare()) | (0x1ULL << bestPredictedMove.getToSquare());
-                if (bestPredictedMove.getToSquare() == 58) {
+                newPosition->blackKing ^= (0x1ULL << bestPredictedMove->getFromSquare()) | (0x1ULL << bestPredictedMove->getToSquare());
+                newPosition->blackPieces ^= (0x1ULL << bestPredictedMove->getFromSquare()) | (0x1ULL << bestPredictedMove->getToSquare());
+                if (bestPredictedMove->getToSquare() == 58) {
                     newPosition->blackRooks ^= (0x1ULL << 56) | (0x1ULL << 59);
                     newPosition->blackPieces ^= (0x1ULL << 61) | (0x1ULL << 63);
-                } else if (bestPredictedMove.getToSquare() == 62) {
+                } else if (bestPredictedMove->getToSquare() == 62) {
                     newPosition->blackRooks ^= (0x1ULL << 61) | (0x1ULL << 63);
                     newPosition->blackPieces ^= (0x1ULL << 61) | (0x1ULL << 63);
                 }
-                children.emplace_back(new BoardNode(newPosition, newLastDoublePawnMoveIndex, newCastleStatus, pinsCopy));
+                children.emplace_back(new BoardNode(move(newPosition), newLastDoublePawnMoveIndex, newCastleStatus, pinsCopy));
                 return;
             case Move::enPassant:
-                newPosition->blackPawns ^= (0x1ULL << bestPredictedMove.getFromSquare()) | (0x1ULL << bestPredictedMove.getToSquare());
-                newPosition->blackPieces ^= (0x1ULL << bestPredictedMove.getFromSquare()) | (0x1ULL << bestPredictedMove.getToSquare());
+                newPosition->blackPawns ^= (0x1ULL << bestPredictedMove->getFromSquare()) | (0x1ULL << bestPredictedMove->getToSquare());
+                newPosition->blackPieces ^= (0x1ULL << bestPredictedMove->getFromSquare()) | (0x1ULL << bestPredictedMove->getToSquare());
                 clearBit(newPosition->whitePawns, lastDoublePawnMoveIndex);
                 clearBit(newPosition->whitePieces, lastDoublePawnMoveIndex);
-                children.emplace_back(new BoardNode(newPosition, newLastDoublePawnMoveIndex, newCastleStatus, pinsCopy));
+                children.emplace_back(new BoardNode(move(newPosition), newLastDoublePawnMoveIndex, newCastleStatus, pinsCopy));
                 return;
             case Move::pawnDoubleMove:
-                newPosition->blackPawns ^= (0x1ULL << bestPredictedMove.getFromSquare()) | (0x1ULL << bestPredictedMove.getToSquare());
-                newPosition->blackPieces ^= (0x1ULL << bestPredictedMove.getFromSquare()) | (0x1ULL << bestPredictedMove.getToSquare());
-                newLastDoublePawnMoveIndex = bestPredictedMove.getToSquare();
-                children.emplace_back(new BoardNode(newPosition, newLastDoublePawnMoveIndex, newCastleStatus, pinsCopy));
+                newPosition->blackPawns ^= (0x1ULL << bestPredictedMove->getFromSquare()) | (0x1ULL << bestPredictedMove->getToSquare());
+                newPosition->blackPieces ^= (0x1ULL << bestPredictedMove->getFromSquare()) | (0x1ULL << bestPredictedMove->getToSquare());
+                newLastDoublePawnMoveIndex = bestPredictedMove->getToSquare();
+                children.emplace_back(new BoardNode(move(newPosition), newLastDoublePawnMoveIndex, newCastleStatus, pinsCopy));
                 return;
             case Move::queenPromotion:
-                clearBit(newPosition->blackPawns, bestPredictedMove.getFromSquare());
-                setBit(newPosition->blackQueens, bestPredictedMove.getToSquare());
-                newPosition->blackPieces ^= (0x1ULL << bestPredictedMove.getFromSquare()) | (0x1ULL << bestPredictedMove.getToSquare());
-                children.emplace_back(new BoardNode(newPosition, newLastDoublePawnMoveIndex, newCastleStatus, pinsCopy));
+                clearBit(newPosition->blackPawns, bestPredictedMove->getFromSquare());
+                setBit(newPosition->blackQueens, bestPredictedMove->getToSquare());
+                newPosition->blackPieces ^= (0x1ULL << bestPredictedMove->getFromSquare()) | (0x1ULL << bestPredictedMove->getToSquare());
+                children.emplace_back(new BoardNode(move(newPosition), newLastDoublePawnMoveIndex, newCastleStatus, pinsCopy));
                 break;
             case Move::rookPromotion:
                 break;
@@ -945,33 +945,33 @@ void BoardNode::addPredictedBestMove(Colour colour) {
             case Move::bishopPromotion:
                 break;
             case Move::pawnMove:
-                newPosition->blackPawns ^= (0x1ULL << bestPredictedMove.getFromSquare()) | (0x1ULL << bestPredictedMove.getToSquare());
-                newPosition->blackPieces ^= (0x1ULL << bestPredictedMove.getFromSquare()) | (0x1ULL << bestPredictedMove.getToSquare());
+                newPosition->blackPawns ^= (0x1ULL << bestPredictedMove->getFromSquare()) | (0x1ULL << bestPredictedMove->getToSquare());
+                newPosition->blackPieces ^= (0x1ULL << bestPredictedMove->getFromSquare()) | (0x1ULL << bestPredictedMove->getToSquare());
                 break;
             case Move::knightMove:
-                newPosition->blackKnights ^= (0x1ULL << bestPredictedMove.getFromSquare()) | (0x1ULL << bestPredictedMove.getToSquare());
-                newPosition->blackPieces ^= (0x1ULL << bestPredictedMove.getFromSquare()) | (0x1ULL << bestPredictedMove.getToSquare());
+                newPosition->blackKnights ^= (0x1ULL << bestPredictedMove->getFromSquare()) | (0x1ULL << bestPredictedMove->getToSquare());
+                newPosition->blackPieces ^= (0x1ULL << bestPredictedMove->getFromSquare()) | (0x1ULL << bestPredictedMove->getToSquare());
                 break;
             case Move::bishopMove:
-                newPosition->blackBishops ^= (0x1ULL << bestPredictedMove.getFromSquare()) | (0x1ULL << bestPredictedMove.getToSquare());
-                newPosition->blackPieces ^= (0x1ULL << bestPredictedMove.getFromSquare()) | (0x1ULL << bestPredictedMove.getToSquare());
+                newPosition->blackBishops ^= (0x1ULL << bestPredictedMove->getFromSquare()) | (0x1ULL << bestPredictedMove->getToSquare());
+                newPosition->blackPieces ^= (0x1ULL << bestPredictedMove->getFromSquare()) | (0x1ULL << bestPredictedMove->getToSquare());
                 break;
             case Move::rookMove:
-                newPosition->blackRooks ^= (0x1ULL << bestPredictedMove.getFromSquare()) | (0x1ULL << bestPredictedMove.getToSquare());
-                newPosition->blackPieces ^= (0x1ULL << bestPredictedMove.getFromSquare()) | (0x1ULL << bestPredictedMove.getToSquare());
-                if (bestPredictedMove.getFromSquare() == 56) {
+                newPosition->blackRooks ^= (0x1ULL << bestPredictedMove->getFromSquare()) | (0x1ULL << bestPredictedMove->getToSquare());
+                newPosition->blackPieces ^= (0x1ULL << bestPredictedMove->getFromSquare()) | (0x1ULL << bestPredictedMove->getToSquare());
+                if (bestPredictedMove->getFromSquare() == 56) {
                     newCastleStatus.disenableBlackKingCastleLeft();
-                } else if (bestPredictedMove.getFromSquare() == 63) {
+                } else if (bestPredictedMove->getFromSquare() == 63) {
                     newCastleStatus.disenableBlackKingCastleRight();
                 }
                 break;
             case Move::queenMove:
-                newPosition->blackQueens ^= (0x1ULL << bestPredictedMove.getFromSquare()) | (0x1ULL << bestPredictedMove.getToSquare());
-                newPosition->blackPieces ^= (0x1ULL << bestPredictedMove.getFromSquare()) | (0x1ULL << bestPredictedMove.getToSquare());
+                newPosition->blackQueens ^= (0x1ULL << bestPredictedMove->getFromSquare()) | (0x1ULL << bestPredictedMove->getToSquare());
+                newPosition->blackPieces ^= (0x1ULL << bestPredictedMove->getFromSquare()) | (0x1ULL << bestPredictedMove->getToSquare());
                 break;
             case Move::kingMove:
-                newPosition->blackKing ^= (0x1ULL << bestPredictedMove.getFromSquare()) | (0x1ULL << bestPredictedMove.getToSquare());
-                newPosition->blackPieces ^= (0x1ULL << bestPredictedMove.getFromSquare()) | (0x1ULL << bestPredictedMove.getToSquare());
+                newPosition->blackKing ^= (0x1ULL << bestPredictedMove->getFromSquare()) | (0x1ULL << bestPredictedMove->getToSquare());
+                newPosition->blackPieces ^= (0x1ULL << bestPredictedMove->getFromSquare()) | (0x1ULL << bestPredictedMove->getToSquare());
                 newCastleStatus.disenableBlackKingCastleLeft();
                 newCastleStatus.disenableBlackKingCastleRight();
                 break;
@@ -983,34 +983,34 @@ void BoardNode::addPredictedBestMove(Colour colour) {
 
     // REMINDER: You should return instead of break for special move cases
 
-    int captureFlag = bestPredictedMove.getCapture();
+    int captureFlag = bestPredictedMove->getCapture();
     if (captureFlag != Move::noCapture) {
         if (colour == Colour::WHITE) {
             switch (captureFlag) {
                 case Move::pawnCapture:
-                    newPosition->blackPawns ^= (0x1ULL << bestPredictedMove.getToSquare());
-                    newPosition->blackPieces ^= (0x1ULL << bestPredictedMove.getToSquare());
+                    newPosition->blackPawns ^= (0x1ULL << bestPredictedMove->getToSquare());
+                    newPosition->blackPieces ^= (0x1ULL << bestPredictedMove->getToSquare());
                     break;
                 case Move::knightCapture:
-                    newPosition->blackKnights ^= (0x1ULL << bestPredictedMove.getToSquare());
-                    newPosition->blackPieces ^= (0x1ULL << bestPredictedMove.getToSquare());
+                    newPosition->blackKnights ^= (0x1ULL << bestPredictedMove->getToSquare());
+                    newPosition->blackPieces ^= (0x1ULL << bestPredictedMove->getToSquare());
                     break;
                 case Move::bishopCapture:
-                    newPosition->blackBishops ^= (0x1ULL << bestPredictedMove.getToSquare());
-                    newPosition->blackPieces ^= (0x1ULL << bestPredictedMove.getToSquare());
+                    newPosition->blackBishops ^= (0x1ULL << bestPredictedMove->getToSquare());
+                    newPosition->blackPieces ^= (0x1ULL << bestPredictedMove->getToSquare());
                     break;
                 case Move::rookCapture:
-                    newPosition->blackRooks ^= (0x1ULL << bestPredictedMove.getToSquare());
-                    newPosition->blackPieces ^= (0x1ULL << bestPredictedMove.getToSquare());
-                    if (bestPredictedMove.getToSquare() == 56) {
+                    newPosition->blackRooks ^= (0x1ULL << bestPredictedMove->getToSquare());
+                    newPosition->blackPieces ^= (0x1ULL << bestPredictedMove->getToSquare());
+                    if (bestPredictedMove->getToSquare() == 56) {
                         newCastleStatus.disenableBlackKingCastleLeft();
-                    } else if (bestPredictedMove.getToSquare() == 63) {
+                    } else if (bestPredictedMove->getToSquare() == 63) {
                         newCastleStatus.disenableBlackKingCastleRight();
                     }
                     break;
                 case Move::queenCapture:
-                    newPosition->blackQueens ^= (0x1ULL << bestPredictedMove.getToSquare());
-                    newPosition->blackPieces ^= (0x1ULL << bestPredictedMove.getToSquare());
+                    newPosition->blackQueens ^= (0x1ULL << bestPredictedMove->getToSquare());
+                    newPosition->blackPieces ^= (0x1ULL << bestPredictedMove->getToSquare());
                     break;
                 default:
                     throw logic_error("Undefined capture flag");
@@ -1019,29 +1019,29 @@ void BoardNode::addPredictedBestMove(Colour colour) {
         } else {
             switch (captureFlag) {
                 case Move::pawnCapture:
-                    newPosition->whitePawns ^= (0x1ULL << bestPredictedMove.getToSquare());
-                    newPosition->whitePieces ^= (0x1ULL << bestPredictedMove.getToSquare());
+                    newPosition->whitePawns ^= (0x1ULL << bestPredictedMove->getToSquare());
+                    newPosition->whitePieces ^= (0x1ULL << bestPredictedMove->getToSquare());
                     break;
                 case Move::knightCapture:
-                    newPosition->whiteKnights ^= (0x1ULL << bestPredictedMove.getToSquare());
-                    newPosition->whitePieces ^= (0x1ULL << bestPredictedMove.getToSquare());
+                    newPosition->whiteKnights ^= (0x1ULL << bestPredictedMove->getToSquare());
+                    newPosition->whitePieces ^= (0x1ULL << bestPredictedMove->getToSquare());
                     break;
                 case Move::bishopCapture:
-                    newPosition->whiteBishops ^= (0x1ULL << bestPredictedMove.getToSquare());
-                    newPosition->whitePieces ^= (0x1ULL << bestPredictedMove.getToSquare());
+                    newPosition->whiteBishops ^= (0x1ULL << bestPredictedMove->getToSquare());
+                    newPosition->whitePieces ^= (0x1ULL << bestPredictedMove->getToSquare());
                     break;
                 case Move::rookCapture:
-                    newPosition->whiteRooks ^= (0x1ULL << bestPredictedMove.getToSquare());
-                    newPosition->whitePieces ^= (0x1ULL << bestPredictedMove.getToSquare());
-                    if (bestPredictedMove.getToSquare() == 0) {
+                    newPosition->whiteRooks ^= (0x1ULL << bestPredictedMove->getToSquare());
+                    newPosition->whitePieces ^= (0x1ULL << bestPredictedMove->getToSquare());
+                    if (bestPredictedMove->getToSquare() == 0) {
                         newCastleStatus.disenableWhiteKingCastleLeft();
-                    } else if (bestPredictedMove.getToSquare() == 7) {
+                    } else if (bestPredictedMove->getToSquare() == 7) {
                         newCastleStatus.disenableWhiteKingCastleRight();
                     }
                     break;
                 case Move::queenCapture:
-                    newPosition->whiteQueens ^= (0x1ULL << bestPredictedMove.getToSquare());
-                    newPosition->whitePieces ^= (0x1ULL << bestPredictedMove.getToSquare());
+                    newPosition->whiteQueens ^= (0x1ULL << bestPredictedMove->getToSquare());
+                    newPosition->whitePieces ^= (0x1ULL << bestPredictedMove->getToSquare());
                     break;
                 default:
                     throw logic_error("Undefined capture flag");
@@ -1050,14 +1050,14 @@ void BoardNode::addPredictedBestMove(Colour colour) {
         }
     }
 
-    children.emplace_back(new BoardNode(newPosition, newLastDoublePawnMoveIndex, newCastleStatus, pinsCopy));
+    children.emplace_back(new BoardNode(move(newPosition), newLastDoublePawnMoveIndex, newCastleStatus, pinsCopy));
 }
 
 ostream& operator<<(ostream& out, BoardNode& boardNode) {
     out << "BOARD NODE: " << "——————————————————————————————————————————————————————————————————————————" << endl;
     out << *(boardNode.board);
     out << "CHILDREN OF PARENT (SIZE: " << boardNode.children.size() << ")" << endl;
-    for (auto child : boardNode.children) {
+    for (auto& child : boardNode.children) {
         cout << *child;
     }
     out << "END CHILDREN" << endl;
@@ -1089,8 +1089,8 @@ string indexToChessSquare(int index) {
 }
 
 ostream& BoardNode::printChildrenMoveNotation(ostream& out) {
-    for (auto move : moves) {
-        cout << "(move value " << move.first  << ") " << indexToChessSquare(move.second.getFromSquare()) << " " << indexToChessSquare(move.second.getToSquare()) << endl;
+    for (auto& move : moves) {
+        cout << "(move value " << move.first  << ") " << indexToChessSquare((move.second)->getFromSquare()) << " " << indexToChessSquare((move.second)->getToSquare()) << endl;
     }
     return out;
 }
@@ -1100,7 +1100,7 @@ ostream& BoardNode::printChildrenTree(ostream& out) {
     cout << randomID << endl;
     printBoardOnly(cout);
     cout << "children of " <<  randomID << endl;
-    for (auto child : children) {
+    for (auto& child : children) {
         cout << "Value of following board ID (from parent id " << randomID << "): " << child->getValue() << endl;
         child->printBoardOnly(cout);
         if (child->getChildren().size() == 0) {
@@ -1115,53 +1115,39 @@ ostream& BoardNode::printChildrenTree(ostream& out) {
 }
 
 ostream& BoardNode::printChildrenValue(ostream& out) {
-    for (auto child : children) {
+    for (auto& child : children) {
         cout << child->getValue() << endl;
     }
     return out;
 }
 
-vector<BoardNode*>& BoardNode::getChildren() {
+vector<unique_ptr<BoardNode>>& BoardNode::getChildren() {
     return children;
 }
 
-BoardNode::~BoardNode() {
-    delete board;
-    for (BoardNode* boardNodePtr : children) {
-        delete boardNodePtr;
-    }
-}
-
-void BoardNode::deleteChildren() {
-    for (BoardNode* child : children) {
-        delete child;
-    }
-    children.clear();
-}
+BoardNode::~BoardNode() {}
 
 void BoardNode::clearMoves() {
     moves.clear();
 }
 
 bool BoardNode::containsMove(int fromSquare, int toSquare) {
-    for (auto move : moves) {
-        if (move.second.getFromSquare() == fromSquare && move.second.getToSquare() == toSquare) {
+    for (auto& move : moves) {
+        if ((move.second)->getFromSquare() == fromSquare && (move.second)->getToSquare() == toSquare) {
             return true;
         }
     }
     return false;
 }
 
-void branchToChild(BoardNode*& boardNode, size_t childIndex) {
-    for (size_t i = 0; i < boardNode->getChildren().size(); i++) {
-        if (childIndex == i) {
-            continue;
-        }
-        delete boardNode->getChildren()[i];
-    }
-    delete boardNode->board;
-    BoardNode* ptr = boardNode;
-    boardNode = boardNode->getChildren()[childIndex];
+void branchToChild(unique_ptr<BoardNode>& boardNode, size_t childIndex) {
+    auto& children = boardNode->getChildren();
+    children.erase(
+        remove_if(children.begin(), children.end(), [&children, childIndex](const unique_ptr<BoardNode>& element) {
+            return &element != &children[childIndex];
+        }),
+        children.end()
+    );
 }
 
 void BoardNode::setValue(double value) {
@@ -1172,6 +1158,6 @@ double BoardNode::getValue() const {
     return value;
 }
 
-multimap<double, Move, greater<double>>& BoardNode::getMoves() {
+multimap<double, unique_ptr<Move>, greater<double>>& BoardNode::getMoves() {
     return moves;
 }

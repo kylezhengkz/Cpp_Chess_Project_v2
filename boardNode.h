@@ -9,20 +9,20 @@
 #include "castleStatus.h"
 #include <iterator>
 class BoardNode {
-    Board* board;
+    unique_ptr<Board> board;
     int lastDoublePawnMoveIndex;
     CastleStatus castleStatus;
     unordered_map<int, U64> pins;
     unordered_map<int, U64> opponentPins;
-    multimap<double, Move, greater<double>> moves;
-    vector<BoardNode*> children;
+    multimap<double, unique_ptr<Move>, greater<double>> moves;
+    vector<unique_ptr<BoardNode>> children;
     double value;
     U64 checkPathMusk;
     // TEMP (debugging purposes only)
     public:
     // Board* getBoard(); // TEMP
     bool moveListEmpty(); // TEMP
-    BoardNode(Board* board, int lastDoublePawnMoveIndex, CastleStatus castleStatus, unordered_map<int, U64> opponentPins);
+    BoardNode(unique_ptr<Board> board, int lastDoublePawnMoveIndex, CastleStatus castleStatus, unordered_map<int, U64> opponentPins);
     U64 getColourPieces(Colour colour);
     double staticEval();
     void searchLegalMusks(Colour colour, bool& check, bool& doubleCheck, U64& kingLegalMoves, int& kingSquare, U64& pinBlockMusk);
@@ -37,14 +37,13 @@ class BoardNode {
     ostream& printChildrenMoveNotation(ostream& out);
     ostream& printChildrenTree(ostream& out);
     ostream& printChildrenValue(ostream& out);
-    vector<BoardNode*>& getChildren();
+    vector<unique_ptr<BoardNode>>& getChildren();
     ~BoardNode();
-    void deleteChildren();
     void clearMoves();
     bool containsMove(int fromSquare, int toSquare);
-    friend void branchToChild(BoardNode*& boardNode, size_t index);
+    friend void branchToChild(unique_ptr<BoardNode>& boardNode, size_t index);
     void setValue(double val);
     double getValue() const;
-    multimap<double, Move, greater<double>>& getMoves();
+    multimap<double, unique_ptr<Move>, greater<double>>& getMoves();
 };
 #endif

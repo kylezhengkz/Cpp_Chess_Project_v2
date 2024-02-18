@@ -3,8 +3,8 @@
 #include "boardNode.h"
 class StartPosition {
     public:
-    static BoardNode* defaultPosition(Board* board);
-    static BoardNode* castleTestSetup(Board* board);
-    static BoardNode* manualSetup(Board* board);
+    static unique_ptr<BoardNode> defaultPosition(unique_ptr<Board>& board);
+    static unique_ptr<BoardNode> castleTestSetup(unique_ptr<Board>& board);
+    static unique_ptr<BoardNode> manualSetup(unique_ptr<Board>& board);
 };
 #endif

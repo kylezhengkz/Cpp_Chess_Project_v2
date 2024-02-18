@@ -5,6 +5,6 @@
 class User: public Player {
     public:
     User(Colour colour);
-    void pickMove(BoardNode*& pos);
+    void pickMove(unique_ptr<BoardNode>& pos);
 };
 
