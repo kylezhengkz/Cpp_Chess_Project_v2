@@ -20,9 +20,10 @@ class BoardNode {
     U64 checkPathMusk;
     // TEMP (debugging purposes only)
     public:
+    BoardNode* parent;
     // Board* getBoard(); // TEMP
     bool moveListEmpty(); // TEMP
-    BoardNode(unique_ptr<Board> board, int lastDoublePawnMoveIndex, CastleStatus castleStatus, unordered_map<int, U64> opponentPins);
+    BoardNode(unique_ptr<Board> board, int lastDoublePawnMoveIndex, CastleStatus castleStatus, unordered_map<int, U64> opponentPins, BoardNode* parent);
     U64 getColourPieces(Colour colour);
     double staticEval();
     void searchLegalMusks(Colour colour, bool& check, bool& doubleCheck, U64& kingLegalMoves, int& kingSquare, U64& pinBlockMusk);
