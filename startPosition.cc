@@ -47,16 +47,40 @@ unique_ptr<BoardNode> StartPosition::castleTestSetup(unique_ptr<Board>& board) {
 }
 
 unique_ptr<BoardNode> StartPosition::manualSetup(unique_ptr<Board>& board) {
-    setBit(board->whiteKing, 39);
-    setBit(board->whiteBishops, 38);
-    setBit(board->blackKing, 60);
+    setBit(board->whiteKing, 4);
+    setBit(board->whiteBishops, 2);
+    setBit(board->whiteBishops, 26);
+    setBit(board->whitePawns, 51);
+    setBit(board->whitePawns, 8);
+    setBit(board->whitePawns, 9);
+    setBit(board->whitePawns, 10);
+    setBit(board->whitePawns, 14);
+    setBit(board->whitePawns, 15);
+    setBit(board->whiteKnights, 12);
+    setBit(board->whiteKnights, 1);
+    setBit(board->whiteRooks, 0);
+    setBit(board->whiteRooks, 7);
+    setBit(board->whiteQueens, 3);
+
+    setBit(board->blackKing, 61);
+    setBit(board->blackRooks, 63);
+    setBit(board->blackRooks, 56);
+    setBit(board->blackKnights, 57);
+    setBit(board->blackBishops, 58);
+    setBit(board->blackBishops, 52);
+    setBit(board->blackQueens, 59);
+    setBit(board->blackKnights, 13);
+    setBit(board->blackPawns, 48);
     setBit(board->blackPawns, 49);
-    setBit(board->whitePawns, 34);
-    setBit(board->blackRooks, 48);
+    setBit(board->blackPawns, 42);
+    setBit(board->blackPawns, 53);
+    setBit(board->blackPawns, 54);
+    setBit(board->blackPawns, 55);
     board->whitePieces = board->whitePawns | board->whiteKnights | board->whiteBishops | board->whiteRooks | board->whiteQueens | board->whiteKing;
     board->blackPieces = board->blackPawns | board->blackKnights | board->blackBishops | board->blackRooks | board->blackQueens | board->blackKing;
     unordered_map<int, U64> emptyMap;
-    CastleStatus castleStatus(true, true, true, true);
+    CastleStatus castleStatus(true, false, false, false);
     unique_ptr<BoardNode> boardNode(new BoardNode(move(board), -1, castleStatus, emptyMap, nullptr));
+    boardNode->printBoardOnly(cout);
     return boardNode;
 }

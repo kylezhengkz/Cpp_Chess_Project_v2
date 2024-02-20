@@ -12,6 +12,25 @@ void CPU::pickMove(unique_ptr<BoardNode>& pos) {
         cout << "BLACK TO MOVE:" << endl;
     }
     iterativeDeepening(pos);
+
+   // move counter
+   /*
+    int totalMoves = 0;
+    countTotalPossibleMoves(pos, 1, true, totalMoves);
+    cout << totalMoves << endl;
+
+    totalMoves = 0;
+    countTotalPossibleMoves(pos, 2, true, totalMoves);
+    cout << totalMoves << endl;
+
+    totalMoves = 0;
+    countTotalPossibleMoves(pos, 3, true, totalMoves);
+    cout << totalMoves << endl;
+
+    totalMoves = 0;
+    countTotalPossibleMoves(pos, 4, true, totalMoves);
+    cout << totalMoves << endl;
+    */
 }
 
 void CPU::iterativeDeepening(unique_ptr<BoardNode>& pos) {
@@ -33,18 +52,40 @@ void CPU::iterativeDeepening(unique_ptr<BoardNode>& pos) {
             break;
         }
         cout << "Finished searching depth " << depth << endl;
+
+        if (pos->getValue() == positiveInfinity) {
+            cout << "Forced checkmate found for white" << endl;
+            break;
+        } else if (pos->getValue() == negativeInfinity) {
+            cout << "Forced checkmate found for black" << endl;
+            break;
+        }
     }
     cout << "End iterative deepening search" << endl;
-    if (colour == Colour::WHITE) {
-        sort(pos->getChildren().begin(), pos->getChildren().end(), [](const unique_ptr<BoardNode>& lhs, const unique_ptr<BoardNode>& rhs) {
-            return lhs->getValue() > rhs->getValue();
-        });
-    } else {
-        sort(pos->getChildren().begin(), pos->getChildren().end(), [](const unique_ptr<BoardNode>& lhs, const unique_ptr<BoardNode>& rhs) {
-            return lhs->getValue() < rhs->getValue();
-        });
+
+    cout << "Evaluation: " << pos->getValue() << endl;
+    pos->printBoardOnly(cout);
+    cout << "Printing leftmost path" << endl;
+    Colour switchColour = colour;
+    while (pos->getChildren().size() > 0) {
+        if (switchColour == Colour::WHITE) {
+            sort(pos->getChildren().begin(), pos->getChildren().end(), [](const unique_ptr<BoardNode>& lhs, const unique_ptr<BoardNode>& rhs) {
+                return lhs->getValue() > rhs->getValue();
+            });
+        } else {
+            sort(pos->getChildren().begin(), pos->getChildren().end(), [](const unique_ptr<BoardNode>& lhs, const unique_ptr<BoardNode>& rhs) {
+                return lhs->getValue() < rhs->getValue();
+            });
+        }
+        branchToChild(pos, 0);
+        pos->printBoardOnly(cout);
+
+        if (switchColour == Colour::WHITE) {
+            switchColour = Colour::BLACK;
+        } else {
+            switchColour = Colour::WHITE;
+        }
     }
-    branchToChild(pos, 0);
 }
 
 double CPU::alphaBetaPruning(unique_ptr<BoardNode>& pos, int depth, double alpha, double beta, bool maximizingPlayer) {
@@ -145,4 +186,30 @@ double CPU::alphaBetaPruning(unique_ptr<BoardNode>& pos, int depth, double alpha
 
 void CPU::quiescenceSearch() {
     
+}
+
+void CPU::countTotalPossibleMoves(unique_ptr<BoardNode>& pos, int depth, bool maximizingPlayer, int& totalMoves) {
+    if (depth == 0) {
+        return;
+    }
+
+    if (maximizingPlayer) {
+        pos->generateMoves(Colour::WHITE);
+        int index = -1;
+        while (!pos->moveListEmpty()) {
+            pos->addPredictedBestMove(Colour::WHITE);
+            index++;
+            totalMoves++;
+            countTotalPossibleMoves(pos->getChildren()[index], depth - 1, false, totalMoves);
+        }
+    } else {
+        pos->generateMoves(Colour::BLACK);
+        int index = -1;
+        while (!pos->moveListEmpty()) {
+            pos->addPredictedBestMove(Colour::BLACK);
+            index++;
+            totalMoves++;
+            countTotalPossibleMoves(pos->getChildren()[index], depth - 1, true, totalMoves);
+        }
+    }
 }

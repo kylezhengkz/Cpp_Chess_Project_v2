@@ -116,7 +116,7 @@ double BoardNode::staticEval() {
     return eval;
 }
 
-void BoardNode::searchLegalMusks(Colour colour, bool& check, bool& doubleCheck, U64& kingLegalMoves, int& kingSquare, U64& pinBlockMusk) {
+void BoardNode::searchLegalMusks(Colour colour, bool& check, bool& doubleCheck, U64& kingLegalMoves, int& kingSquare, U64& pinBlockMusk, bool print) {
     U64 oppositionPawns;
     U64 oppositionKnights;
     U64 oppositionBishops;
@@ -148,6 +148,11 @@ void BoardNode::searchLegalMusks(Colour colour, bool& check, bool& doubleCheck, 
 
     // look for pawn checks
     U64 checkMusk = LookupTable::lookupPawnControlMusk(kingSquare, colour);
+    if (print) {
+        cout << "start check check" << endl;
+        printBitboard(checkMusk, cout);
+        printBitboard(oppositionPawns, cout);
+    }
     if ((checkMusk & oppositionPawns) != 0) {
         check = true;
         checkPathMusk = checkMusk & oppositionPawns;
@@ -364,7 +369,7 @@ bool BoardNode::isSquareSafe(int square, Colour colour) { // castling purposes
     // quick way to ensure that it's possible for square to be unsafe
     U64 potentialCheckPaths = LookupTable::lookupMove(square, Piece::QUEEN, 0);
     if ((potentialCheckPaths & (oppositionBishops | oppositionRooks | oppositionQueens)) == 0) {
-        return false;
+        return true;
     }
 
     // search each check ray direction one-by-one
@@ -443,14 +448,36 @@ U64 BoardNode::generateUnsafeMusk(Colour teamColour, bool print) {
             }
             if (piece == Piece::WHITEPAWN || piece == Piece::BLACKPAWN) {
                 controlMusk |= LookupTable::lookupPawnControlMusk(initialSquare, oppositionColour);
+                if (print) {
+                    cout << "check pawn" << endl;
+                    cout << initialSquare << endl;
+                    printBitboard(LookupTable::lookupPawnControlMusk(initialSquare, oppositionColour), cout);
+                    cout << "end check" << endl;
+                }
             } else if ((piece == Piece::KNIGHT) || (piece == Piece::KING)) {
                 controlMusk |= LookupTable::lookupMusk(initialSquare, piece);
+                if (print) {
+                    cout << "check knight or king" << endl;
+                    cout << initialSquare << endl;
+                    printBitboard(LookupTable::lookupMusk(initialSquare, piece), cout);
+                    cout << "end check" << endl;
+                }
             } else {
                 controlMusk |= LookupTable::lookupMove(initialSquare, piece, allPieces);
+                if (print) {
+                    cout << "check ranged piece" << endl;
+                    cout << initialSquare << endl;
+                    printBitboard(LookupTable::lookupMove(initialSquare, piece, allPieces), cout);
+                    cout << "end check" << endl;
+                }
             }
         }
     }
     
+    if (print) {
+        cout << "final" << endl;
+        printBitboard(controlMusk, cout);
+    }
     return controlMusk;
 }
 
@@ -487,7 +514,7 @@ void BoardNode::generateMoves(Colour colour) {
     U64 kingLegalMoves;
     int kingSquare;
     U64 pinBlockMusk = 0x0ULL;
-    searchLegalMusks(colour, check, doubleCheck, kingLegalMoves, kingSquare, pinBlockMusk);
+    searchLegalMusks(colour, check, doubleCheck, kingLegalMoves, kingSquare, pinBlockMusk, false);
 
     U64 unsafeSquares = generateUnsafeMusk(colour, false);
     U64 allPieces = board->whitePieces | board->blackPieces;
@@ -532,7 +559,7 @@ void BoardNode::generateMoves(Colour colour) {
 
             if (check) {
                 // consider edge case where you can stop pawn check via en passant
-                if ((lastDoublePawnMoveIndex != -1) && getBit(checkPathMusk, lastDoublePawnMoveIndex) && getBit(legalMoves, enPassantCaptureIndex)) {
+                if ((lastDoublePawnMoveIndex != -1) && (piece == Piece::WHITEPAWN || piece == Piece::BLACKPAWN) && getBit(checkPathMusk, lastDoublePawnMoveIndex) && getBit(legalMoves, enPassantCaptureIndex)) {
                     legalMoves = 0x0ULL;
                     setBit(legalMoves, enPassantCaptureIndex);
                 } else {
@@ -677,6 +704,27 @@ void BoardNode::generateMoves(Colour colour) {
                             cout << e.what() << endl;
                             cout << initialSquare << " to " << newSquare << " to " << destinationSquare << endl;
                             printBoardOnly(cout);
+                            cout << "parent linage" << endl;
+                            Colour switchColour = colour;
+                            if (switchColour == Colour::WHITE) {
+                                switchColour = Colour::BLACK;
+                            } else {
+                                switchColour = Colour::WHITE;
+                            }
+                            BoardNode* parentNode = parent;
+                            while (parentNode) {
+                                parentNode->printBoardOnly(cout);
+                                cout << "printing check musk" << endl;
+                                printBitboard(checkPathMusk, cout);
+                                cout << "printing unsafe musk" << endl;
+                                generateUnsafeMusk(switchColour, true);
+                                parentNode = parentNode->parent;
+                                if (switchColour == Colour::WHITE) {
+                                    switchColour = Colour::BLACK;
+                                } else {
+                                    switchColour = Colour::WHITE;
+                                }
+                            }
                             throw;
                         }
                         if (getBit(unsafeSquares, destinationSquare) && attackVal < board->getPieceValue(piece)) { // attacked piece is being defended and isn't worth pursuing
@@ -704,10 +752,33 @@ void BoardNode::generateMoves(Colour colour) {
                         cout << "tried capturing from " << initialSquare << " to " << newSquare << endl;
                         printBoardOnly(cout);
                         cout << "parent linage" << endl;
+                        Colour switchColour = colour;
+                        if (switchColour == Colour::WHITE) {
+                            switchColour = Colour::BLACK;
+                        } else {
+                            switchColour = Colour::WHITE;
+                        }
                         BoardNode* parentNode = parent;
                         while (parentNode) {
                             parentNode->printBoardOnly(cout);
+                            cout << "printing check musk" << endl;
+                            bool check1 = false;
+                            bool doubleCheck1 = false;
+                            U64 kingLegalMoves1;
+                            int kingSquare1;
+                            U64 pinBlockMusk1 = 0x0ULL;
+                            checkPathMusk = 0x0ULL;
+                            searchLegalMusks(switchColour, check1, doubleCheck1, kingLegalMoves1, kingSquare1, pinBlockMusk1, true);
+
+                            printBitboard(checkPathMusk, cout);
+                            cout << "printing unsafe musk" << endl;
+                            generateUnsafeMusk(switchColour, true);
                             parentNode = parentNode->parent;
+                            if (switchColour == Colour::WHITE) {
+                                switchColour = Colour::BLACK;
+                            } else {
+                                switchColour = Colour::WHITE;
+                            }
                         }
                         throw;
                     }
@@ -734,6 +805,16 @@ void BoardNode::generateMoves(Colour colour) {
 
                 unique_ptr<Move> newMove = make_unique<Move>(initialSquare, newSquare, flag, captureFlag, removePinIndex, isAddPin);
                 moves.emplace(moveVal, move(newMove));
+
+                if (flag == Move::queenPromotion) {
+                    // very unlikely to consider down promoting instead of just promoting to queen (so we should consider last)
+                    unique_ptr<Move> newMove1 = make_unique<Move>(initialSquare, newSquare, 0b0101, captureFlag, removePinIndex, isAddPin);
+                    moves.emplace(moveVal - 100, move(newMove1));
+                    unique_ptr<Move> newMove2 = make_unique<Move>(initialSquare, newSquare, 0b0110, captureFlag, removePinIndex, isAddPin);
+                    moves.emplace(moveVal - 101, move(newMove2));
+                    unique_ptr<Move> newMove3 = make_unique<Move>(initialSquare, newSquare, 0b0111, captureFlag, removePinIndex, isAddPin);
+                    moves.emplace(moveVal - 102, move(newMove3));
+                }
             }
         }
     }
@@ -831,7 +912,7 @@ void BoardNode::addPredictedBestMove(Colour colour) {
             case Move::noFlag:
                 throw logic_error("No flag");
                 break;
-            case 0b0001:
+            case Move::castle:
                 newCastleStatus.disenableWhiteKingCastleLeft();
                 newCastleStatus.disenableWhiteKingCastleRight();
                 newPosition->whiteKing ^= (0x1ULL << bestPredictedMove->getFromSquare()) | (0x1ULL << bestPredictedMove->getToSquare());
@@ -862,13 +943,21 @@ void BoardNode::addPredictedBestMove(Colour colour) {
                 clearBit(newPosition->whitePawns, bestPredictedMove->getFromSquare());
                 setBit(newPosition->whiteQueens, bestPredictedMove->getToSquare());
                 newPosition->whitePieces ^= (0x1ULL << bestPredictedMove->getFromSquare()) | (0x1ULL << bestPredictedMove->getToSquare());
-                children.emplace_back(make_unique<BoardNode>(move(newPosition), newLastDoublePawnMoveIndex, newCastleStatus, pinsCopy, this));
                 break;
             case Move::rookPromotion:
+                clearBit(newPosition->whitePawns, bestPredictedMove->getFromSquare());
+                setBit(newPosition->whiteRooks, bestPredictedMove->getToSquare());
+                newPosition->whitePieces ^= (0x1ULL << bestPredictedMove->getFromSquare()) | (0x1ULL << bestPredictedMove->getToSquare());
                 break;
             case Move::knightPromotion:
+                clearBit(newPosition->whitePawns, bestPredictedMove->getFromSquare());
+                setBit(newPosition->whiteKnights, bestPredictedMove->getToSquare());
+                newPosition->whitePieces ^= (0x1ULL << bestPredictedMove->getFromSquare()) | (0x1ULL << bestPredictedMove->getToSquare());
                 break;
             case Move::bishopPromotion:
+                clearBit(newPosition->whitePawns, bestPredictedMove->getFromSquare());
+                setBit(newPosition->whiteBishops, bestPredictedMove->getToSquare());
+                newPosition->whitePieces ^= (0x1ULL << bestPredictedMove->getFromSquare()) | (0x1ULL << bestPredictedMove->getToSquare());
                 break;
             case Move::pawnMove:
                 newPosition->whitePawns ^= (0x1ULL << bestPredictedMove->getFromSquare()) | (0x1ULL << bestPredictedMove->getToSquare());
@@ -944,10 +1033,22 @@ void BoardNode::addPredictedBestMove(Colour colour) {
                 children.emplace_back(make_unique<BoardNode>(move(newPosition), newLastDoublePawnMoveIndex, newCastleStatus, pinsCopy, this));
                 break;
             case Move::rookPromotion:
+                clearBit(newPosition->blackPawns, bestPredictedMove->getFromSquare());
+                setBit(newPosition->blackRooks, bestPredictedMove->getToSquare());
+                newPosition->blackPieces ^= (0x1ULL << bestPredictedMove->getFromSquare()) | (0x1ULL << bestPredictedMove->getToSquare());
+                children.emplace_back(make_unique<BoardNode>(move(newPosition), newLastDoublePawnMoveIndex, newCastleStatus, pinsCopy, this));
                 break;
             case Move::knightPromotion:
+                clearBit(newPosition->blackPawns, bestPredictedMove->getFromSquare());
+                setBit(newPosition->blackKnights, bestPredictedMove->getToSquare());
+                newPosition->blackPieces ^= (0x1ULL << bestPredictedMove->getFromSquare()) | (0x1ULL << bestPredictedMove->getToSquare());
+                children.emplace_back(make_unique<BoardNode>(move(newPosition), newLastDoublePawnMoveIndex, newCastleStatus, pinsCopy, this));
                 break;
             case Move::bishopPromotion:
+                clearBit(newPosition->blackPawns, bestPredictedMove->getFromSquare());
+                setBit(newPosition->blackBishops, bestPredictedMove->getToSquare());
+                newPosition->blackPieces ^= (0x1ULL << bestPredictedMove->getFromSquare()) | (0x1ULL << bestPredictedMove->getToSquare());
+                children.emplace_back(make_unique<BoardNode>(move(newPosition), newLastDoublePawnMoveIndex, newCastleStatus, pinsCopy, this));
                 break;
             case Move::pawnMove:
                 newPosition->blackPawns ^= (0x1ULL << bestPredictedMove->getFromSquare()) | (0x1ULL << bestPredictedMove->getToSquare());

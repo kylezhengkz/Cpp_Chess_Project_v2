@@ -16,6 +16,7 @@ class CPU: public Player {
     void iterativeDeepening(unique_ptr<BoardNode>& pos);
     double alphaBetaPruning(unique_ptr<BoardNode>& pos, int depth, double alpha, double beta, bool maximizingPlayer);
     void quiescenceSearch();
+    void countTotalPossibleMoves(unique_ptr<BoardNode>& pos, int depth, bool maximizingPlayer, int& totalMoves);
     private:
     static const double negativeInfinity;
     static const double positiveInfinity;

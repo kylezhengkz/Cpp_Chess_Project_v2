@@ -26,7 +26,7 @@ class BoardNode {
     BoardNode(unique_ptr<Board> board, int lastDoublePawnMoveIndex, CastleStatus castleStatus, unordered_map<int, U64> opponentPins, BoardNode* parent);
     U64 getColourPieces(Colour colour);
     double staticEval();
-    void searchLegalMusks(Colour colour, bool& check, bool& doubleCheck, U64& kingLegalMoves, int& kingSquare, U64& pinBlockMusk);
+    void searchLegalMusks(Colour colour, bool& check, bool& doubleCheck, U64& kingLegalMoves, int& kingSquare, U64& pinBlockMusk, bool print);
     void searchNewPinsOnly(Colour colour, int oldKingSquare, int newKingSquare, unordered_map<int, U64> newPins);
     bool isSquareSafe(int square, Colour colour);
     U64 generateUnsafeMusk(Colour teamColour, bool print);

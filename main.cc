@@ -23,7 +23,8 @@ int main() {
     LookupTable::setMusks();
     LookupTable::mapBlockerKeys();
     unique_ptr<Board> board{new Board()};
-    unique_ptr<BoardNode> currentPosition = StartPosition::defaultPosition(board);
+    unique_ptr<BoardNode> currentPosition = StartPosition::manualSetup(board);
+    // unique_ptr<BoardNode> currentPosition = StartPosition::defaultPosition(board);
     Player* player1 = choosePlayerType(Colour::WHITE);
     Player* player2 = choosePlayerType(Colour::BLACK);
     int maxTurns = numeric_limits<int>::max();
@@ -50,5 +51,5 @@ int main() {
         cout << ((player2->getColour() == Colour::WHITE)? "WHITE'S MOVE:" : "BLACK'S MOVE:") << endl;
         currentPosition->printBoardOnly(cout);
     }
-    LookupTable::cleanup();
+   LookupTable::cleanup();
 };
