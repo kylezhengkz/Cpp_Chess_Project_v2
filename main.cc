@@ -25,6 +25,8 @@ int main() {
     unique_ptr<Board> board{new Board()};
     unique_ptr<BoardNode> currentPosition = StartPosition::manualSetup(board);
     // unique_ptr<BoardNode> currentPosition = StartPosition::defaultPosition(board);
+    // Player* player1 = choosePlayerType(Colour::WHITE);
+    // player1->pickMove(currentPosition);
     Player* player1 = choosePlayerType(Colour::WHITE);
     Player* player2 = choosePlayerType(Colour::BLACK);
     int maxTurns = numeric_limits<int>::max();

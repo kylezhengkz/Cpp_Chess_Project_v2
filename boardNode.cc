@@ -331,93 +331,6 @@ void BoardNode::searchNewPinsOnly(Colour colour, int oldKingSquare, int newKingS
     }
 }
 
-bool BoardNode::isSquareSafe(int square, Colour colour) { // castling purposes
-    U64 oppositionPawns;
-    U64 oppositionKnights;
-    U64 oppositionBishops;
-    U64 oppositionRooks;
-    U64 oppositionQueens;
-    U64 allPieces;
-    if (colour == Colour::WHITE) {
-        oppositionPawns = board->blackPawns;
-        oppositionKnights = board->blackKnights;
-        oppositionBishops = board->blackBishops;
-        oppositionRooks = board->blackRooks;
-        oppositionQueens = board->blackQueens;
-        allPieces = board->blackPieces | board->whitePieces;
-    } else {
-        oppositionPawns = board->whitePawns;
-        oppositionKnights = board->whiteKnights;
-        oppositionBishops = board->whiteBishops;
-        oppositionRooks = board->whiteRooks;
-        oppositionQueens = board->whiteQueens;
-        allPieces = board->whitePieces | board->whitePieces;
-    }
-    
-    // look for pawn checks
-    U64 checkMusk = LookupTable::lookupPawnControlMusk(square, colour);
-    if ((checkMusk & oppositionPawns) != 0) {
-        return false;
-    }
-
-    // look for knight checks
-    checkMusk = LookupTable::lookupMusk(square, Piece::KNIGHT);
-    if ((checkMusk & oppositionKnights) != 0) {
-        return false;
-    }
-    
-    // quick way to ensure that it's possible for square to be unsafe
-    U64 potentialCheckPaths = LookupTable::lookupMove(square, Piece::QUEEN, 0);
-    if ((potentialCheckPaths & (oppositionBishops | oppositionRooks | oppositionQueens)) == 0) {
-        return true;
-    }
-
-    // search each check ray direction one-by-one
-    vector<int> increasingRays = {VERTICAL, POSITIVE_DIAGONAL, NEGATIVE_DIAGONAL, HORIZONTAL};
-    for (int direction : increasingRays) {
-        U64 ray = LookupTable::lookupRayMusk(square, direction);
-        U64 oppositionAttackers;
-        if (isDiagonal(direction)) {
-            oppositionAttackers = oppositionBishops | oppositionQueens;
-        } else {
-            oppositionAttackers = oppositionRooks | oppositionQueens;
-        }
-
-        if ((ray & oppositionAttackers) != 0) {
-            int sourceIndex = getLSB(ray & oppositionAttackers);
-            U64 inBetweenRay = clearBitsGreaterThanIndex(ray, sourceIndex);
-            if (inBetweenRay & allPieces) { // piece in the way
-                continue;
-            } else {
-                return false;
-            }
-        }
-    }
-
-    vector<int> decreasingRays = {-VERTICAL, -POSITIVE_DIAGONAL, -NEGATIVE_DIAGONAL, -HORIZONTAL};
-    for (int direction : decreasingRays) {
-        U64 ray = LookupTable::lookupRayMusk(square, direction);
-        U64 oppositionAttackers;
-        if (isDiagonal(direction)) {
-            oppositionAttackers = oppositionBishops | oppositionQueens;
-        } else {
-            oppositionAttackers = oppositionRooks | oppositionQueens;
-        }
-
-        if ((ray & oppositionAttackers) != 0) {
-            int sourceIndex = getMSB(ray & oppositionAttackers);
-            U64 inBetweenRay = clearBitsLessThanIndex(ray, sourceIndex);
-            if (inBetweenRay & allPieces) { // piece in the way
-                continue;
-            } else {
-                return false;
-            }
-        }
-    }
-
-    return true;
-}
-
 U64 BoardNode::generateUnsafeMusk(Colour teamColour, bool print) {
     Colour oppositionColour;
     if (teamColour == Colour::WHITE) {
@@ -713,6 +626,7 @@ void BoardNode::generateMoves(Colour colour) {
                             }
                             BoardNode* parentNode = parent;
                             while (parentNode) {
+                                cout << "over here 2" << endl;
                                 parentNode->printBoardOnly(cout);
                                 cout << "printing check musk" << endl;
                                 printBitboard(checkPathMusk, cout);
@@ -760,17 +674,8 @@ void BoardNode::generateMoves(Colour colour) {
                         }
                         BoardNode* parentNode = parent;
                         while (parentNode) {
+                            cout << "over here 1" << endl;
                             parentNode->printBoardOnly(cout);
-                            cout << "printing check musk" << endl;
-                            bool check1 = false;
-                            bool doubleCheck1 = false;
-                            U64 kingLegalMoves1;
-                            int kingSquare1;
-                            U64 pinBlockMusk1 = 0x0ULL;
-                            checkPathMusk = 0x0ULL;
-                            searchLegalMusks(switchColour, check1, doubleCheck1, kingLegalMoves1, kingSquare1, pinBlockMusk1, true);
-
-                            printBitboard(checkPathMusk, cout);
                             cout << "printing unsafe musk" << endl;
                             generateUnsafeMusk(switchColour, true);
                             parentNode = parentNode->parent;
@@ -849,28 +754,28 @@ void BoardNode::generateMoves(Colour colour) {
     // check castling
     if (colour == Colour::WHITE) {
         if (castleStatus.canWhiteKingCastleLeft() && ((whiteLeftCastle & allPieces) == 0)) {
-            if (isSquareSafe(4, colour) && isSquareSafe(1, colour) && isSquareSafe(2, colour) && isSquareSafe(3, colour)) {
+            if (!getBit(unsafeSquares, 4) && !getBit(unsafeSquares, 1) && !getBit(unsafeSquares, 2) && !getBit(unsafeSquares, 3)) {
                 unique_ptr<Move> newMove = make_unique<Move>(kingSquare, 2, 0b0001, 0b0000, -1, false);
                 moves.emplace(1.5, move(newMove));
             }
         }
         
         if (castleStatus.canWhiteKingCastleRight() && ((whiteRightCastle & allPieces) == 0)) {
-            if (isSquareSafe(4, colour) && isSquareSafe(5, colour) && isSquareSafe(6, colour)) {
+            if (!getBit(unsafeSquares, 4) && !getBit(unsafeSquares, 5) && !getBit(unsafeSquares, 6)) {
                 unique_ptr<Move> newMove = make_unique<Move>(kingSquare, 6, 0b0001, 0b0000, -1, false);
                 moves.emplace(1.7, move(newMove));
             }
         }
     } else {
         if (castleStatus.canBlackKingCastleLeft() && ((blackLeftCastle & allPieces) == 0)) {
-            if (isSquareSafe(60, colour) &&  isSquareSafe(57, colour) && isSquareSafe(58, colour) && isSquareSafe(59, colour)) {
+            if (!getBit(unsafeSquares, 60) && !getBit(unsafeSquares, 57) && !getBit(unsafeSquares, 58) && !getBit(unsafeSquares, 59)) {
                 unique_ptr<Move> newMove = make_unique<Move>(kingSquare, 58, 0b0001, 0b0000, -1, false);
                 moves.emplace(1.5, move(newMove));
             }
         }
         
         if (castleStatus.canBlackKingCastleRight() && ((blackRightCastle & allPieces) == 0)) {
-            if (isSquareSafe(60, colour) && isSquareSafe(61, colour) && isSquareSafe(62, colour)) {
+            if (!getBit(unsafeSquares, 60) && !getBit(unsafeSquares, 61) && !getBit(unsafeSquares, 62)) {
                 unique_ptr<Move> newMove = make_unique<Move>(kingSquare, 62, 0b0001, 0b0000, -1, false);
                 moves.emplace(1.7, move(newMove));
             }
@@ -1006,7 +911,7 @@ void BoardNode::addPredictedBestMove(Colour colour) {
                 newPosition->blackPieces ^= (0x1ULL << bestPredictedMove->getFromSquare()) | (0x1ULL << bestPredictedMove->getToSquare());
                 if (bestPredictedMove->getToSquare() == 58) {
                     newPosition->blackRooks ^= (0x1ULL << 56) | (0x1ULL << 59);
-                    newPosition->blackPieces ^= (0x1ULL << 61) | (0x1ULL << 63);
+                    newPosition->blackPieces ^= (0x1ULL << 56) | (0x1ULL << 59);
                 } else if (bestPredictedMove->getToSquare() == 62) {
                     newPosition->blackRooks ^= (0x1ULL << 61) | (0x1ULL << 63);
                     newPosition->blackPieces ^= (0x1ULL << 61) | (0x1ULL << 63);
@@ -1030,25 +935,21 @@ void BoardNode::addPredictedBestMove(Colour colour) {
                 clearBit(newPosition->blackPawns, bestPredictedMove->getFromSquare());
                 setBit(newPosition->blackQueens, bestPredictedMove->getToSquare());
                 newPosition->blackPieces ^= (0x1ULL << bestPredictedMove->getFromSquare()) | (0x1ULL << bestPredictedMove->getToSquare());
-                children.emplace_back(make_unique<BoardNode>(move(newPosition), newLastDoublePawnMoveIndex, newCastleStatus, pinsCopy, this));
                 break;
             case Move::rookPromotion:
                 clearBit(newPosition->blackPawns, bestPredictedMove->getFromSquare());
                 setBit(newPosition->blackRooks, bestPredictedMove->getToSquare());
                 newPosition->blackPieces ^= (0x1ULL << bestPredictedMove->getFromSquare()) | (0x1ULL << bestPredictedMove->getToSquare());
-                children.emplace_back(make_unique<BoardNode>(move(newPosition), newLastDoublePawnMoveIndex, newCastleStatus, pinsCopy, this));
                 break;
             case Move::knightPromotion:
                 clearBit(newPosition->blackPawns, bestPredictedMove->getFromSquare());
                 setBit(newPosition->blackKnights, bestPredictedMove->getToSquare());
                 newPosition->blackPieces ^= (0x1ULL << bestPredictedMove->getFromSquare()) | (0x1ULL << bestPredictedMove->getToSquare());
-                children.emplace_back(make_unique<BoardNode>(move(newPosition), newLastDoublePawnMoveIndex, newCastleStatus, pinsCopy, this));
                 break;
             case Move::bishopPromotion:
                 clearBit(newPosition->blackPawns, bestPredictedMove->getFromSquare());
                 setBit(newPosition->blackBishops, bestPredictedMove->getToSquare());
                 newPosition->blackPieces ^= (0x1ULL << bestPredictedMove->getFromSquare()) | (0x1ULL << bestPredictedMove->getToSquare());
-                children.emplace_back(make_unique<BoardNode>(move(newPosition), newLastDoublePawnMoveIndex, newCastleStatus, pinsCopy, this));
                 break;
             case Move::pawnMove:
                 newPosition->blackPawns ^= (0x1ULL << bestPredictedMove->getFromSquare()) | (0x1ULL << bestPredictedMove->getToSquare());

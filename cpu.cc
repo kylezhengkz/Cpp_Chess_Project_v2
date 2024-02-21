@@ -15,21 +15,21 @@ void CPU::pickMove(unique_ptr<BoardNode>& pos) {
 
    // move counter
    /*
-    int totalMoves = 0;
-    countTotalPossibleMoves(pos, 1, true, totalMoves);
-    cout << totalMoves << endl;
+    int totalMoves1 = 0;
+    countTotalPossibleMoves(pos, 1, true, totalMoves1);
+    cout << totalMoves1 << endl;
 
-    totalMoves = 0;
-    countTotalPossibleMoves(pos, 2, true, totalMoves);
-    cout << totalMoves << endl;
+    int totalMoves2 = 0;
+    countTotalPossibleMoves(pos, 2, true, totalMoves2);
+    cout << totalMoves2 - totalMoves1  << endl;
 
-    totalMoves = 0;
-    countTotalPossibleMoves(pos, 3, true, totalMoves);
-    cout << totalMoves << endl;
+    int totalMoves3 = 0;
+    countTotalPossibleMoves(pos, 3, true, totalMoves3);
+    cout << totalMoves3 - totalMoves2 << endl;
 
-    totalMoves = 0;
-    countTotalPossibleMoves(pos, 4, true, totalMoves);
-    cout << totalMoves << endl;
+    int totalMoves4 = 0;
+    countTotalPossibleMoves(pos, 4, true, totalMoves4);
+    cout << totalMoves4 - totalMoves3 << endl;
     */
 }
 
@@ -62,7 +62,9 @@ void CPU::iterativeDeepening(unique_ptr<BoardNode>& pos) {
         }
     }
     cout << "End iterative deepening search" << endl;
-
+    branchToChild(pos, 0);
+    
+    /*
     cout << "Evaluation: " << pos->getValue() << endl;
     pos->printBoardOnly(cout);
     cout << "Printing leftmost path" << endl;
@@ -77,7 +79,6 @@ void CPU::iterativeDeepening(unique_ptr<BoardNode>& pos) {
                 return lhs->getValue() < rhs->getValue();
             });
         }
-        branchToChild(pos, 0);
         pos->printBoardOnly(cout);
 
         if (switchColour == Colour::WHITE) {
@@ -85,7 +86,9 @@ void CPU::iterativeDeepening(unique_ptr<BoardNode>& pos) {
         } else {
             switchColour = Colour::WHITE;
         }
+        branchToChild(pos, 0);
     }
+    */
 }
 
 double CPU::alphaBetaPruning(unique_ptr<BoardNode>& pos, int depth, double alpha, double beta, bool maximizingPlayer) {
