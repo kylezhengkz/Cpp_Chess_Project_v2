@@ -708,17 +708,17 @@ void BoardNode::generateMoves(Colour colour) {
                     isAddPin = true;
                 }
 
-                unique_ptr<Move> newMove = make_unique<Move>(initialSquare, newSquare, flag, captureFlag, removePinIndex, isAddPin);
-                moves.emplace(moveVal, move(newMove));
+                unique_ptr<Move> newMove = make_unique<Move>(initialSquare, newSquare, flag, captureFlag, removePinIndex, isAddPin, moveVal);
+                moves.emplace_back(move(newMove));
 
                 if (flag == Move::queenPromotion) {
                     // very unlikely to consider down promoting instead of just promoting to queen (so we should consider last)
-                    unique_ptr<Move> newMove1 = make_unique<Move>(initialSquare, newSquare, 0b0101, captureFlag, removePinIndex, isAddPin);
-                    moves.emplace(moveVal - 100, move(newMove1));
-                    unique_ptr<Move> newMove2 = make_unique<Move>(initialSquare, newSquare, 0b0110, captureFlag, removePinIndex, isAddPin);
-                    moves.emplace(moveVal - 101, move(newMove2));
-                    unique_ptr<Move> newMove3 = make_unique<Move>(initialSquare, newSquare, 0b0111, captureFlag, removePinIndex, isAddPin);
-                    moves.emplace(moveVal - 102, move(newMove3));
+                    unique_ptr<Move> newMove1 = make_unique<Move>(initialSquare, newSquare, 0b0101, captureFlag, removePinIndex, isAddPin, moveVal - 100);
+                    moves.emplace_back(move(newMove1));
+                    unique_ptr<Move> newMove2 = make_unique<Move>(initialSquare, newSquare, 0b0110, captureFlag, removePinIndex, isAddPin, moveVal - 100);
+                    moves.emplace_back(move(newMove2));
+                    unique_ptr<Move> newMove3 = make_unique<Move>(initialSquare, newSquare, 0b0111, captureFlag, removePinIndex, isAddPin, moveVal - 100);
+                    moves.emplace_back(move(newMove3));
                 }
             }
         }
@@ -747,40 +747,44 @@ void BoardNode::generateMoves(Colour colour) {
             }
         }
 
-        unique_ptr<Move> newMove = make_unique<Move>(kingSquare, newSquare, flag, captureFlag, -1, false);
-        moves.emplace(moveVal, move(newMove));
+        unique_ptr<Move> newMove = make_unique<Move>(kingSquare, newSquare, flag, captureFlag, -1, false, moveVal);
+        moves.emplace_back(move(newMove));
     }
 
     // check castling
     if (colour == Colour::WHITE) {
         if (castleStatus.canWhiteKingCastleLeft() && ((whiteLeftCastle & allPieces) == 0)) {
             if (!getBit(unsafeSquares, 4) && !getBit(unsafeSquares, 1) && !getBit(unsafeSquares, 2) && !getBit(unsafeSquares, 3)) {
-                unique_ptr<Move> newMove = make_unique<Move>(kingSquare, 2, 0b0001, 0b0000, -1, false);
-                moves.emplace(1.5, move(newMove));
+                unique_ptr<Move> newMove = make_unique<Move>(kingSquare, 2, 0b0001, 0b0000, -1, false, 1.5);
+                moves.emplace_back(move(newMove));
             }
         }
         
         if (castleStatus.canWhiteKingCastleRight() && ((whiteRightCastle & allPieces) == 0)) {
             if (!getBit(unsafeSquares, 4) && !getBit(unsafeSquares, 5) && !getBit(unsafeSquares, 6)) {
-                unique_ptr<Move> newMove = make_unique<Move>(kingSquare, 6, 0b0001, 0b0000, -1, false);
-                moves.emplace(1.7, move(newMove));
+                unique_ptr<Move> newMove = make_unique<Move>(kingSquare, 6, 0b0001, 0b0000, -1, false, 1.7);
+                moves.emplace_back(move(newMove));
             }
         }
     } else {
         if (castleStatus.canBlackKingCastleLeft() && ((blackLeftCastle & allPieces) == 0)) {
             if (!getBit(unsafeSquares, 60) && !getBit(unsafeSquares, 57) && !getBit(unsafeSquares, 58) && !getBit(unsafeSquares, 59)) {
-                unique_ptr<Move> newMove = make_unique<Move>(kingSquare, 58, 0b0001, 0b0000, -1, false);
-                moves.emplace(1.5, move(newMove));
+                unique_ptr<Move> newMove = make_unique<Move>(kingSquare, 58, 0b0001, 0b0000, -1, false, 1.5);
+                moves.emplace_back(move(newMove));
             }
         }
         
         if (castleStatus.canBlackKingCastleRight() && ((blackRightCastle & allPieces) == 0)) {
             if (!getBit(unsafeSquares, 60) && !getBit(unsafeSquares, 61) && !getBit(unsafeSquares, 62)) {
-                unique_ptr<Move> newMove = make_unique<Move>(kingSquare, 62, 0b0001, 0b0000, -1, false);
-                moves.emplace(1.7, move(newMove));
+                unique_ptr<Move> newMove = make_unique<Move>(kingSquare, 62, 0b0001, 0b0000, -1, false, 1.7);
+                moves.emplace_back(move(newMove));
             }
         }
     }
+
+    sort(moves.begin(), moves.end(), [](const unique_ptr<Move>& lhs, const unique_ptr<Move>& rhs) {
+        return lhs->value > rhs->value;
+    });
 }
 
 void BoardNode::addPredictedBestMove(Colour colour) {
@@ -789,7 +793,7 @@ void BoardNode::addPredictedBestMove(Colour colour) {
     }
 
     unique_ptr<Board> newPosition = make_unique<Board>(*board);
-    auto bestPredictedMove = move(moves.begin()->second);
+    unique_ptr<Move> bestPredictedMove = move(moves.front());
     moves.erase(moves.begin());
     int flag = bestPredictedMove->getFlag();
 
@@ -990,10 +994,9 @@ void BoardNode::addPredictedBestMove(Colour colour) {
 
     // REMINDER: You should return instead of break for special move cases
 
-    int captureFlag = bestPredictedMove->getCapture();
-    if (captureFlag != 0b0000) {
+    if (bestPredictedMove->capture != 0b0000) {
         if (colour == Colour::WHITE) {
-            switch (captureFlag) {
+            switch (bestPredictedMove->capture) {
                 case Move::pawnCapture:
                     newPosition->blackPawns ^= (0x1ULL << bestPredictedMove->getToSquare());
                     newPosition->blackPieces ^= (0x1ULL << bestPredictedMove->getToSquare());
@@ -1024,7 +1027,7 @@ void BoardNode::addPredictedBestMove(Colour colour) {
                     break;
             }
         } else {
-            switch (captureFlag) {
+            switch (bestPredictedMove->capture) {
                 case Move::pawnCapture:
                     newPosition->whitePawns ^= (0x1ULL << bestPredictedMove->getToSquare());
                     newPosition->whitePieces ^= (0x1ULL << bestPredictedMove->getToSquare());
@@ -1097,7 +1100,7 @@ string indexToChessSquare(int index) {
 
 ostream& BoardNode::printChildrenMoveNotation(ostream& out) {
     for (auto& move : moves) {
-        cout << "(move value " << move.first  << ") " << indexToChessSquare((move.second)->getFromSquare()) << " " << indexToChessSquare((move.second)->getToSquare()) << endl;
+        cout << "(move value " << move->value  << ") " << indexToChessSquare(move->getFromSquare()) << " " << indexToChessSquare(move->getToSquare()) << endl;
     }
     return out;
 }
@@ -1140,7 +1143,7 @@ void BoardNode::clearMoves() {
 
 bool BoardNode::containsMove(int fromSquare, int toSquare) {
     for (auto& move : moves) {
-        if ((move.second)->getFromSquare() == fromSquare && (move.second)->getToSquare() == toSquare) {
+        if (move->getFromSquare() == fromSquare && move->getToSquare() == toSquare) {
             return true;
         }
     }
@@ -1168,6 +1171,6 @@ double BoardNode::getValue() const {
     return value;
 }
 
-multimap<double, unique_ptr<Move>, greater<double>>& BoardNode::getMoves() {
+vector<unique_ptr<Move>>& BoardNode::getMoves() {
     return moves;
 }

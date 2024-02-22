@@ -14,7 +14,7 @@ class BoardNode {
     CastleStatus castleStatus;
     unordered_map<int, U64> pins;
     unordered_map<int, U64> opponentPins;
-    multimap<double, unique_ptr<Move>, greater<double>> moves;
+    vector<unique_ptr<Move>> moves;
     vector<unique_ptr<BoardNode>> children;
     double value;
     U64 checkPathMusk;
@@ -44,6 +44,6 @@ class BoardNode {
     friend void branchToChild(unique_ptr<BoardNode>& boardNode, size_t index);
     void setValue(double val);
     double getValue() const;
-    multimap<double, unique_ptr<Move>, greater<double>>& getMoves();
+    vector<unique_ptr<Move>>& getMoves();
 };
 #endif

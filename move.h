@@ -26,10 +26,10 @@ struct Move {
     static const int queenCapture = 0b0101;
     int removePinIndex;
     bool addPin;
-    Move(int fromSquare, int toSquare, int flag, int8_t capture, int removePinIndex, bool addPin);
+    double value;
+    Move(int fromSquare, int toSquare, int flag, int8_t capture, int removePinIndex, bool addPin, double value);
     int getFromSquare();
     int getToSquare();
     int getFlag();
-    int getCapture();
 };
 #endif

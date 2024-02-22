@@ -1,6 +1,6 @@
 #include "move.h"
-Move::Move(int fromSquare, int toSquare, int flag, int8_t capture, int removePinIndex, bool addPin):
-capture{capture}, removePinIndex{removePinIndex}, addPin{addPin} {
+Move::Move(int fromSquare, int toSquare, int flag, int8_t capture, int removePinIndex, bool addPin, double value):
+capture{capture}, removePinIndex{removePinIndex}, addPin{addPin}, value{value} {
     move = fromSquare | (toSquare << 6) | (flag << 12);
 }
 
@@ -14,8 +14,4 @@ int Move::getToSquare() {
 
 int Move::getFlag() {
     return (move >> 12) & 0b1111;
-}
-
-int Move::getCapture() {
-    return capture;
 }
