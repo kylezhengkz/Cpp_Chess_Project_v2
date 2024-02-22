@@ -47,7 +47,7 @@ class LookupTable {
     const static int DOWNLEFTINDEX = 5;
     const static int UPLEFTINDEX = 6;
     const static int DOWNRIGHTINDEX = 7;
-    
+
     public:
     static U64 lookupPawnControlMusk(int key, Colour colour);
     static U64 lookupMusk(int key, Piece piece);
@@ -57,5 +57,10 @@ class LookupTable {
     static void setMusks();
     static U64* generateBlockerMusks(U64 movementMusk);
     static void mapBlockerKeys();
+    static void generateWhitePawnMagicNumbers();
+    static void generateBlackPawnMagicNumbers();
+    static void generateBishopMagicNumbers();
+    static void generateRookMagicNumbers();
+    static void printStuff();
 };
 #endif

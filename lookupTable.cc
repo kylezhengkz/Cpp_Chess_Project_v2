@@ -353,30 +353,32 @@ U64 generatePawnMoves(int square, U64 blockerMusk, bool white) {
 
 void LookupTable::mapBlockerKeys() {
     for (int i = 0; i < 64; i++) {
-        whitePawnBlockerShifts[i] = 64 - __builtin_popcountll(whitePawnMusks[i]);
-        blackPawnBlockerShifts[i] = 64 - __builtin_popcountll(blackPawnMusks[i]);
+        if (i >= 8 && i <= 55) {
+            whitePawnBlockerShifts[i] = 64 - __builtin_popcountll(whitePawnMusks[i]);
+            blackPawnBlockerShifts[i] = 64 - __builtin_popcountll(blackPawnMusks[i]);
+        }
         bishopBlockerShifts[i] = 64 - __builtin_popcountll(bishopMusks[i]);
         rookBlockerShifts[i] = 64 - __builtin_popcountll(rookMusks[i]);
     }
 
     // store magic numbers
     ifstream readWhitePawnFile("whitePawnMagicNumbers.txt");
-    for (int i = 0; i < 64; ++i) {
+    for (int i = 8; i <= 55; i++) {
         readWhitePawnFile >> whitePawnMagicArray[i];
     }
 
     ifstream readBlackPawnFile("blackPawnMagicNumbers.txt");
-    for (int i = 0; i < 64; ++i) {
+    for (int i = 8; i <= 55; i++) {
         readBlackPawnFile >> blackPawnMagicArray[i];
     }
 
-    ifstream readBoshopFile("bishopMagicNumbers.txt");
-    for (int i = 0; i < 64; ++i) {
-        readBoshopFile >> bishopMagicArray[i];
+    ifstream readBishopFile("bishopMagicNumbers.txt");
+    for (int i = 0; i < 64; i++) {
+        readBishopFile >> bishopMagicArray[i];
     }
 
     ifstream readRookFile("rookMagicNumbers.txt");
-    for (int i = 0; i < 64; ++i) {
+    for (int i = 0; i < 64; i++) {
         readRookFile >> rookMagicArray[i];
     }
 
@@ -407,11 +409,6 @@ void LookupTable::mapBlockerKeys() {
         for (int blockerIndex = 0; blockerIndex < totalPatterns; blockerIndex++) {
             int blockerKey = (blockerMusks[blockerIndex] * whitePawnMagicArray[square]) >> whitePawnBlockerShifts[square];
             whitePawnMagicMoves[square][blockerKey] = generatePawnMoves(square, blockerMusks[blockerIndex], true);
-            cout << "square: " << square << endl;
-            cout << "blockers" << endl;
-            printBitboard(blockerMusks[blockerIndex], cout);
-            cout << "moves" << endl;
-            printBitboard(whitePawnMagicMoves[square][blockerKey], cout);
         }
     }
 
@@ -422,12 +419,132 @@ void LookupTable::mapBlockerKeys() {
         for (int blockerIndex = 0; blockerIndex < totalPatterns; blockerIndex++) {
             int blockerKey = (blockerMusks[blockerIndex] * blackPawnMagicArray[square]) >> blackPawnBlockerShifts[square];
             blackPawnMagicMoves[square][blockerKey] = generatePawnMoves(square, blockerMusks[blockerIndex], false);
-            cout << "square: " << square << endl;
-            cout << "blockers" << endl;
-            printBitboard(blockerMusks[blockerIndex], cout);
-            cout << "moves" << endl;
-            printBitboard(blackPawnMagicMoves[square][blockerKey], cout);
         }
     }
 }
 
+void LookupTable::generateWhitePawnMagicNumbers() {
+    for (int i = 8; i <= 55; i++) {
+        whitePawnBlockerShifts[i] = 64 - __builtin_popcountll(whitePawnMusks[i]);
+    }
+    for (int square = 8; square <= 55; square++) {
+        U64* blockerMusks{generateBlockerMusks(whitePawnMusks[square])};
+        int numOfBits = __builtin_popcountll(whitePawnMusks[square]);
+        int totalPatterns = 1 << numOfBits;
+        unordered_set<U64> uniqueProducts;
+        U64 testMagicNumber = generateRandomU64Exact(4);
+        while (true) {
+            bool unique = true;
+            for (int i = 0; i < totalPatterns; i++) {
+                U64 product = (blockerMusks[i] * testMagicNumber) >> whitePawnBlockerShifts[square];
+                if (!(uniqueProducts.insert(product)).second) {
+                    testMagicNumber = generateRandomU64Exact(4);
+                    uniqueProducts.clear();
+                    unique = false;
+                    break;
+                }
+            }
+            if (unique) {
+                break;
+            }
+        }
+    }
+}
+
+void LookupTable::generateBlackPawnMagicNumbers() {
+    for (int i = 8; i <= 55; i++) {
+        blackPawnBlockerShifts[i] = 64 - __builtin_popcountll(blackPawnMusks[i]);
+    }
+    for (int square = 8; square <= 55; square++) {
+        U64* blockerMusks{generateBlockerMusks(blackPawnMusks[square])};
+        int numOfBits = __builtin_popcountll(blackPawnMusks[square]);
+        int totalPatterns = 1 << numOfBits;
+        unordered_set<U64> uniqueProducts;
+        U64 testMagicNumber = generateRandomU64Exact(4);
+        while (true) {
+            bool unique = true;
+            for (int i = 0; i < totalPatterns; i++) {
+                U64 product = (blockerMusks[i] * testMagicNumber) >> blackPawnBlockerShifts[square];
+                if (!(uniqueProducts.insert(product)).second) {
+                    testMagicNumber = generateRandomU64Exact(4);
+                    uniqueProducts.clear();
+                    unique = false;
+                    break;
+                }
+            }
+            if (unique) {
+                break;
+            }
+        }
+        cout << testMagicNumber << endl;
+    }
+}
+
+void LookupTable::generateBishopMagicNumbers() {
+    for (int i = 0; i < 64; i++) {
+        bishopBlockerShifts[i] = 64 - __builtin_popcountll(bishopMusks[i]);
+    }
+
+    for (int square = 0; square < 64; square++) {
+        U64* blockerMusks{generateBlockerMusks(bishopMusks[square])};
+        int numOfBits = __builtin_popcountll(bishopMusks[square]);
+        int totalPatterns = 1 << numOfBits;
+        unordered_set<U64> uniqueProducts;
+        U64 testMagicNumber = generateRandomU64Exact(8);
+        while (true) {
+            bool unique = true;
+            for (int i = 0; i < totalPatterns; i++) {
+                U64 product = (blockerMusks[i] * testMagicNumber) >> bishopBlockerShifts[square];
+                if (!(uniqueProducts.insert(product)).second) {
+                    testMagicNumber = generateRandomU64Exact(8);
+                    uniqueProducts.clear();
+                    unique = false;
+                    break;
+                }
+            }
+            if (unique) {
+                break;
+            }
+        }
+        cout << testMagicNumber << endl;
+    }
+}
+
+void LookupTable::generateRookMagicNumbers() {
+    for (int i = 0; i < 64; i++) {
+        rookBlockerShifts[i] = 64 - __builtin_popcountll(rookMusks[i]);
+    }
+
+    for (int square = 0; square < 64; square++) {
+        U64* blockerMusks{generateBlockerMusks(rookMusks[square])};
+        int numOfBits = __builtin_popcountll(rookMusks[square]);
+        int totalPatterns = 1 << numOfBits;
+        unordered_set<U64> uniqueProducts;
+        U64 testMagicNumber = generateRandomU64Range(6, 14);
+        while (true) {
+            bool unique = true;
+            for (int i = 0; i < totalPatterns; i++) {
+                U64 product = (blockerMusks[i] * testMagicNumber) >> rookBlockerShifts[square];
+                if (!(uniqueProducts.insert(product)).second) {
+                    testMagicNumber = generateRandomU64Range(6, 14);
+                    uniqueProducts.clear();
+                    unique = false;
+                    break;
+                }
+            }
+            if (unique) {
+                break;
+            }
+        }
+        cout << testMagicNumber << endl;
+    }
+}
+
+void LookupTable::printStuff() {
+    for (int i = 0; i < 64; i++) {
+        cout << "square: " << i << endl;
+        for (int j = 0; j < 16; j++) {
+            printBitboard(LookupTable::whitePawnMagicMoves[i][j], cout);
+        }
+    }
+}

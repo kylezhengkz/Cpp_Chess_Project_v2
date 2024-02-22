@@ -22,13 +22,6 @@ int main() {
     LookupTable::setRayMusks();
     LookupTable::setMusks();
     LookupTable::mapBlockerKeys();
-}
-
-/*
-int main() {
-    LookupTable::setRayMusks();
-    LookupTable::setMusks();
-    LookupTable::mapBlockerKeys();
     unique_ptr<Board> board{new Board()};
     unique_ptr<BoardNode> currentPosition = StartPosition::manualSetup(board);
     // unique_ptr<BoardNode> currentPosition = StartPosition::defaultPosition(board);
@@ -60,4 +53,3 @@ int main() {
         currentPosition->printBoardOnly(cout);
     }
 };
-*/
