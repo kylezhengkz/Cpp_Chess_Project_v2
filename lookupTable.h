@@ -5,18 +5,34 @@
 #include <vector>
 #include "constants.h"
 #include <memory>
+#include <unordered_set>
+#include <chrono>
 using namespace std;
 using namespace MaskUtils;
+using namespace chrono;
 class LookupTable {
-    static U64* whitePawnMusks;
-    static U64* blackPawnMusks;
-    static U64* whitePawnControlMusks;
-    static U64* blackPawnControlMusks;
-    static U64* bishopMusks;
-    static U64* rookMusks;
-    static U64* queenMusks;
-    static U64* knightMusks;
-    static U64* kingMusks;
+    static U64 whitePawnMusks[64];
+    static U64 blackPawnMusks[64];
+    static U64 whitePawnControlMusks[64];
+    static U64 blackPawnControlMusks[64];
+    static U64 bishopMusks[64];
+    static U64 rookMusks[64];
+    static U64 queenMusks[64];
+    static U64 knightMusks[64];
+    static U64 kingMusks[64];
+    static U64 rayMusks[8][64];
+
+    // magic number arrays
+    static int whitePawnBlockerShifts[64];
+    static int blackPawnBlockerShifts[64];
+    static int bishopBlockerShifts[64];
+    static int rookBlockerShifts[64];
+
+    static U64 whitePawnMagicArray[64];
+    static U64 blackPawnMagicArray[64];
+    static U64 bishopMagicArray[64];
+    static U64 rookMagicArray[64];
+
     const static int UPINDEX = 0;
     const static int DOWNINDEX = 1;
     const static int LEFTINDEX = 2;
@@ -25,7 +41,7 @@ class LookupTable {
     const static int DOWNLEFTINDEX = 5;
     const static int UPLEFTINDEX = 6;
     const static int DOWNRIGHTINDEX = 7;
-    static U64 rayMusks[8][64];
+
     struct PairHash {
         template <class T1, class T2>
         size_t operator() (const pair<T1, T2>& p) const {
@@ -45,7 +61,6 @@ class LookupTable {
     static unordered_map<pair<int, U64>, U64, PairHash, PairEqual> blackPawnMoves;
     static unordered_map<pair<int, U64>, U64, PairHash, PairEqual> bishopMoves;
     static unordered_map<pair<int, U64>, U64, PairHash, PairEqual> rookMoves;
-    static unordered_map<pair<int, U64>, U64, PairHash, PairEqual> queenMoves;
     public:
     static U64 lookupPawnControlMusk(int key, Colour colour);
     static U64 lookupMusk(int key, Piece piece);
@@ -55,6 +70,5 @@ class LookupTable {
     static void setMusks();
     static U64* generateBlockerMusks(U64 movementMusk);
     static void mapBlockerKeys();
-    static void cleanup();
 };
 #endif

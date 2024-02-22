@@ -1,410 +1,3808 @@
-Generating moves for 64 bishop blocker patterns
-Generating moves for 32 bishop blocker patterns
-Generating moves for 32 bishop blocker patterns
-Generating moves for 32 bishop blocker patterns
-Generating moves for 32 bishop blocker patterns
-Generating moves for 32 bishop blocker patterns
-Generating moves for 32 bishop blocker patterns
-Generating moves for 64 bishop blocker patterns
-Generating moves for 32 bishop blocker patterns
-Generating moves for 32 bishop blocker patterns
-Generating moves for 32 bishop blocker patterns
-Generating moves for 32 bishop blocker patterns
-Generating moves for 32 bishop blocker patterns
-Generating moves for 32 bishop blocker patterns
-Generating moves for 32 bishop blocker patterns
-Generating moves for 32 bishop blocker patterns
-Generating moves for 32 bishop blocker patterns
-Generating moves for 32 bishop blocker patterns
-Generating moves for 128 bishop blocker patterns
-Generating moves for 128 bishop blocker patterns
-Generating moves for 128 bishop blocker patterns
-Generating moves for 128 bishop blocker patterns
-Generating moves for 32 bishop blocker patterns
-Generating moves for 32 bishop blocker patterns
-Generating moves for 32 bishop blocker patterns
-Generating moves for 32 bishop blocker patterns
-Generating moves for 128 bishop blocker patterns
-Generating moves for 512 bishop blocker patterns
-Generating moves for 512 bishop blocker patterns
-Generating moves for 128 bishop blocker patterns
-Generating moves for 32 bishop blocker patterns
-Generating moves for 32 bishop blocker patterns
-Generating moves for 32 bishop blocker patterns
-Generating moves for 32 bishop blocker patterns
-Generating moves for 128 bishop blocker patterns
-Generating moves for 512 bishop blocker patterns
-Generating moves for 512 bishop blocker patterns
-Generating moves for 128 bishop blocker patterns
-Generating moves for 32 bishop blocker patterns
-Generating moves for 32 bishop blocker patterns
-Generating moves for 32 bishop blocker patterns
-Generating moves for 32 bishop blocker patterns
-Generating moves for 128 bishop blocker patterns
-Generating moves for 128 bishop blocker patterns
-Generating moves for 128 bishop blocker patterns
-Generating moves for 128 bishop blocker patterns
-Generating moves for 32 bishop blocker patterns
-Generating moves for 32 bishop blocker patterns
-Generating moves for 32 bishop blocker patterns
-Generating moves for 32 bishop blocker patterns
-Generating moves for 32 bishop blocker patterns
-Generating moves for 32 bishop blocker patterns
-Generating moves for 32 bishop blocker patterns
-Generating moves for 32 bishop blocker patterns
-Generating moves for 32 bishop blocker patterns
-Generating moves for 32 bishop blocker patterns
-Generating moves for 64 bishop blocker patterns
-Generating moves for 32 bishop blocker patterns
-Generating moves for 32 bishop blocker patterns
-Generating moves for 32 bishop blocker patterns
-Generating moves for 32 bishop blocker patterns
-Generating moves for 32 bishop blocker patterns
-Generating moves for 32 bishop blocker patterns
-Generating moves for 64 bishop blocker patterns
+Generating bit shift values for magic bitboards
+Searching for a magic bitboard number for rook square: 0
+Magic bitboard number: 13871087127189816080
+Number of bits: 11
+Time: 1342
 Generating moves for 4096 rook blocker patterns
+Searching for a magic bitboard number for rook square: 1
+Magic bitboard number: 18014742117351488
+Number of bits: 6
+Time: 104
 Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 2
+Magic bitboard number: 5260214262858514624
+Number of bits: 11
+Time: 1238
 Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 3
+Magic bitboard number: 216181784365506816
+Number of bits: 8
+Time: 4619
 Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 4
+Magic bitboard number: 5908744839050428425
+Number of bits: 11
+Time: 1392
 Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 5
+Magic bitboard number: 9583662377933508864
+Number of bits: 10
+Time: 1379
 Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 6
+Magic bitboard number: 4755803406667939976
+Number of bits: 9
+Time: 708
 Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 7
+Magic bitboard number: 72058247426605126
+Number of bits: 9
+Time: 5716
 Generating moves for 4096 rook blocker patterns
+Searching for a magic bitboard number for rook square: 8
+Magic bitboard number: 297378323401539713
+Number of bits: 11
+Time: 26
 Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 9
+Magic bitboard number: 9228016511418089475
+Number of bits: 11
+Time: 345
 Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 10
+Magic bitboard number: 11529355852284977153
+Number of bits: 9
+Time: 294
 Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 11
+Magic bitboard number: 288793429457109280
+Number of bits: 9
+Time: 1418
 Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 12
+Magic bitboard number: 4612108333978222720
+Number of bits: 9
+Time: 492
 Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 13
+Magic bitboard number: 563156717010968
+Number of bits: 9
+Time: 55
 Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 14
+Magic bitboard number: 2316539077941801472
+Number of bits: 12
+Time: 76
 Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 15
+Magic bitboard number: 37295440059695360
+Number of bits: 8
+Time: 68
 Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 16
+Magic bitboard number: 10665721286321244420
+Number of bits: 11
+Time: 649
 Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 17
+Magic bitboard number: 9259542121654796288
+Number of bits: 6
+Time: 472
 Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 18
+Magic bitboard number: 5783187070830789412
+Number of bits: 13
+Time: 44
 Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 19
+Magic bitboard number: 3199254481451618304
+Number of bits: 12
+Time: 1323
 Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 20
+Magic bitboard number: 586929202579112192
+Number of bits: 10
+Time: 265
 Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 21
+Magic bitboard number: 14988023544717254720
+Number of bits: 10
+Time: 3214
 Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 22
+Magic bitboard number: 144119588304455745
+Number of bits: 8
+Time: 31
 Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 23
+Magic bitboard number: 10376357313203175497
+Number of bits: 11
+Time: 648
 Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 24
+Magic bitboard number: 18084769401242152
+Number of bits: 8
+Time: 157
 Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 25
+Magic bitboard number: 9944097953201258752
+Number of bits: 12
+Time: 420
 Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 26
+Magic bitboard number: 36327866331299974
+Number of bits: 8
+Time: 514
 Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 27
+Magic bitboard number: 9232493596057272450
+Number of bits: 10
+Time: 638
 Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 28
+Magic bitboard number: 837687144352317697
+Number of bits: 11
+Time: 108
 Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 29
+Magic bitboard number: 145804046527185960
+Number of bits: 10
+Time: 862
 Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 30
+Magic bitboard number: 1153212892370698768
+Number of bits: 9
+Time: 196
 Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 31
+Magic bitboard number: 13844209316329963676
+Number of bits: 13
+Time: 533
 Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 32
+Magic bitboard number: 1874342419688857664
+Number of bits: 9
+Time: 919
 Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 33
+Magic bitboard number: 45036271189372928
+Number of bits: 7
+Time: 320
 Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 34
+Magic bitboard number: 9007337515794692
+Number of bits: 8
+Time: 80
 Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 35
+Magic bitboard number: 24813780571549696
+Number of bits: 10
+Time: 189
 Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 36
+Magic bitboard number: 82208581755082753
+Number of bits: 11
+Time: 1092
 Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 37
+Magic bitboard number: 577586686905618592
+Number of bits: 9
+Time: 126
 Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 38
+Magic bitboard number: 2535478175731720
+Number of bits: 7
+Time: 604
 Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 39
+Magic bitboard number: 6759841544536201
+Number of bits: 10
+Time: 1362
 Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 40
+Magic bitboard number: 70446598881280
+Number of bits: 6
+Time: 667
 Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 41
+Magic bitboard number: 2684215787476025377
+Number of bits: 12
+Time: 104
 Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 42
+Magic bitboard number: 74345136871571520
+Number of bits: 9
+Time: 635
 Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 43
+Magic bitboard number: 1157426204028502050
+Number of bits: 11
+Time: 1114
 Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 44
+Magic bitboard number: 1156303602508136576
+Number of bits: 7
+Time: 991
 Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 45
+Magic bitboard number: 562967267901456
+Number of bits: 6
+Time: 922
 Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 46
+Magic bitboard number: 9288682821451916
+Number of bits: 7
+Time: 54
 Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 47
+Magic bitboard number: 54406622780719108
+Number of bits: 13
+Time: 854
 Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 48
+Magic bitboard number: 2631368854697148544
+Number of bits: 10
+Time: 62
 Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 49
+Magic bitboard number: 4650107627628396672
+Number of bits: 7
+Time: 322
 Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 50
+Magic bitboard number: 649997206947889920
+Number of bits: 12
+Time: 279
 Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 51
+Magic bitboard number: 2307250419262301440
+Number of bits: 9
+Time: 695
 Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 52
+Magic bitboard number: 4612953772518801536
+Number of bits: 8
+Time: 35
 Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 53
+Magic bitboard number: 1125919238520960
+Number of bits: 6
+Time: 43
 Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 54
+Magic bitboard number: 9223512782937325696
+Number of bits: 6
+Time: 272
 Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 55
+Magic bitboard number: 3476919671293231232
+Number of bits: 8
+Time: 86
 Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 56
+Magic bitboard number: 43070827549172226
+Number of bits: 13
+Time: 291
 Generating moves for 4096 rook blocker patterns
+Searching for a magic bitboard number for rook square: 57
+Magic bitboard number: 293016035412410673
+Number of bits: 11
+Time: 123
 Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 58
+Magic bitboard number: 81065695789465865
+Number of bits: 12
+Time: 1335
 Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 59
+Magic bitboard number: 4432674693377
+Number of bits: 6
+Time: 1028
 Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 60
+Magic bitboard number: 281758713251841
+Number of bits: 7
+Time: 192
 Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 61
+Magic bitboard number: 626281885122693121
+Number of bits: 14
+Time: 157
 Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 62
+Magic bitboard number: 46777766976750084
+Number of bits: 15
+Time: 495
 Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 63
+Magic bitboard number: 7228318085001814146
+Number of bits: 15
+Time: 1052
 Generating moves for 4096 rook blocker patterns
-Generating moves for 262144 queen blocker patterns
-Generating moves for 65536 queen blocker patterns
-Generating moves for 65536 queen blocker patterns
-Generating moves for 65536 queen blocker patterns
-Generating moves for 65536 queen blocker patterns
-Generating moves for 65536 queen blocker patterns
-Generating moves for 65536 queen blocker patterns
-Generating moves for 262144 queen blocker patterns
-Generating moves for 65536 queen blocker patterns
-Generating moves for 32768 queen blocker patterns
-Generating moves for 32768 queen blocker patterns
-Generating moves for 32768 queen blocker patterns
-Generating moves for 32768 queen blocker patterns
-Generating moves for 32768 queen blocker patterns
-Generating moves for 32768 queen blocker patterns
-Generating moves for 65536 queen blocker patterns
-Generating moves for 65536 queen blocker patterns
-Generating moves for 32768 queen blocker patterns
-Generating moves for 131072 queen blocker patterns
-Generating moves for 131072 queen blocker patterns
-Generating moves for 131072 queen blocker patterns
-Generating moves for 131072 queen blocker patterns
-Generating moves for 32768 queen blocker patterns
-Generating moves for 65536 queen blocker patterns
-Generating moves for 65536 queen blocker patterns
-Generating moves for 32768 queen blocker patterns
-Generating moves for 131072 queen blocker patterns
-Generating moves for 524288 queen blocker patterns
-Generating moves for 524288 queen blocker patterns
-Generating moves for 131072 queen blocker patterns
-Generating moves for 32768 queen blocker patterns
-Generating moves for 65536 queen blocker patterns
-Generating moves for 65536 queen blocker patterns
-Generating moves for 32768 queen blocker patterns
-Generating moves for 131072 queen blocker patterns
-Generating moves for 524288 queen blocker patterns
-Generating moves for 524288 queen blocker patterns
-Generating moves for 131072 queen blocker patterns
-Generating moves for 32768 queen blocker patterns
-Generating moves for 65536 queen blocker patterns
-Generating moves for 65536 queen blocker patterns
-Generating moves for 32768 queen blocker patterns
-Generating moves for 131072 queen blocker patterns
-Generating moves for 131072 queen blocker patterns
-Generating moves for 131072 queen blocker patterns
-Generating moves for 131072 queen blocker patterns
-Generating moves for 32768 queen blocker patterns
-Generating moves for 65536 queen blocker patterns
-Generating moves for 65536 queen blocker patterns
-Generating moves for 32768 queen blocker patterns
-Generating moves for 32768 queen blocker patterns
-Generating moves for 32768 queen blocker patterns
-Generating moves for 32768 queen blocker patterns
-Generating moves for 32768 queen blocker patterns
-Generating moves for 32768 queen blocker patterns
-Generating moves for 65536 queen blocker patterns
-Generating moves for 262144 queen blocker patterns
-Generating moves for 65536 queen blocker patterns
-Generating moves for 65536 queen blocker patterns
-Generating moves for 65536 queen blocker patterns
-Generating moves for 65536 queen blocker patterns
-Generating moves for 65536 queen blocker patterns
-Generating moves for 65536 queen blocker patterns
-Generating moves for 262144 queen blocker patterns
-Generating moves for 8 white pawn blocker patterns
-Generating moves for 16 white pawn blocker patterns
-Generating moves for 16 white pawn blocker patterns
-Generating moves for 16 white pawn blocker patterns
-Generating moves for 16 white pawn blocker patterns
-Generating moves for 16 white pawn blocker patterns
-Generating moves for 16 white pawn blocker patterns
-Generating moves for 8 white pawn blocker patterns
-Generating moves for 4 white pawn blocker patterns
-Generating moves for 8 white pawn blocker patterns
-Generating moves for 8 white pawn blocker patterns
-Generating moves for 8 white pawn blocker patterns
-Generating moves for 8 white pawn blocker patterns
-Generating moves for 8 white pawn blocker patterns
-Generating moves for 8 white pawn blocker patterns
-Generating moves for 4 white pawn blocker patterns
-Generating moves for 4 white pawn blocker patterns
-Generating moves for 8 white pawn blocker patterns
-Generating moves for 8 white pawn blocker patterns
-Generating moves for 8 white pawn blocker patterns
-Generating moves for 8 white pawn blocker patterns
-Generating moves for 8 white pawn blocker patterns
-Generating moves for 8 white pawn blocker patterns
-Generating moves for 4 white pawn blocker patterns
-Generating moves for 4 white pawn blocker patterns
-Generating moves for 8 white pawn blocker patterns
-Generating moves for 8 white pawn blocker patterns
-Generating moves for 8 white pawn blocker patterns
-Generating moves for 8 white pawn blocker patterns
-Generating moves for 8 white pawn blocker patterns
-Generating moves for 8 white pawn blocker patterns
-Generating moves for 4 white pawn blocker patterns
-Generating moves for 4 white pawn blocker patterns
-Generating moves for 8 white pawn blocker patterns
-Generating moves for 8 white pawn blocker patterns
-Generating moves for 8 white pawn blocker patterns
-Generating moves for 8 white pawn blocker patterns
-Generating moves for 8 white pawn blocker patterns
-Generating moves for 8 white pawn blocker patterns
-Generating moves for 4 white pawn blocker patterns
-Generating moves for 4 white pawn blocker patterns
-Generating moves for 8 white pawn blocker patterns
-Generating moves for 8 white pawn blocker patterns
-Generating moves for 8 white pawn blocker patterns
-Generating moves for 8 white pawn blocker patterns
-Generating moves for 8 white pawn blocker patterns
-Generating moves for 8 white pawn blocker patterns
-Generating moves for 4 white pawn blocker patterns
-Generating moves for 4 black pawn blocker patterns
-Generating moves for 8 black pawn blocker patterns
-Generating moves for 8 black pawn blocker patterns
-Generating moves for 8 black pawn blocker patterns
-Generating moves for 8 black pawn blocker patterns
-Generating moves for 8 black pawn blocker patterns
-Generating moves for 8 black pawn blocker patterns
-Generating moves for 4 black pawn blocker patterns
-Generating moves for 4 black pawn blocker patterns
-Generating moves for 8 black pawn blocker patterns
-Generating moves for 8 black pawn blocker patterns
-Generating moves for 8 black pawn blocker patterns
-Generating moves for 8 black pawn blocker patterns
-Generating moves for 8 black pawn blocker patterns
-Generating moves for 8 black pawn blocker patterns
-Generating moves for 4 black pawn blocker patterns
-Generating moves for 4 black pawn blocker patterns
-Generating moves for 8 black pawn blocker patterns
-Generating moves for 8 black pawn blocker patterns
-Generating moves for 8 black pawn blocker patterns
-Generating moves for 8 black pawn blocker patterns
-Generating moves for 8 black pawn blocker patterns
-Generating moves for 8 black pawn blocker patterns
-Generating moves for 4 black pawn blocker patterns
-Generating moves for 4 black pawn blocker patterns
-Generating moves for 8 black pawn blocker patterns
-Generating moves for 8 black pawn blocker patterns
-Generating moves for 8 black pawn blocker patterns
-Generating moves for 8 black pawn blocker patterns
-Generating moves for 8 black pawn blocker patterns
-Generating moves for 8 black pawn blocker patterns
-Generating moves for 4 black pawn blocker patterns
-Generating moves for 4 black pawn blocker patterns
-Generating moves for 8 black pawn blocker patterns
-Generating moves for 8 black pawn blocker patterns
-Generating moves for 8 black pawn blocker patterns
-Generating moves for 8 black pawn blocker patterns
-Generating moves for 8 black pawn blocker patterns
-Generating moves for 8 black pawn blocker patterns
-Generating moves for 4 black pawn blocker patterns
-Generating moves for 8 black pawn blocker patterns
-Generating moves for 16 black pawn blocker patterns
-Generating moves for 16 black pawn blocker patterns
-Generating moves for 16 black pawn blocker patterns
-Generating moves for 16 black pawn blocker patterns
-Generating moves for 16 black pawn blocker patterns
-Generating moves for 16 black pawn blocker patterns
-Generating moves for 8 black pawn blocker patterns
-Choose players as follows: (user OR cpu) (user OR cpu)
-Choose players as follows: (user OR cpu) (user OR cpu)
-WHITE TO MOVE:
-Input command as follows: (move OR list OR display)
-Input move as follows: (square in lower case) (square in lower case)
-WHITE'S MOVE:
-  ABCDEFGH
-  --------
-8|rnbqkbnr|8
-7|pppppppp|7
-6|--------|6
-5|--------|5
-4|----P---|4
-3|--------|3
-2|PPPP-PPP|2
-1|RNBQKBNR|1
-  --------
-  ABCDEFGH
-
-BLACK TO MOVE:
-Begin iterative deepening search
-Searching depth 1
-Time elasped: 0
-Finished searching depth 1
-Searching depth 2
-Time elasped: 0
-Finished searching depth 2
-Searching depth 3
-Time elasped: 0
-Finished searching depth 3
-Searching depth 4
-Time elasped: 0
-Finished searching depth 4
-Searching depth 5
-Time elasped: 0
-Finished searching depth 5
-Searching depth 6
-Time elasped: 1
-Finished searching depth 6
-Searching depth 7
-Time elasped: 9
-Finished searching depth 7
-Searching depth 8
-Time elasped: 10
-Halted search at depth 8
-End iterative deepening search
-BLACK'S MOVE:
-  ABCDEFGH
-  --------
-8|rnbqkbnr|8
-7|pppp-ppp|7
-6|----p---|6
-5|--------|5
-4|----P---|4
-3|--------|3
-2|PPPP-PPP|2
-1|RNBQKBNR|1
-  --------
-  ABCDEFGH
-
-WHITE TO MOVE:
-Input command as follows: (move OR list OR display)
-Input move as follows: (square in lower case) (square in lower case)
-Couldn't find move in move list
-Invalid move
-WHITE TO MOVE:
-Input command as follows: (move OR list OR display)
-Input move as follows: (square in lower case) (square in lower case)
-WHITE'S MOVE:
-  ABCDEFGH
-  --------
-8|rnbqkbnr|8
-7|pppp-ppp|7
-6|----p---|6
-5|--------|5
-4|----P---|4
-3|--N-----|3
-2|PPPP-PPP|2
-1|R-BQKBNR|1
-  --------
-  ABCDEFGH
-
-BLACK TO MOVE:
-Begin iterative deepening search
-Searching depth 1
-Time elasped: 0
-Finished searching depth 1
-Searching depth 2
-Time elasped: 0
-Finished searching depth 2
-Searching depth 3
-Time elasped: 0
-Finished searching depth 3
-Searching depth 4
-Time elasped: 0
-Finished searching depth 4
-Searching depth 5
-Time elasped: 0
-Finished searching depth 5
-Searching depth 6
-Time elasped: 6
-Finished searching depth 6
-Searching depth 7
-Time elasped: 10
-Halted search at depth 7
-End iterative deepening search
-BLACK'S MOVE:
-  ABCDEFGH
-  --------
-8|rnbqk-nr|8
-7|pppp-ppp|7
-6|----p---|6
-5|--------|5
-4|-b--P---|4
-3|--N-----|3
-2|PPPP-PPP|2
-1|R-BQKBNR|1
-  --------
-  ABCDEFGH
-
-WHITE TO MOVE:
-Input command as follows: (move OR list OR display)
+Generating bit shift values for magic bitboards
+Searching for a magic bitboard number for rook square: 0
+Magic bitboard number: 180146326124627074
+Number of bits: 10
+Time: 1067
+Generating moves for 4096 rook blocker patterns
+Searching for a magic bitboard number for rook square: 1
+Magic bitboard number: 9241386847819534337
+Number of bits: 8
+Time: 786
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 2
+Magic bitboard number: 36038154142257152
+Number of bits: 9
+Time: 1063
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 3
+Magic bitboard number: 1945564935165841408
+Number of bits: 9
+Time: 4767
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 4
+Magic bitboard number: 4755812202426955804
+Number of bits: 14
+Time: 1282
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 5
+Magic bitboard number: 216181625451708426
+Number of bits: 9
+Time: 1500
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 6
+Magic bitboard number: 612490099111772416
+Number of bits: 6
+Time: 149
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 7
+Magic bitboard number: 4647724986516111488
+Number of bits: 9
+Time: 1770
+Generating moves for 4096 rook blocker patterns
+Searching for a magic bitboard number for rook square: 8
+Magic bitboard number: 140742857138306
+Number of bits: 7
+Time: 294
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 9
+Magic bitboard number: 108156897508769793
+Number of bits: 9
+Time: 1403
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 10
+Magic bitboard number: 292875263560126464
+Number of bits: 6
+Time: 35
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 11
+Magic bitboard number: 2533343511976192
+Number of bits: 7
+Time: 382
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 12
+Magic bitboard number: 586030940502893056
+Number of bits: 10
+Time: 141
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 13
+Magic bitboard number: 141288955448320
+Number of bits: 8
+Time: 21
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 14
+Magic bitboard number: 4615064371722191369
+Number of bits: 13
+Time: 218
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 15
+Magic bitboard number: 1153203018239337602
+Number of bits: 10
+Time: 525
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 16
+Magic bitboard number: 1154153507389966724
+Number of bits: 10
+Time: 459
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 17
+Magic bitboard number: 7548033525765671104
+Number of bits: 11
+Time: 134
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 18
+Magic bitboard number: 10376382602440360198
+Number of bits: 10
+Time: 248
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 19
+Magic bitboard number: 2254548861288536
+Number of bits: 9
+Time: 337
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 20
+Magic bitboard number: 1153344266961961986
+Number of bits: 8
+Time: 147
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 21
+Magic bitboard number: 2310487896118789121
+Number of bits: 7
+Time: 17
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 22
+Magic bitboard number: 577727939622207744
+Number of bits: 7
+Time: 92
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 23
+Magic bitboard number: 9259403032913789092
+Number of bits: 8
+Time: 384
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 24
+Magic bitboard number: 70370891960416
+Number of bits: 7
+Time: 552
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 25
+Magic bitboard number: 73253903493234820
+Number of bits: 9
+Time: 521
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 26
+Magic bitboard number: 9225659042519585024
+Number of bits: 8
+Time: 794
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 27
+Magic bitboard number: 301744477864235168
+Number of bits: 11
+Time: 511
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 28
+Magic bitboard number: 2741003366158831904
+Number of bits: 12
+Time: 1273
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 29
+Magic bitboard number: 289357376648118784
+Number of bits: 6
+Time: 294
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 30
+Magic bitboard number: 5514739581456
+Number of bits: 7
+Time: 241
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 31
+Magic bitboard number: 148620445560866891
+Number of bits: 11
+Time: 1036
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 32
+Magic bitboard number: 70369356547200
+Number of bits: 6
+Time: 1459
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 33
+Magic bitboard number: 2306058651036553217
+Number of bits: 10
+Time: 312
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 34
+Magic bitboard number: 1347843269618311168
+Number of bits: 12
+Time: 5
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 35
+Magic bitboard number: 12195888597135525888
+Number of bits: 9
+Time: 89
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 36
+Magic bitboard number: 891928264874922241
+Number of bits: 12
+Time: 50
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 37
+Magic bitboard number: 1130300109226496
+Number of bits: 5
+Time: 1020
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 38
+Magic bitboard number: 2328660177659642373
+Number of bits: 12
+Time: 29
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 39
+Magic bitboard number: 1236238390072967297
+Number of bits: 10
+Time: 744
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 40
+Magic bitboard number: 9331467361447854080
+Number of bits: 7
+Time: 101
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 41
+Magic bitboard number: 4512673282670592
+Number of bits: 6
+Time: 380
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 42
+Magic bitboard number: 2378182215679934480
+Number of bits: 8
+Time: 17
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 43
+Magic bitboard number: 306529616892854304
+Number of bits: 9
+Time: 303
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 44
+Magic bitboard number: 652459013466357792
+Number of bits: 11
+Time: 1165
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 45
+Magic bitboard number: 595883084780470280
+Number of bits: 11
+Time: 1864
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 46
+Magic bitboard number: 4053240833172045832
+Number of bits: 12
+Time: 289
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 47
+Magic bitboard number: 36038160320430115
+Number of bits: 10
+Time: 1039
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 48
+Magic bitboard number: 360851470473560576
+Number of bits: 9
+Time: 51
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 49
+Magic bitboard number: 1153097701362010368
+Number of bits: 8
+Time: 73
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 50
+Magic bitboard number: 9223407223375398272
+Number of bits: 7
+Time: 48
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 51
+Magic bitboard number: 9242529932960235648
+Number of bits: 10
+Time: 892
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 52
+Magic bitboard number: 40550435525821696
+Number of bits: 10
+Time: 145
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 53
+Magic bitboard number: 11821968484499968
+Number of bits: 9
+Time: 300
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 54
+Magic bitboard number: 706195975373824
+Number of bits: 9
+Time: 96
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 55
+Magic bitboard number: 9233519439474065920
+Number of bits: 12
+Time: 107
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 56
+Magic bitboard number: 9232399577091416905
+Number of bits: 12
+Time: 397
+Generating moves for 4096 rook blocker patterns
+Searching for a magic bitboard number for rook square: 57
+Magic bitboard number: 1190288016443183618
+Number of bits: 13
+Time: 169
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 58
+Magic bitboard number: 9809123697045544961
+Number of bits: 11
+Time: 316
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 59
+Magic bitboard number: 1164216787827444745
+Number of bits: 11
+Time: 1424
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 60
+Magic bitboard number: 6922314189486819329
+Number of bits: 11
+Time: 1512
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 61
+Magic bitboard number: 9232660719811690561
+Number of bits: 9
+Time: 1470
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 62
+Magic bitboard number: 2594082250213622916
+Number of bits: 10
+Time: 9
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 63
+Magic bitboard number: 1009097687724984642
+Number of bits: 14
+Time: 216
+Generating moves for 4096 rook blocker patterns
+Generating bit shift values for magic bitboards
+Searching for a magic bitboard number for rook square: 0
+Magic bitboard number: 396317112955650052
+Number of bits: 10
+Time: 7483
+Generating moves for 4096 rook blocker patterns
+Searching for a magic bitboard number for rook square: 1
+Magic bitboard number: 1225014557911617665
+Number of bits: 9
+Time: 108
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 2
+Magic bitboard number: 36063983540121600
+Number of bits: 7
+Time: 1785
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 3
+Magic bitboard number: 72067576884109568
+Number of bits: 9
+Time: 158
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 4
+Magic bitboard number: 144124654284451872
+Number of bits: 11
+Time: 262
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 5
+Magic bitboard number: 2918336958730207249
+Number of bits: 8
+Time: 45
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 6
+Magic bitboard number: 252212574265802880
+Number of bits: 7
+Time: 313
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 7
+Magic bitboard number: 7638110467728097796
+Number of bits: 11
+Time: 2383
+Generating moves for 4096 rook blocker patterns
+Searching for a magic bitboard number for rook square: 8
+Magic bitboard number: 36169545280929796
+Number of bits: 9
+Time: 171
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 9
+Magic bitboard number: 4629770786217938944
+Number of bits: 6
+Time: 196
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 10
+Magic bitboard number: 3243154761146475008
+Number of bits: 14
+Time: 92
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 11
+Magic bitboard number: 703721810169856
+Number of bits: 6
+Time: 154
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 12
+Magic bitboard number: 2342434807893467408
+Number of bits: 10
+Time: 148
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 13
+Magic bitboard number: 2815093499101188
+Number of bits: 8
+Time: 142
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 14
+Magic bitboard number: 1333347656171004416
+Number of bits: 12
+Time: 134
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 15
+Magic bitboard number: 2379589489686233635
+Number of bits: 12
+Time: 442
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 16
+Magic bitboard number: 10106078113580458112
+Number of bits: 9
+Time: 579
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 17
+Magic bitboard number: 8074954407290093568
+Number of bits: 7
+Time: 109
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 18
+Magic bitboard number: 4616349047777722432
+Number of bits: 8
+Time: 330
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 19
+Magic bitboard number: 7037974197837832
+Number of bits: 7
+Time: 420
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 20
+Magic bitboard number: 1408475603149840
+Number of bits: 8
+Time: 2656
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 21
+Magic bitboard number: 5299752148819558912
+Number of bits: 12
+Time: 2869
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 22
+Magic bitboard number: 327658863392327681
+Number of bits: 10
+Time: 120
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 23
+Magic bitboard number: 9241749274268582537
+Number of bits: 13
+Time: 958
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 24
+Magic bitboard number: 18050134785409024
+Number of bits: 6
+Time: 1142
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 25
+Magic bitboard number: 3603196362319986880
+Number of bits: 9
+Time: 521
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 26
+Magic bitboard number: 178129476796548
+Number of bits: 9
+Time: 557
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 27
+Magic bitboard number: 9899901898752
+Number of bits: 8
+Time: 1070
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 28
+Magic bitboard number: 13835906880414681088
+Number of bits: 8
+Time: 1545
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 29
+Magic bitboard number: 144678146619740324
+Number of bits: 8
+Time: 2556
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 30
+Magic bitboard number: 578765345855195202
+Number of bits: 10
+Time: 121
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 31
+Magic bitboard number: 9011623071091011
+Number of bits: 10
+Time: 119
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 32
+Magic bitboard number: 1689412534542400
+Number of bits: 8
+Time: 587
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 33
+Magic bitboard number: 10394589554567823872
+Number of bits: 9
+Time: 377
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 34
+Magic bitboard number: 13835621076136109762
+Number of bits: 12
+Time: 391
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 35
+Magic bitboard number: 36099243106109474
+Number of bits: 8
+Time: 618
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 36
+Magic bitboard number: 241021749213267408
+Number of bits: 14
+Time: 577
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 37
+Magic bitboard number: 562967166849288
+Number of bits: 6
+Time: 1502
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 38
+Magic bitboard number: 2314859073482261922
+Number of bits: 11
+Time: 168
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 39
+Magic bitboard number: 2324420634735542532
+Number of bits: 8
+Time: 1668
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 40
+Magic bitboard number: 315463082298343440
+Number of bits: 10
+Time: 803
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 41
+Magic bitboard number: 576531258494976032
+Number of bits: 6
+Time: 768
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 42
+Magic bitboard number: 54060788251394176
+Number of bits: 6
+Time: 247
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 43
+Magic bitboard number: 14413770813566124040
+Number of bits: 9
+Time: 443
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 44
+Magic bitboard number: 167125834563712
+Number of bits: 6
+Time: 5571
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 45
+Magic bitboard number: 577023772117303384
+Number of bits: 9
+Time: 479
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 46
+Magic bitboard number: 4611691516019114112
+Number of bits: 6
+Time: 403
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 47
+Magic bitboard number: 21992385413137
+Number of bits: 8
+Time: 590
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 48
+Magic bitboard number: 2634888906269532416
+Number of bits: 12
+Time: 308
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 49
+Magic bitboard number: 288516799606030592
+Number of bits: 8
+Time: 0
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 50
+Magic bitboard number: 6052873084380135680
+Number of bits: 9
+Time: 74
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 51
+Magic bitboard number: 722837224290386432
+Number of bits: 11
+Time: 37
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 52
+Magic bitboard number: 9514985133546406144
+Number of bits: 11
+Time: 71
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 53
+Magic bitboard number: 4612249518203733632
+Number of bits: 7
+Time: 618
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 54
+Magic bitboard number: 26418617664512
+Number of bits: 11
+Time: 84
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 55
+Magic bitboard number: 563231291867648
+Number of bits: 8
+Time: 182
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 56
+Magic bitboard number: 4612952805106275074
+Number of bits: 13
+Time: 344
+Generating moves for 4096 rook blocker patterns
+Searching for a magic bitboard number for rook square: 57
+Magic bitboard number: 57739213530268162
+Number of bits: 15
+Time: 6
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 58
+Magic bitboard number: 18296711140089857
+Number of bits: 10
+Time: 16
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 59
+Magic bitboard number: 12178300877999722497
+Number of bits: 12
+Time: 1615
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 60
+Magic bitboard number: 14051512384349536261
+Number of bits: 13
+Time: 1645
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 61
+Magic bitboard number: 99360821400306243
+Number of bits: 12
+Time: 32
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 62
+Magic bitboard number: 10377137983580143617
+Number of bits: 8
+Time: 72
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 63
+Magic bitboard number: 198163909117490178
+Number of bits: 14
+Time: 31
+Generating moves for 4096 rook blocker patterns
+Generating bit shift values for magic bitboards
+Searching for a magic bitboard number for rook square: 0
+Magic bitboard number: 2341872081186066976
+Number of bits: 8
+Time: 3063
+Generating moves for 4096 rook blocker patterns
+Searching for a magic bitboard number for rook square: 1
+Magic bitboard number: 7007601088910067265
+Number of bits: 10
+Time: 496
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 2
+Magic bitboard number: 144150922355933248
+Number of bits: 8
+Time: 6030
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 3
+Magic bitboard number: 216208001114051840
+Number of bits: 8
+Time: 2748
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 4
+Magic bitboard number: 9259407981101974528
+Number of bits: 8
+Time: 6916
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 5
+Magic bitboard number: 72059797365081088
+Number of bits: 7
+Time: 5936
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 6
+Magic bitboard number: 288230994929272849
+Number of bits: 10
+Time: 185
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 7
+Magic bitboard number: 1188950628596973696
+Number of bits: 8
+Time: 712
+Generating moves for 4096 rook blocker patterns
+Searching for a magic bitboard number for rook square: 8
+Magic bitboard number: 1306184631062642688
+Number of bits: 10
+Time: 1509
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 9
+Magic bitboard number: 9228016511418122240
+Number of bits: 7
+Time: 21
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 10
+Magic bitboard number: 4773956411231043722
+Number of bits: 10
+Time: 799
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 11
+Magic bitboard number: 576742369031491584
+Number of bits: 8
+Time: 99
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 12
+Magic bitboard number: 19281053085073538
+Number of bits: 7
+Time: 1144
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 13
+Magic bitboard number: 1688858451775748
+Number of bits: 8
+Time: 354
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 14
+Magic bitboard number: 3873377193170305536
+Number of bits: 11
+Time: 208
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 15
+Magic bitboard number: 77124153383094532
+Number of bits: 11
+Time: 1078
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 16
+Magic bitboard number: 108087765983346698
+Number of bits: 9
+Time: 14
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 17
+Magic bitboard number: 4440549507528142856
+Number of bits: 15
+Time: 292
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 18
+Magic bitboard number: 184656931107909760
+Number of bits: 9
+Time: 650
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 19
+Magic bitboard number: 2306688533842137088
+Number of bits: 10
+Time: 1462
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 20
+Magic bitboard number: 294988524508938368
+Number of bits: 10
+Time: 94
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 21
+Magic bitboard number: 297378862684210176
+Number of bits: 7
+Time: 5015
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 22
+Magic bitboard number: 4755963934497126402
+Number of bits: 13
+Time: 136
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 23
+Magic bitboard number: 2306975506259673153
+Number of bits: 10
+Time: 338
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 24
+Magic bitboard number: 72127964929626144
+Number of bits: 6
+Time: 229
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 25
+Magic bitboard number: 90107177188459536
+Number of bits: 7
+Time: 97
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 26
+Magic bitboard number: 288265571262267520
+Number of bits: 6
+Time: 376
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 27
+Magic bitboard number: 9462063405517005056
+Number of bits: 12
+Time: 2220
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 28
+Magic bitboard number: 9799837197942653056
+Number of bits: 7
+Time: 553
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 29
+Magic bitboard number: 18577391412840464
+Number of bits: 7
+Time: 1085
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 30
+Magic bitboard number: 3062524179850070096
+Number of bits: 13
+Time: 370
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 31
+Magic bitboard number: 1306048315753794625
+Number of bits: 11
+Time: 1134
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 32
+Magic bitboard number: 7205829781672165520
+Number of bits: 9
+Time: 1317
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 33
+Magic bitboard number: 2310348945374593024
+Number of bits: 7
+Time: 20
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 34
+Magic bitboard number: 162164773130080256
+Number of bits: 7
+Time: 171
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 35
+Magic bitboard number: 18158503260588032
+Number of bits: 7
+Time: 83
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 36
+Magic bitboard number: 1153510843661421824
+Number of bits: 10
+Time: 281
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 37
+Magic bitboard number: 9372061210616340496
+Number of bits: 9
+Time: 467
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 38
+Magic bitboard number: 144255929867567616
+Number of bits: 5
+Time: 288
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 39
+Magic bitboard number: 3512948518786433792
+Number of bits: 11
+Time: 33
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 40
+Magic bitboard number: 594475434960257024
+Number of bits: 8
+Time: 408
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 41
+Magic bitboard number: 328762910241210377
+Number of bits: 8
+Time: 134
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 42
+Magic bitboard number: 6917691892817788992
+Number of bits: 9
+Time: 1689
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 43
+Magic bitboard number: 288371182493794312
+Number of bits: 6
+Time: 295
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 44
+Magic bitboard number: 1153485142093856776
+Number of bits: 10
+Time: 250
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 45
+Magic bitboard number: 36592883259801604
+Number of bits: 8
+Time: 851
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 46
+Magic bitboard number: 288248269036060680
+Number of bits: 9
+Time: 109
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 47
+Magic bitboard number: 2333727724687982604
+Number of bits: 12
+Time: 393
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 48
+Magic bitboard number: 2310557751580991616
+Number of bits: 10
+Time: 94
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 49
+Magic bitboard number: 1202179900419641600
+Number of bits: 13
+Time: 5
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 50
+Magic bitboard number: 353566021648640
+Number of bits: 9
+Time: 72
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 51
+Magic bitboard number: 45176768122848896
+Number of bits: 8
+Time: 55
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 52
+Magic bitboard number: 4756083283061113088
+Number of bits: 10
+Time: 262
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 53
+Magic bitboard number: 2305860757094410241
+Number of bits: 9
+Time: 614
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 54
+Magic bitboard number: 3467780515879871488
+Number of bits: 12
+Time: 155
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 55
+Magic bitboard number: 2326122440336507392
+Number of bits: 12
+Time: 289
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 56
+Magic bitboard number: 581034798529643777
+Number of bits: 10
+Time: 1
+Generating moves for 4096 rook blocker patterns
+Searching for a magic bitboard number for rook square: 57
+Magic bitboard number: 36591820005736642
+Number of bits: 10
+Time: 615
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 58
+Magic bitboard number: 14646182093541441
+Number of bits: 11
+Time: 150
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 59
+Magic bitboard number: 2305860601953395721
+Number of bits: 8
+Time: 466
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 60
+Magic bitboard number: 1297599780884850818
+Number of bits: 12
+Time: 5701
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 61
+Magic bitboard number: 577023721315838022
+Number of bits: 12
+Time: 320
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 62
+Magic bitboard number: 9242524432315449860
+Number of bits: 11
+Time: 137
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 63
+Magic bitboard number: 310823141687984394
+Number of bits: 13
+Time: 554
+Generating moves for 4096 rook blocker patterns
+Generating bit shift values for magic bitboards
+Searching for a magic bitboard number for rook square: 0
+Magic bitboard number: 9259401411305684992
+Number of bits: 12
+Time: 7115
+Generating moves for 4096 rook blocker patterns
+Searching for a magic bitboard number for rook square: 1
+Magic bitboard number: 2377922735226568704
+Number of bits: 9
+Time: 1756
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 2
+Magic bitboard number: 72092782742736920
+Number of bits: 8
+Time: 5628
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 3
+Magic bitboard number: 360323360720748548
+Number of bits: 8
+Time: 6929
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 4
+Magic bitboard number: 144124001382309904
+Number of bits: 6
+Time: 498
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 5
+Magic bitboard number: 72066394426070016
+Number of bits: 7
+Time: 938
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 6
+Magic bitboard number: 72093877930688580
+Number of bits: 8
+Time: 0
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 7
+Magic bitboard number: 1585272068329505346
+Number of bits: 14
+Time: 1168
+Generating moves for 4096 rook blocker patterns
+Searching for a magic bitboard number for rook square: 8
+Magic bitboard number: 2305983782135562784
+Number of bits: 7
+Time: 744
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 9
+Magic bitboard number: 2305913382789730305
+Number of bits: 7
+Time: 120
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 10
+Magic bitboard number: 5770305750441984
+Number of bits: 6
+Time: 499
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 11
+Magic bitboard number: 4611967532101795872
+Number of bits: 8
+Time: 119
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 12
+Magic bitboard number: 13871227624157611008
+Number of bits: 7
+Time: 763
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 13
+Magic bitboard number: 4635892936085733380
+Number of bits: 12
+Time: 383
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 14
+Magic bitboard number: 5629783136543120
+Number of bits: 10
+Time: 108
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 15
+Magic bitboard number: 320037057116276992
+Number of bits: 11
+Time: 1538
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 16
+Magic bitboard number: 936788854676013056
+Number of bits: 9
+Time: 101
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 17
+Magic bitboard number: 576610836177502209
+Number of bits: 7
+Time: 1154
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 18
+Magic bitboard number: 4899936186358841472
+Number of bits: 8
+Time: 933
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 19
+Magic bitboard number: 9227878935429144832
+Number of bits: 11
+Time: 237
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 20
+Magic bitboard number: 2920884525158432772
+Number of bits: 10
+Time: 2338
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 21
+Magic bitboard number: 5369559042521838592
+Number of bits: 12
+Time: 808
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 22
+Magic bitboard number: 4398315079689
+Number of bits: 6
+Time: 394
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 23
+Magic bitboard number: 2816948798802949
+Number of bits: 10
+Time: 590
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 24
+Magic bitboard number: 1297072428958105620
+Number of bits: 8
+Time: 26
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 25
+Magic bitboard number: 738625526482227201
+Number of bits: 10
+Time: 957
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 26
+Magic bitboard number: 576883815174242321
+Number of bits: 11
+Time: 976
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 27
+Magic bitboard number: 2324068659985777033
+Number of bits: 12
+Time: 963
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 28
+Magic bitboard number: 18304671731155072
+Number of bits: 7
+Time: 3113
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 29
+Magic bitboard number: 9229005936591372800
+Number of bits: 7
+Time: 1808
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 30
+Magic bitboard number: 22555536151544080
+Number of bits: 9
+Time: 773
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 31
+Magic bitboard number: 9801240305775837762
+Number of bits: 11
+Time: 1031
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 32
+Magic bitboard number: 2396197026510415936
+Number of bits: 9
+Time: 428
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 33
+Magic bitboard number: 4573987707297796
+Number of bits: 7
+Time: 117
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 34
+Magic bitboard number: 12447989503333765636
+Number of bits: 14
+Time: 750
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 35
+Magic bitboard number: 4504770031126529
+Number of bits: 8
+Time: 308
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 36
+Magic bitboard number: 3544831938800640
+Number of bits: 11
+Time: 340
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 37
+Magic bitboard number: 1435964341748736
+Number of bits: 8
+Time: 3
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 38
+Magic bitboard number: 9800115707311073282
+Number of bits: 11
+Time: 256
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 39
+Magic bitboard number: 11685683768854145
+Number of bits: 14
+Time: 10
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 40
+Magic bitboard number: 1589806405810946056
+Number of bits: 10
+Time: 60
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 41
+Magic bitboard number: 4505386472194048
+Number of bits: 7
+Time: 26
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 42
+Magic bitboard number: 2383672086922133520
+Number of bits: 12
+Time: 84
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 43
+Magic bitboard number: 1225014566485884936
+Number of bits: 8
+Time: 1329
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 44
+Magic bitboard number: 9295438427052867712
+Number of bits: 6
+Time: 827
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 45
+Magic bitboard number: 144117387166253184
+Number of bits: 5
+Time: 2038
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 46
+Magic bitboard number: 27884177825464328
+Number of bits: 13
+Time: 182
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 47
+Magic bitboard number: 9899119607812
+Number of bits: 9
+Time: 47
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 48
+Magic bitboard number: 13835200996092944896
+Number of bits: 8
+Time: 334
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 49
+Magic bitboard number: 4785349815468800
+Number of bits: 12
+Time: 168
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 50
+Magic bitboard number: 1157781483524731136
+Number of bits: 12
+Time: 13
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 51
+Magic bitboard number: 615728659563392
+Number of bits: 8
+Time: 194
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 52
+Magic bitboard number: 9369599403956371584
+Number of bits: 11
+Time: 1230
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 53
+Magic bitboard number: 565151126519936
+Number of bits: 6
+Time: 790
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 54
+Magic bitboard number: 2270036380550144
+Number of bits: 12
+Time: 111
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 55
+Magic bitboard number: 40554406223565312
+Number of bits: 11
+Time: 429
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 56
+Magic bitboard number: 564122517275426
+Number of bits: 11
+Time: 51
+Generating moves for 4096 rook blocker patterns
+Searching for a magic bitboard number for rook square: 57
+Magic bitboard number: 563229403652354
+Number of bits: 9
+Time: 386
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 58
+Magic bitboard number: 2306547316238082570
+Number of bits: 12
+Time: 177
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 59
+Magic bitboard number: 92381310565285897
+Number of bits: 12
+Time: 286
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 60
+Magic bitboard number: 18093563968552981
+Number of bits: 11
+Time: 3540
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 61
+Magic bitboard number: 288793330668804098
+Number of bits: 8
+Time: 1206
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 62
+Magic bitboard number: 291889568070893569
+Number of bits: 9
+Time: 8
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 63
+Magic bitboard number: 4647750826616684834
+Number of bits: 11
+Time: 261
+Generating moves for 4096 rook blocker patterns
+Generating bit shift values for magic bitboards
+Searching for a magic bitboard number for rook square: 0
+Magic bitboard number: 36028935531664512
+Number of bits: 6
+Time: 2224
+Generating moves for 4096 rook blocker patterns
+Searching for a magic bitboard number for rook square: 1
+Magic bitboard number: 9259418563507142660
+Number of bits: 7
+Time: 3110
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 2
+Magic bitboard number: 684573669086760960
+Number of bits: 9
+Time: 2215
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 3
+Magic bitboard number: 144121785418254624
+Number of bits: 8
+Time: 28
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 4
+Magic bitboard number: 3891118945175870496
+Number of bits: 13
+Time: 1290
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 5
+Magic bitboard number: 4827863200751945746
+Number of bits: 9
+Time: 218
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 6
+Magic bitboard number: 10088071974364647426
+Number of bits: 12
+Time: 1615
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 7
+Magic bitboard number: 36029072710566144
+Number of bits: 6
+Time: 1373
+Generating moves for 4096 rook blocker patterns
+Searching for a magic bitboard number for rook square: 8
+Magic bitboard number: 5764748295691829377
+Number of bits: 9
+Time: 73
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 9
+Magic bitboard number: 9241456808941322560
+Number of bits: 8
+Time: 477
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 10
+Magic bitboard number: 4631107929343345680
+Number of bits: 11
+Time: 321
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 11
+Magic bitboard number: 1161933106211471872
+Number of bits: 7
+Time: 85
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 12
+Magic bitboard number: 6981002184846485504
+Number of bits: 12
+Time: 388
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 13
+Magic bitboard number: 7098235971280332804
+Number of bits: 11
+Time: 204
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 14
+Magic bitboard number: 9295711114459611904
+Number of bits: 7
+Time: 630
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 15
+Magic bitboard number: 11531748484106061056
+Number of bits: 14
+Time: 282
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 16
+Magic bitboard number: 342274121448857730
+Number of bits: 11
+Time: 1043
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 17
+Magic bitboard number: 1153063342680581888
+Number of bits: 8
+Time: 29
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 18
+Magic bitboard number: 4688425334070182018
+Number of bits: 13
+Time: 155
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 19
+Magic bitboard number: 1729524643934504960
+Number of bits: 7
+Time: 2173
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 20
+Magic bitboard number: 19141402223970304
+Number of bits: 6
+Time: 73
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 21
+Magic bitboard number: 1153062792455000576
+Number of bits: 7
+Time: 826
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 22
+Magic bitboard number: 576896159179080195
+Number of bits: 11
+Time: 52
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 23
+Magic bitboard number: 1158885280924681
+Number of bits: 12
+Time: 1060
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 24
+Magic bitboard number: 24840203202036000
+Number of bits: 10
+Time: 285
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 25
+Magic bitboard number: 6998666397297443072
+Number of bits: 11
+Time: 69
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 26
+Magic bitboard number: 1810799997732069377
+Number of bits: 13
+Time: 494
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 27
+Magic bitboard number: 9225096148397081091
+Number of bits: 11
+Time: 606
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 28
+Magic bitboard number: 4900291332342286336
+Number of bits: 11
+Time: 303
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 29
+Magic bitboard number: 1125908530333712
+Number of bits: 5
+Time: 587
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 30
+Magic bitboard number: 289637755330887700
+Number of bits: 8
+Time: 295
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 31
+Magic bitboard number: 11529250548268173572
+Number of bits: 10
+Time: 268
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 32
+Magic bitboard number: 36043228146827328
+Number of bits: 8
+Time: 218
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 33
+Magic bitboard number: 10458908684837732386
+Number of bits: 14
+Time: 118
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 34
+Magic bitboard number: 2594216940494921728
+Number of bits: 9
+Time: 404
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 35
+Magic bitboard number: 145267491302543360
+Number of bits: 9
+Time: 238
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 36
+Magic bitboard number: 450390751218501632
+Number of bits: 9
+Time: 277
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 37
+Magic bitboard number: 4785633100825600
+Number of bits: 7
+Time: 220
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 38
+Magic bitboard number: 5922176121178123
+Number of bits: 13
+Time: 243
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 39
+Magic bitboard number: 1193612781924909348
+Number of bits: 12
+Time: 465
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 40
+Magic bitboard number: 13835208413537271808
+Number of bits: 11
+Time: 261
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 41
+Magic bitboard number: 2310347845829410816
+Number of bits: 7
+Time: 167
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 42
+Magic bitboard number: 71468792741909
+Number of bits: 7
+Time: 34
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 43
+Magic bitboard number: 4904439785955393600
+Number of bits: 10
+Time: 736
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 44
+Magic bitboard number: 432371953328783364
+Number of bits: 9
+Time: 4734
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 45
+Magic bitboard number: 5199969338431504392
+Number of bits: 12
+Time: 53
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 46
+Magic bitboard number: 563035878326280
+Number of bits: 8
+Time: 27
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 47
+Magic bitboard number: 604889734623854594
+Number of bits: 11
+Time: 759
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 48
+Magic bitboard number: 324264122046750848
+Number of bits: 7
+Time: 27
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 49
+Magic bitboard number: 1585416739892494464
+Number of bits: 9
+Time: 253
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 50
+Magic bitboard number: 11529782549501198848
+Number of bits: 12
+Time: 48
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 51
+Magic bitboard number: 9042972038398720
+Number of bits: 8
+Time: 0
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 52
+Magic bitboard number: 2308094963646759040
+Number of bits: 7
+Time: 129
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 53
+Magic bitboard number: 4617597027365159680
+Number of bits: 8
+Time: 205
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 54
+Magic bitboard number: 378575816623104
+Number of bits: 12
+Time: 82
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 55
+Magic bitboard number: 4616516191463309824
+Number of bits: 13
+Time: 478
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 56
+Magic bitboard number: 282024736989457
+Number of bits: 8
+Time: 1004
+Generating moves for 4096 rook blocker patterns
+Searching for a magic bitboard number for rook square: 57
+Magic bitboard number: 90107521590690945
+Number of bits: 10
+Time: 91
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 58
+Magic bitboard number: 567898028382306
+Number of bits: 10
+Time: 78
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 59
+Magic bitboard number: 4683761205808990497
+Number of bits: 10
+Time: 196
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 60
+Magic bitboard number: 73746478530830338
+Number of bits: 9
+Time: 471
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 61
+Magic bitboard number: 282041912526849
+Number of bits: 6
+Time: 573
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 62
+Magic bitboard number: 45053692084814372
+Number of bits: 12
+Time: 8
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 63
+Magic bitboard number: 18300275846710338
+Number of bits: 11
+Time: 48
+Generating moves for 4096 rook blocker patterns
+Generating bit shift values for magic bitboards
+Searching for a magic bitboard number for rook square: 0
+Magic bitboard number: 36028883992060037
+Number of bits: 8
+Time: 1759
+Generating moves for 4096 rook blocker patterns
+Searching for a magic bitboard number for rook square: 1
+Magic bitboard number: 18015775583375360
+Number of bits: 6
+Time: 1167
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 2
+Magic bitboard number: 4683787730370445568
+Number of bits: 8
+Time: 2192
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 3
+Magic bitboard number: 36033538671249408
+Number of bits: 6
+Time: 8298
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 4
+Magic bitboard number: 4971982789007378960
+Number of bits: 10
+Time: 1746
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 5
+Magic bitboard number: 72058693583643648
+Number of bits: 6
+Time: 1915
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 6
+Magic bitboard number: 144118495200954504
+Number of bits: 9
+Time: 1823
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 7
+Magic bitboard number: 1765411329352402176
+Number of bits: 8
+Time: 4011
+Generating moves for 4096 rook blocker patterns
+Searching for a magic bitboard number for rook square: 8
+Magic bitboard number: 5782903535050063872
+Number of bits: 9
+Time: 83
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 9
+Magic bitboard number: 5764677960499986496
+Number of bits: 6
+Time: 913
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 10
+Magic bitboard number: 1153766066992713792
+Number of bits: 7
+Time: 33
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 11
+Magic bitboard number: 576742365391225088
+Number of bits: 7
+Time: 71
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 12
+Magic bitboard number: 1747678164757315588
+Number of bits: 8
+Time: 925
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 13
+Magic bitboard number: 11603946669573440000
+Number of bits: 10
+Time: 89
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 14
+Magic bitboard number: 562975724013601
+Number of bits: 8
+Time: 201
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 15
+Magic bitboard number: 45176738058289280
+Number of bits: 9
+Time: 855
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 16
+Magic bitboard number: 36029621723996164
+Number of bits: 7
+Time: 201
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 17
+Magic bitboard number: 45043143640352392
+Number of bits: 11
+Time: 54
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 18
+Magic bitboard number: 4778391772945580160
+Number of bits: 10
+Time: 235
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 19
+Magic bitboard number: 3533084903358927040
+Number of bits: 12
+Time: 158
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 20
+Magic bitboard number: 73887731276715008
+Number of bits: 9
+Time: 2230
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 21
+Magic bitboard number: 141287277773824
+Number of bits: 6
+Time: 3202
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 22
+Magic bitboard number: 162133985037062170
+Number of bits: 13
+Time: 6
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 23
+Magic bitboard number: 9261659231311413380
+Number of bits: 12
+Time: 320
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 24
+Magic bitboard number: 11531502616517361665
+Number of bits: 10
+Time: 2318
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 25
+Magic bitboard number: 70388073627776
+Number of bits: 5
+Time: 574
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 26
+Magic bitboard number: 158331823980676
+Number of bits: 6
+Time: 143
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 27
+Magic bitboard number: 875387289243488288
+Number of bits: 11
+Time: 438
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 28
+Magic bitboard number: 1225546448796909697
+Number of bits: 9
+Time: 1820
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 29
+Magic bitboard number: 618682557156820024
+Number of bits: 12
+Time: 142
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 30
+Magic bitboard number: 720964634920112130
+Number of bits: 12
+Time: 80
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 31
+Magic bitboard number: 3819333971871809922
+Number of bits: 11
+Time: 1447
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 32
+Magic bitboard number: 9367522684205794688
+Number of bits: 9
+Time: 747
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 33
+Magic bitboard number: 140875137040384
+Number of bits: 6
+Time: 48
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 34
+Magic bitboard number: 19784612800630913
+Number of bits: 11
+Time: 42
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 35
+Magic bitboard number: 576601558519662592
+Number of bits: 6
+Time: 437
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 36
+Magic bitboard number: 144686936278176768
+Number of bits: 7
+Time: 1229
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 37
+Magic bitboard number: 844433671078912
+Number of bits: 7
+Time: 1508
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 38
+Magic bitboard number: 4901607585263652872
+Number of bits: 10
+Time: 27
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 39
+Magic bitboard number: 79579335098636
+Number of bits: 9
+Time: 379
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 40
+Magic bitboard number: 18084772379262977
+Number of bits: 10
+Time: 396
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 41
+Magic bitboard number: 11538239838050369536
+Number of bits: 8
+Time: 2022
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 42
+Magic bitboard number: 13853145022104469528
+Number of bits: 10
+Time: 787
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 43
+Magic bitboard number: 2310346643267928128
+Number of bits: 6
+Time: 738
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 44
+Magic bitboard number: 1162210247692058628
+Number of bits: 7
+Time: 658
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 45
+Magic bitboard number: 14125822273162248200
+Number of bits: 11
+Time: 733
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 46
+Magic bitboard number: 563091822215300
+Number of bits: 8
+Time: 86
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 47
+Magic bitboard number: 2258959528493060
+Number of bits: 9
+Time: 180
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 48
+Magic bitboard number: 1153485600318431744
+Number of bits: 12
+Time: 145
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 49
+Magic bitboard number: 90196243849937152
+Number of bits: 12
+Time: 278
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 50
+Magic bitboard number: 4614219568374612224
+Number of bits: 8
+Time: 36
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 51
+Magic bitboard number: 9095168925901568
+Number of bits: 9
+Time: 139
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 52
+Magic bitboard number: 4756558770084512000
+Number of bits: 11
+Time: 205
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 53
+Magic bitboard number: 1729945550880772608
+Number of bits: 11
+Time: 157
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 54
+Magic bitboard number: 13839579251424625664
+Number of bits: 8
+Time: 241
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 55
+Magic bitboard number: 363424177725952
+Number of bits: 12
+Time: 49
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 56
+Magic bitboard number: 38363060475298306
+Number of bits: 11
+Time: 38
+Generating moves for 4096 rook blocker patterns
+Searching for a magic bitboard number for rook square: 57
+Magic bitboard number: 9511708521016590593
+Number of bits: 12
+Time: 167
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 58
+Magic bitboard number: 4621328739840565394
+Number of bits: 12
+Time: 868
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 59
+Magic bitboard number: 2306020030854243337
+Number of bits: 10
+Time: 168
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 60
+Magic bitboard number: 588898462196761345
+Number of bits: 12
+Time: 368
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 61
+Magic bitboard number: 144678761404569602
+Number of bits: 11
+Time: 754
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 62
+Magic bitboard number: 5216087490727940
+Number of bits: 9
+Time: 550
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 63
+Magic bitboard number: 11839695830942978
+Number of bits: 11
+Time: 24
+Generating moves for 4096 rook blocker patterns
+Generating bit shift values for magic bitboards
+Searching for a magic bitboard number for rook square: 0
+Magic bitboard number: 4647715176769142784
+Number of bits: 9
+Time: 3194
+Generating moves for 4096 rook blocker patterns
+Searching for a magic bitboard number for rook square: 1
+Magic bitboard number: 162129724028489728
+Number of bits: 5
+Time: 633
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 2
+Magic bitboard number: 36038143404675077
+Number of bits: 7
+Time: 1936
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 3
+Magic bitboard number: 324264122315180032
+Number of bits: 7
+Time: 3861
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 4
+Magic bitboard number: 9367509421466325504
+Number of bits: 11
+Time: 614
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 5
+Magic bitboard number: 9367531360200294448
+Number of bits: 13
+Time: 522
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 6
+Magic bitboard number: 2594095959780688400
+Number of bits: 10
+Time: 2073
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 7
+Magic bitboard number: 36036236455972992
+Number of bits: 10
+Time: 2054
+Generating moves for 4096 rook blocker patterns
+Searching for a magic bitboard number for rook square: 8
+Magic bitboard number: 578290340726121109
+Number of bits: 13
+Time: 181
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 9
+Magic bitboard number: 1549942096704585732
+Number of bits: 10
+Time: 40
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 10
+Magic bitboard number: 1766677828789211136
+Number of bits: 11
+Time: 93
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 11
+Magic bitboard number: 4972255532330000424
+Number of bits: 9
+Time: 228
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 12
+Magic bitboard number: 1441292652631819264
+Number of bits: 7
+Time: 174
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 13
+Magic bitboard number: 578713669884454928
+Number of bits: 9
+Time: 45
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 14
+Magic bitboard number: 9516387771080248064
+Number of bits: 12
+Time: 54
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 15
+Magic bitboard number: 2389722691893724229
+Number of bits: 13
+Time: 887
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 16
+Magic bitboard number: 180179719231160328
+Number of bits: 8
+Time: 237
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 17
+Magic bitboard number: 292736449732673600
+Number of bits: 8
+Time: 1053
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 18
+Magic bitboard number: 324755053451751682
+Number of bits: 13
+Time: 791
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 19
+Magic bitboard number: 4755873774581710944
+Number of bits: 11
+Time: 200
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 20
+Magic bitboard number: 1731775344572110849
+Number of bits: 10
+Time: 1878
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 21
+Magic bitboard number: 361133494765879362
+Number of bits: 9
+Time: 2349
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 22
+Magic bitboard number: 9511905878356330000
+Number of bits: 12
+Time: 630
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 23
+Magic bitboard number: 9368615324062077587
+Number of bits: 13
+Time: 328
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 24
+Magic bitboard number: 9799995939933437952
+Number of bits: 11
+Time: 127
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 25
+Magic bitboard number: 366005436022792192
+Number of bits: 9
+Time: 147
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 26
+Magic bitboard number: 9513907004412788864
+Number of bits: 10
+Time: 118
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 27
+Magic bitboard number: 869775274523295752
+Number of bits: 10
+Time: 684
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 28
+Magic bitboard number: 298926571297441872
+Number of bits: 12
+Time: 1240
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 29
+Magic bitboard number: 4652293184014123136
+Number of bits: 9
+Time: 530
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 30
+Magic bitboard number: 8070538510364901944
+Number of bits: 14
+Time: 10
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 31
+Magic bitboard number: 13835630909430202452
+Number of bits: 10
+Time: 1392
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 32
+Magic bitboard number: 585608963932815393
+Number of bits: 7
+Time: 693
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 33
+Magic bitboard number: 1551419530291520
+Number of bits: 11
+Time: 331
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 34
+Magic bitboard number: 576605956633272320
+Number of bits: 7
+Time: 17
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 35
+Magic bitboard number: 399835410584307712
+Number of bits: 10
+Time: 311
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 36
+Magic bitboard number: 588282841079484452
+Number of bits: 11
+Time: 393
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 37
+Magic bitboard number: 10133511679848456
+Number of bits: 10
+Time: 1284
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 38
+Magic bitboard number: 4767218540145022978
+Number of bits: 12
+Time: 585
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 39
+Magic bitboard number: 10701838628948017412
+Number of bits: 14
+Time: 627
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 40
+Magic bitboard number: 9241386578180341764
+Number of bits: 8
+Time: 10
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 41
+Magic bitboard number: 87961467666432
+Number of bits: 6
+Time: 126
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 42
+Magic bitboard number: 2332873682245976081
+Number of bits: 10
+Time: 648
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 43
+Magic bitboard number: 144396731772633184
+Number of bits: 7
+Time: 239
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 44
+Magic bitboard number: 4697263207641809024
+Number of bits: 9
+Time: 107
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 45
+Magic bitboard number: 1477812886700308
+Number of bits: 10
+Time: 1661
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 46
+Magic bitboard number: 9944230620576350342
+Number of bits: 11
+Time: 191
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 47
+Magic bitboard number: 144116348833890308
+Number of bits: 11
+Time: 186
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 48
+Magic bitboard number: 234293835398660352
+Number of bits: 9
+Time: 34
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 49
+Magic bitboard number: 2605494052371636480
+Number of bits: 14
+Time: 83
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 50
+Magic bitboard number: 2350958789336826624
+Number of bits: 11
+Time: 4
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 51
+Magic bitboard number: 580968755346538688
+Number of bits: 8
+Time: 99
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 52
+Magic bitboard number: 571748195238016
+Number of bits: 6
+Time: 578
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 53
+Magic bitboard number: 1450722047154987648
+Number of bits: 9
+Time: 844
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 54
+Magic bitboard number: 577023719487578624
+Number of bits: 8
+Time: 4
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 55
+Magic bitboard number: 297519058983600384
+Number of bits: 8
+Time: 511
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 56
+Magic bitboard number: 2343138447924174913
+Number of bits: 11
+Time: 497
+Generating moves for 4096 rook blocker patterns
+Searching for a magic bitboard number for rook square: 57
+Magic bitboard number: 9232449626363428961
+Number of bits: 12
+Time: 4
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 58
+Magic bitboard number: 1445796355586523714
+Number of bits: 12
+Time: 78
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 59
+Magic bitboard number: 288388706379769925
+Number of bits: 10
+Time: 378
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 60
+Magic bitboard number: 1806224996553458181
+Number of bits: 11
+Time: 1872
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 61
+Magic bitboard number: 289919230375645202
+Number of bits: 11
+Time: 408
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 62
+Magic bitboard number: 13617520363832484
+Number of bits: 12
+Time: 51
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 63
+Magic bitboard number: 5242335110929465618
+Number of bits: 14
+Time: 145
+Generating moves for 4096 rook blocker patterns
+Generating bit shift values for magic bitboards
+Searching for a magic bitboard number for rook square: 0
+Magic bitboard number: 2341872081118994450
+Number of bits: 8
+Time: 13536
+Generating moves for 4096 rook blocker patterns
+Searching for a magic bitboard number for rook square: 1
+Magic bitboard number: 36046526681712768
+Number of bits: 7
+Time: 2662
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 2
+Magic bitboard number: 36072846205649536
+Number of bits: 7
+Time: 2605
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 3
+Magic bitboard number: 2341885555094065152
+Number of bits: 9
+Time: 6328
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 4
+Magic bitboard number: 36050789399527426
+Number of bits: 6
+Time: 1580
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 5
+Magic bitboard number: 4755959553358037504
+Number of bits: 7
+Time: 105
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 6
+Magic bitboard number: 144119621027758089
+Number of bits: 9
+Time: 352
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 7
+Magic bitboard number: 3566854346228367616
+Number of bits: 11
+Time: 3487
+Generating moves for 4096 rook blocker patterns
+Searching for a magic bitboard number for rook square: 8
+Magic bitboard number: 9148008684068992
+Number of bits: 8
+Time: 255
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 9
+Magic bitboard number: 590112426133815680
+Number of bits: 9
+Time: 538
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 10
+Magic bitboard number: 281612416909378
+Number of bits: 7
+Time: 1392
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 11
+Magic bitboard number: 864972640476987648
+Number of bits: 8
+Time: 325
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 12
+Magic bitboard number: 72620596087357456
+Number of bits: 10
+Time: 757
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 13
+Magic bitboard number: 563233422838801
+Number of bits: 9
+Time: 390
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 14
+Magic bitboard number: 3377725516548100
+Number of bits: 9
+Time: 147
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 15
+Magic bitboard number: 73746455189390404
+Number of bits: 11
+Time: 830
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 16
+Magic bitboard number: 324261647107489856
+Number of bits: 7
+Time: 950
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 17
+Magic bitboard number: 13512723031744514
+Number of bits: 10
+Time: 205
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 18
+Magic bitboard number: 2253208288353067008
+Number of bits: 12
+Time: 847
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 19
+Magic bitboard number: 10237247102309113921
+Number of bits: 14
+Time: 1022
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 20
+Magic bitboard number: 1729667030556094476
+Number of bits: 10
+Time: 91
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 21
+Magic bitboard number: 4036070790632833576
+Number of bits: 10
+Time: 1348
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 22
+Magic bitboard number: 3945048901355600
+Number of bits: 14
+Time: 83
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 23
+Magic bitboard number: 1170955694770242561
+Number of bits: 11
+Time: 51
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 24
+Magic bitboard number: 11399893323104256
+Number of bits: 7
+Time: 204
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 25
+Magic bitboard number: 35219806617666
+Number of bits: 6
+Time: 544
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 26
+Magic bitboard number: 2598577536897212416
+Number of bits: 9
+Time: 36
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 27
+Magic bitboard number: 1153391994605568
+Number of bits: 7
+Time: 1362
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 28
+Magic bitboard number: 9264186256370440192
+Number of bits: 10
+Time: 833
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 29
+Magic bitboard number: 1013380456719065164
+Number of bits: 13
+Time: 1139
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 30
+Magic bitboard number: 76632713460895752
+Number of bits: 11
+Time: 140
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 31
+Magic bitboard number: 182818076830745344
+Number of bits: 12
+Time: 110
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 32
+Magic bitboard number: 4647714952956608576
+Number of bits: 6
+Time: 2448
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 33
+Magic bitboard number: 1513244694606254082
+Number of bits: 9
+Time: 78
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 34
+Magic bitboard number: 342344498803646608
+Number of bits: 10
+Time: 437
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 35
+Magic bitboard number: 270886885910386944
+Number of bits: 14
+Time: 1060
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 36
+Magic bitboard number: 577305470650288128
+Number of bits: 9
+Time: 1262
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 37
+Magic bitboard number: 4791970758215604736
+Number of bits: 10
+Time: 245
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 38
+Magic bitboard number: 6940051432431157504
+Number of bits: 8
+Time: 430
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 39
+Magic bitboard number: 14411531282351653124
+Number of bits: 13
+Time: 9
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 40
+Magic bitboard number: 162130963191660544
+Number of bits: 9
+Time: 699
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 41
+Magic bitboard number: 671037031777910797
+Number of bits: 14
+Time: 159
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 42
+Magic bitboard number: 11551735380675952692
+Number of bits: 11
+Time: 209
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 43
+Magic bitboard number: 9799841653987541024
+Number of bits: 7
+Time: 1605
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 44
+Magic bitboard number: 145241122343551232
+Number of bits: 6
+Time: 949
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 45
+Magic bitboard number: 2533309351526402
+Number of bits: 7
+Time: 749
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 46
+Magic bitboard number: 2307013998358560816
+Number of bits: 11
+Time: 8
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 47
+Magic bitboard number: 399747535571386377
+Number of bits: 15
+Time: 543
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 48
+Magic bitboard number: 144255926105282688
+Number of bits: 7
+Time: 146
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 49
+Magic bitboard number: 4620834093716800000
+Number of bits: 8
+Time: 273
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 50
+Magic bitboard number: 9016133055185024
+Number of bits: 6
+Time: 331
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 51
+Magic bitboard number: 9174328511923328
+Number of bits: 11
+Time: 172
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 52
+Magic bitboard number: 9405776618665607424
+Number of bits: 13
+Time: 1451
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 53
+Magic bitboard number: 182958941155920384
+Number of bits: 12
+Time: 1007
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 54
+Magic bitboard number: 571823650505728
+Number of bits: 9
+Time: 30
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 55
+Magic bitboard number: 147211427886195456
+Number of bits: 14
+Time: 39
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 56
+Magic bitboard number: 9223724018450858754
+Number of bits: 11
+Time: 160
+Generating moves for 4096 rook blocker patterns
+Searching for a magic bitboard number for rook square: 57
+Magic bitboard number: 9818163937214989189
+Number of bits: 14
+Time: 20
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 58
+Magic bitboard number: 9223445162969014282
+Number of bits: 9
+Time: 1084
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 59
+Magic bitboard number: 586031177732202502
+Number of bits: 10
+Time: 1464
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 60
+Magic bitboard number: 579275570857648386
+Number of bits: 9
+Time: 1454
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 61
+Magic bitboard number: 4630263402055410690
+Number of bits: 10
+Time: 269
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 62
+Magic bitboard number: 148135071340348172
+Number of bits: 15
+Time: 24
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 63
+Magic bitboard number: 2312879898697410881
+Number of bits: 13
+Time: 565
+Generating moves for 4096 rook blocker patterns
+Generating bit shift values for magic bitboards
+Searching for a magic bitboard number for rook square: 0
+Magic bitboard number: 468374536266547221
+Number of bits: 12
+Time: 600
+Generating moves for 4096 rook blocker patterns
+Searching for a magic bitboard number for rook square: 1
+Magic bitboard number: 3602898402188222593
+Number of bits: 11
+Time: 401
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 2
+Magic bitboard number: 36038005530558592
+Number of bits: 8
+Time: 2993
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 3
+Magic bitboard number: 72075190519464992
+Number of bits: 6
+Time: 2866
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 4
+Magic bitboard number: 2449997917418160640
+Number of bits: 9
+Time: 2155
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 5
+Magic bitboard number: 72103777821787136
+Number of bits: 7
+Time: 1498
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 6
+Magic bitboard number: 144118538158866440
+Number of bits: 8
+Time: 414
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 7
+Magic bitboard number: 3026438758527664193
+Number of bits: 11
+Time: 3780
+Generating moves for 4096 rook blocker patterns
+Searching for a magic bitboard number for rook square: 8
+Magic bitboard number: 2392539451637764
+Number of bits: 6
+Time: 541
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 9
+Magic bitboard number: 10988853478050275328
+Number of bits: 10
+Time: 983
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 10
+Magic bitboard number: 326792585401353984
+Number of bits: 11
+Time: 629
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 11
+Magic bitboard number: 563226475499528
+Number of bits: 7
+Time: 965
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 12
+Magic bitboard number: 441493861752635520
+Number of bits: 10
+Time: 2566
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 13
+Magic bitboard number: 10387834127243083832
+Number of bits: 13
+Time: 163
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 14
+Magic bitboard number: 37436180492517380
+Number of bits: 6
+Time: 78
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 15
+Magic bitboard number: 4616471163126845696
+Number of bits: 11
+Time: 17
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 16
+Magic bitboard number: 4820808736184450
+Number of bits: 9
+Time: 1465
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 17
+Magic bitboard number: 83837763719168
+Number of bits: 6
+Time: 54
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 18
+Magic bitboard number: 8080022881025134784
+Number of bits: 12
+Time: 1344
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 19
+Magic bitboard number: 360429257702246400
+Number of bits: 6
+Time: 413
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 20
+Magic bitboard number: 9295570918606702592
+Number of bits: 9
+Time: 2974
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 21
+Magic bitboard number: 145523662572258304
+Number of bits: 9
+Time: 8205
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 22
+Magic bitboard number: 4612816316649318419
+Number of bits: 10
+Time: 69
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 23
+Magic bitboard number: 1191239485392847108
+Number of bits: 12
+Time: 266
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 24
+Magic bitboard number: 4611730550795812864
+Number of bits: 6
+Time: 636
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 25
+Magic bitboard number: 1513860406081757184
+Number of bits: 11
+Time: 599
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 26
+Magic bitboard number: 10380814735424620672
+Number of bits: 8
+Time: 636
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 27
+Magic bitboard number: 281616711307265
+Number of bits: 8
+Time: 304
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 28
+Magic bitboard number: 146459349022148608
+Number of bits: 8
+Time: 1613
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 29
+Magic bitboard number: 563027263096848
+Number of bits: 6
+Time: 3753
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 30
+Magic bitboard number: 5911116251401728
+Number of bits: 11
+Time: 112
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 31
+Magic bitboard number: 5765066577728783379
+Number of bits: 13
+Time: 910
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 32
+Magic bitboard number: 4634345029006000160
+Number of bits: 8
+Time: 382
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 33
+Magic bitboard number: 4972047243650535425
+Number of bits: 11
+Time: 265
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 34
+Magic bitboard number: 292874781995311104
+Number of bits: 6
+Time: 1955
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 35
+Magic bitboard number: 9224515535465613312
+Number of bits: 8
+Time: 170
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 36
+Magic bitboard number: 4650811074566705164
+Number of bits: 11
+Time: 295
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 37
+Magic bitboard number: 1441292910313080320
+Number of bits: 8
+Time: 1407
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 38
+Magic bitboard number: 63613379935208529
+Number of bits: 12
+Time: 145
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 39
+Magic bitboard number: 63050755661111425
+Number of bits: 11
+Time: 2041
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 40
+Magic bitboard number: 598409211838466
+Number of bits: 6
+Time: 422
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 41
+Magic bitboard number: 4774413740680462339
+Number of bits: 11
+Time: 192
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 42
+Magic bitboard number: 2621130167854104641
+Number of bits: 11
+Time: 1551
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 43
+Magic bitboard number: 2570933231550480
+Number of bits: 9
+Time: 893
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 44
+Magic bitboard number: 3602888502285762576
+Number of bits: 9
+Time: 770
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 45
+Magic bitboard number: 1153240363046043776
+Number of bits: 7
+Time: 648
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 46
+Magic bitboard number: 10281155291250704
+Number of bits: 11
+Time: 223
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 47
+Magic bitboard number: 720579254504783876
+Number of bits: 13
+Time: 184
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 48
+Magic bitboard number: 1152957795155446272
+Number of bits: 12
+Time: 152
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 49
+Magic bitboard number: 4665764467085149248
+Number of bits: 9
+Time: 11
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 50
+Magic bitboard number: 9246453260099790336
+Number of bits: 10
+Time: 212
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 51
+Magic bitboard number: 2477728163049767168
+Number of bits: 15
+Time: 36
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 52
+Magic bitboard number: 1732197041305838080
+Number of bits: 10
+Time: 76
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 53
+Magic bitboard number: 216454291492438272
+Number of bits: 8
+Time: 285
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 54
+Magic bitboard number: 226042024338932736
+Number of bits: 13
+Time: 103
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 55
+Magic bitboard number: 4622383178332767744
+Number of bits: 12
+Time: 3
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 56
+Magic bitboard number: 154003650199552338
+Number of bits: 14
+Time: 4
+Generating moves for 4096 rook blocker patterns
+Searching for a magic bitboard number for rook square: 57
+Magic bitboard number: 45212193096106003
+Number of bits: 12
+Time: 70
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 58
+Magic bitboard number: 70403382837505
+Number of bits: 7
+Time: 60
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 59
+Magic bitboard number: 2630700797759389701
+Number of bits: 14
+Time: 165
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 60
+Magic bitboard number: 4757490194407491842
+Number of bits: 11
+Time: 936
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 61
+Magic bitboard number: 288793360751135874
+Number of bits: 10
+Time: 5
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 62
+Magic bitboard number: 378583845890555905
+Number of bits: 8
+Time: 343
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 63
+Magic bitboard number: 2310418215626638338
+Number of bits: 11
+Time: 74
+Generating moves for 4096 rook blocker patterns
+Generating bit shift values for magic bitboards
+Searching for a magic bitboard number for rook square: 0
+Magic bitboard number: 2918332697048811824
+Number of bits: 10
+Time: 2210
+Generating moves for 4096 rook blocker patterns
+Searching for a magic bitboard number for rook square: 1
+Magic bitboard number: 6935578610791104514
+Number of bits: 7
+Time: 484
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 2
+Magic bitboard number: 1801457548897878080
+Number of bits: 10
+Time: 4022
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 3
+Magic bitboard number: 9727811481219108864
+Number of bits: 10
+Time: 189
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 4
+Magic bitboard number: 7061664007599427660
+Number of bits: 12
+Time: 1398
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 5
+Magic bitboard number: 2233796977227792456
+Number of bits: 12
+Time: 817
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 6
+Magic bitboard number: 2594144372937720324
+Number of bits: 11
+Time: 2098
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 7
+Magic bitboard number: 144120977868104962
+Number of bits: 14
+Time: 4025
+Generating moves for 4096 rook blocker patterns
+Searching for a magic bitboard number for rook square: 8
+Magic bitboard number: 5215872096357318784
+Number of bits: 14
+Time: 1140
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 9
+Magic bitboard number: 4785213117400320
+Number of bits: 9
+Time: 403
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 10
+Magic bitboard number: 2310487483776831488
+Number of bits: 7
+Time: 46
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 11
+Magic bitboard number: 4614219430925238280
+Number of bits: 7
+Time: 157
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 12
+Magic bitboard number: 4616752672698290688
+Number of bits: 11
+Time: 630
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 13
+Magic bitboard number: 4035788250470679568
+Number of bits: 8
+Time: 5
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 14
+Magic bitboard number: 5333388142248529928
+Number of bits: 10
+Time: 52
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 15
+Magic bitboard number: 2379167241972228480
+Number of bits: 12
+Time: 173
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 16
+Magic bitboard number: 6629334385625677831
+Number of bits: 11
+Time: 459
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 17
+Magic bitboard number: 1180508252461498626
+Number of bits: 13
+Time: 959
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 18
+Magic bitboard number: 621710054202024576
+Number of bits: 12
+Time: 2475
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 19
+Magic bitboard number: 9227876186540474496
+Number of bits: 7
+Time: 982
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 20
+Magic bitboard number: 227714355804898320
+Number of bits: 10
+Time: 168
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 21
+Magic bitboard number: 5188429345353629706
+Number of bits: 8
+Time: 497
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 22
+Magic bitboard number: 2031198198880604162
+Number of bits: 14
+Time: 3
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 23
+Magic bitboard number: 41782058615436
+Number of bits: 13
+Time: 597
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 24
+Magic bitboard number: 10700553063598596100
+Number of bits: 12
+Time: 284
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 25
+Magic bitboard number: 2603081272889705664
+Number of bits: 10
+Time: 194
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 26
+Magic bitboard number: 1445664278089826337
+Number of bits: 9
+Time: 54
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 27
+Magic bitboard number: 11601555356329185283
+Number of bits: 11
+Time: 612
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 28
+Magic bitboard number: 281547992467456
+Number of bits: 6
+Time: 2045
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 29
+Magic bitboard number: 2287018563359808
+Number of bits: 9
+Time: 53
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 30
+Magic bitboard number: 73219795008898576
+Number of bits: 10
+Time: 36
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 31
+Magic bitboard number: 587918221810667604
+Number of bits: 14
+Time: 2018
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 32
+Magic bitboard number: 14109208093917312
+Number of bits: 7
+Time: 5
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 33
+Magic bitboard number: 2381876455589023744
+Number of bits: 11
+Time: 302
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 34
+Magic bitboard number: 13908540622857314306
+Number of bits: 12
+Time: 4
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 35
+Magic bitboard number: 149326907559645184
+Number of bits: 8
+Time: 557
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 36
+Magic bitboard number: 1225542186339141892
+Number of bits: 9
+Time: 257
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 37
+Magic bitboard number: 4828985250413548032
+Number of bits: 10
+Time: 641
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 38
+Magic bitboard number: 3458808838084362761
+Number of bits: 11
+Time: 32
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 39
+Magic bitboard number: 2265271012164633
+Number of bits: 10
+Time: 1572
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 40
+Magic bitboard number: 3044486399546916872
+Number of bits: 10
+Time: 413
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 41
+Magic bitboard number: 4695431146207510561
+Number of bits: 14
+Time: 137
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 42
+Magic bitboard number: 211243688329232
+Number of bits: 6
+Time: 1566
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 43
+Magic bitboard number: 6994372933502173192
+Number of bits: 10
+Time: 501
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 44
+Magic bitboard number: 4612811952719167492
+Number of bits: 7
+Time: 3007
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 45
+Magic bitboard number: 40814026242064392
+Number of bits: 8
+Time: 1380
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 46
+Magic bitboard number: 306526275407773724
+Number of bits: 9
+Time: 87
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 47
+Magic bitboard number: 288513089161265156
+Number of bits: 8
+Time: 989
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 48
+Magic bitboard number: 9561282751299256576
+Number of bits: 13
+Time: 346
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 49
+Magic bitboard number: 2884714028549015680
+Number of bits: 11
+Time: 71
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 50
+Magic bitboard number: 9259543776578519552
+Number of bits: 13
+Time: 73
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 51
+Magic bitboard number: 578855660436848768
+Number of bits: 9
+Time: 750
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 52
+Magic bitboard number: 4649685415706537986
+Number of bits: 12
+Time: 210
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 53
+Magic bitboard number: 5764889582697185536
+Number of bits: 9
+Time: 69
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 54
+Magic bitboard number: 11478905957516288
+Number of bits: 9
+Time: 114
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 55
+Magic bitboard number: 13197478298112
+Number of bits: 10
+Time: 126
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 56
+Magic bitboard number: 4756084882676924450
+Number of bits: 11
+Time: 20
+Generating moves for 4096 rook blocker patterns
+Searching for a magic bitboard number for rook square: 57
+Magic bitboard number: 5766019570844402321
+Number of bits: 13
+Time: 139
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 58
+Magic bitboard number: 9007337768495361
+Number of bits: 8
+Time: 640
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 59
+Magic bitboard number: 2306907495385272321
+Number of bits: 12
+Time: 1445
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 60
+Magic bitboard number: 1230047194951713826
+Number of bits: 13
+Time: 477
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 61
+Magic bitboard number: 1297318202057162753
+Number of bits: 8
+Time: 3710
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 62
+Magic bitboard number: 1173207700431995172
+Number of bits: 12
+Time: 268
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 63
+Magic bitboard number: 146508292318888226
+Number of bits: 11
+Time: 324
+Generating moves for 4096 rook blocker patterns
+Generating bit shift values for magic bitboards
+Searching for a magic bitboard number for rook square: 0
+Magic bitboard number: 36030035043291272
+Number of bits: 7
+Time: 6
+Generating moves for 4096 rook blocker patterns
+Searching for a magic bitboard number for rook square: 1
+Magic bitboard number: 72075325827203076
+Number of bits: 7
+Time: 907
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 2
+Magic bitboard number: 1297049062734954624
+Number of bits: 11
+Time: 1227
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 3
+Magic bitboard number: 10808643646544415232
+Number of bits: 11
+Time: 12109
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 4
+Magic bitboard number: 144150681753750016
+Number of bits: 8
+Time: 3116
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 5
+Magic bitboard number: 144123988732411972
+Number of bits: 7
+Time: 1385
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 6
+Magic bitboard number: 12141790357717256832
+Number of bits: 14
+Time: 3301
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 7
+Magic bitboard number: 2810246721530053730
+Number of bits: 12
+Time: 3856
+Generating moves for 4096 rook blocker patterns
+Searching for a magic bitboard number for rook square: 8
+Magic bitboard number: 140756283031680
+Number of bits: 6
+Time: 1098
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 9
+Magic bitboard number: 563089544971008
+Number of bits: 9
+Time: 276
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 10
+Magic bitboard number: 9224639086575284224
+Number of bits: 10
+Time: 273
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 11
+Magic bitboard number: 4920464136659337224
+Number of bits: 12
+Time: 24
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 12
+Magic bitboard number: 436989935711429632
+Number of bits: 8
+Time: 832
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 13
+Magic bitboard number: 9570303860541456
+Number of bits: 7
+Time: 1439
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 14
+Magic bitboard number: 10394870894561984520
+Number of bits: 12
+Time: 226
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 15
+Magic bitboard number: 6989868236275728640
+Number of bits: 9
+Time: 606
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 16
+Magic bitboard number: 1152958338254782464
+Number of bits: 6
+Time: 158
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 17
+Magic bitboard number: 4686067980600115714
+Number of bits: 10
+Time: 138
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 18
+Magic bitboard number: 54325770308289732
+Number of bits: 12
+Time: 801
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 19
+Magic bitboard number: 146729827028836416
+Number of bits: 11
+Time: 1227
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 20
+Magic bitboard number: 1786610737960452352
+Number of bits: 14
+Time: 2842
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 21
+Magic bitboard number: 10416967225385747456
+Number of bits: 9
+Time: 8034
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 22
+Magic bitboard number: 2405732683679760
+Number of bits: 11
+Time: 8
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 23
+Magic bitboard number: 1153491051634491521
+Number of bits: 8
+Time: 260
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 24
+Magic bitboard number: 2323857993986318400
+Number of bits: 9
+Time: 525
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 25
+Magic bitboard number: 4706472721131832460
+Number of bits: 13
+Time: 248
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 26
+Magic bitboard number: 45036065261749248
+Number of bits: 6
+Time: 69
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 27
+Magic bitboard number: 1152941304410282016
+Number of bits: 8
+Time: 60
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 28
+Magic bitboard number: 216187080060962816
+Number of bits: 8
+Time: 1389
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 29
+Magic bitboard number: 9368050200662770736
+Number of bits: 10
+Time: 2450
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 30
+Magic bitboard number: 108088607261066504
+Number of bits: 8
+Time: 113
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 31
+Magic bitboard number: 4575351351279777
+Number of bits: 9
+Time: 201
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 32
+Magic bitboard number: 1157776948500365448
+Number of bits: 8
+Time: 112
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 33
+Magic bitboard number: 1874764907023441922
+Number of bits: 10
+Time: 167
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 34
+Magic bitboard number: 2387473115799097472
+Number of bits: 12
+Time: 68
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 35
+Magic bitboard number: 1378383167127314440
+Number of bits: 11
+Time: 2886
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 36
+Magic bitboard number: 291045538537678852
+Number of bits: 10
+Time: 235
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 37
+Magic bitboard number: 622697690286858288
+Number of bits: 12
+Time: 1533
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 38
+Magic bitboard number: 141983095982128
+Number of bits: 8
+Time: 685
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 39
+Magic bitboard number: 13471198478596
+Number of bits: 7
+Time: 1269
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 40
+Magic bitboard number: 36029075654983680
+Number of bits: 6
+Time: 187
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 41
+Magic bitboard number: 4512533163556868
+Number of bits: 6
+Time: 4
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 42
+Magic bitboard number: 4611829299643809824
+Number of bits: 9
+Time: 463
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 43
+Magic bitboard number: 18577420406095880
+Number of bits: 9
+Time: 360
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 44
+Magic bitboard number: 18295946634919940
+Number of bits: 7
+Time: 180
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 45
+Magic bitboard number: 9224498486551019524
+Number of bits: 6
+Time: 3844
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 46
+Magic bitboard number: 867506032975413281
+Number of bits: 10
+Time: 70
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 47
+Magic bitboard number: 3335633633284
+Number of bits: 10
+Time: 1362
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 48
+Magic bitboard number: 4900200069661225472
+Number of bits: 10
+Time: 130
+Generating moves for 2048 rook blocker patterns
+Searching for a magic bitboard number for rook square: 49
+Magic bitboard number: 42856766565844480
+Number of bits: 14
+Time: 23
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 50
+Magic bitboard number: 14004541175902734464
+Number of bits: 14
+Time: 173
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 51
+Magic bitboard number: 132285009633536
+Number of bits: 10
+Time: 82
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 52
+Magic bitboard number: 43981069254784
+Number of bits: 7
+Time: 517
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 53
+Magic bitboard number: 9288691411454208
+Number of bits: 6
+Time: 133
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 54
+Magic bitboard number: 81082441717138432
+Number of bits: 12
+Time: 44
+Generating moves for 1024 rook blocker patterns
+Searching for a magic bitboard number for rook square: 55

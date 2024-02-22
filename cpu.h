@@ -5,7 +5,6 @@
 #include <algorithm>
 #include <limits>
 #include <chrono>
-#include <thread>
 #include "player.h"
 using namespace chrono;
 class CPU: public Player {

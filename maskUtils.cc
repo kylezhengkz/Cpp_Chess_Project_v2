@@ -59,3 +59,39 @@ bool MaskUtils::isDiagonal(int direction) {
         return false;
     }
 }
+
+MaskUtils::U64 MaskUtils::generateRandomU64Range(int lowestNumOfBits, int highestNumOfBits) { // note that it generates a U64 with 6-12 nonzero bits 
+    random_device rd;
+    mt19937_64 eng(rd());
+        
+    uniform_int_distribution<> bitCountDistr(lowestNumOfBits, highestNumOfBits);
+    int bitsToSet = bitCountDistr(eng);
+    
+    uniform_int_distribution<> bitPositionDistr(0, 63);
+        
+    U64 result = 0;
+    while (bitsToSet > 0) {
+        result |= U64(1) << bitPositionDistr(eng);
+        bitsToSet--;
+    }
+        
+    return result;
+}
+
+MaskUtils::U64 MaskUtils::generateRandomU64Exact(int numOfNonZeroBits) {
+    random_device rd;
+    mt19937_64 eng(rd());
+    
+    uniform_int_distribution<> bitPositionDistr(0, 63);
+        
+    U64 result = 0;
+    while (numOfNonZeroBits > 0) {
+        U64 newBit = U64(1) << bitPositionDistr(eng);
+        if ((result & newBit) == 0) {
+            result |= newBit;
+            numOfNonZeroBits--;
+        }
+    }
+        
+    return result;
+}

@@ -3,6 +3,7 @@
 #include <cstdint>
 #include <iostream>
 #include <memory>
+#include <random>
 using namespace std;
 namespace MaskUtils {
     typedef uint64_t U64;
@@ -141,5 +142,7 @@ namespace MaskUtils {
     U64 clearBitsLessThanIndex(U64 b, int index);
     ostream& printBitboard(const U64& board, ostream& out);
     bool isDiagonal(int direction);
+    U64 generateRandomU64Range(int lowestNumOfBits, int highestNumOfBits);
+    U64 generateRandomU64Exact(int numOfNonZeroBits);
 };
 #endif
