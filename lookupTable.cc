@@ -398,6 +398,27 @@ void LookupTable::mapBlockerKeys() {
         rookBlockerShifts[i] = 64 - __builtin_popcountll(rookMusks[i]);
     }
 
+    // store magic numbers
+    ifstream readWhitePawnFile("whitePawnMagicNumbers.txt");
+    for (int i = 0; i < 64; ++i) {
+        readWhitePawnFile >> whitePawnMagicArray[i];
+    }
+
+    ifstream readBlackPawnFile("blackPawnMagicNumbers.txt");
+    for (int i = 0; i < 64; ++i) {
+        readBlackPawnFile >> blackPawnMagicArray[i];
+    }
+
+    ifstream readBoshopFile("bishopMagicNumbers.txt");
+    for (int i = 0; i < 64; ++i) {
+        readBoshopFile >> bishopMagicArray[i];
+    }
+
+    ifstream readRookFile("rookMagicNumbers.txt");
+    for (int i = 0; i < 64; ++i) {
+        readRookFile >> rookMagicArray[i];
+    }
+
     // bishops
     for (int square = 0; square < 64; square++) {
         U64* blockerMusks{generateBlockerMusks(bishopMusks[square])};

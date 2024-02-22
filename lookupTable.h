@@ -7,6 +7,7 @@
 #include <memory>
 #include <unordered_set>
 #include <chrono>
+#include <fstream>
 using namespace std;
 using namespace MaskUtils;
 using namespace chrono;
