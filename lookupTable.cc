@@ -17,10 +17,10 @@ U64 LookupTable::whitePawnMagicArray[64];
 U64 LookupTable::blackPawnMagicArray[64];
 U64 LookupTable::bishopMagicArray[64];
 U64 LookupTable::rookMagicArray[64];
-unordered_map<pair<int, U64>, U64, LookupTable::PairHash, LookupTable::PairEqual> LookupTable::whitePawnMoves;
-unordered_map<pair<int, U64>, U64, LookupTable::PairHash, LookupTable::PairEqual> LookupTable::blackPawnMoves;
-unordered_map<pair<int, U64>, U64, LookupTable::PairHash, LookupTable::PairEqual> LookupTable::bishopMoves;
-unordered_map<pair<int, U64>, U64, LookupTable::PairHash, LookupTable::PairEqual> LookupTable::rookMoves;
+U64 LookupTable::rookMagicMoves[64][4096];
+U64 LookupTable::bishopMagicMoves[64][512];
+U64 LookupTable::whitePawnMagicMoves[64][16];
+U64 LookupTable::blackPawnMagicMoves[64][16];
 
 U64 LookupTable::lookupPawnControlMusk(int key, Colour colour) {
     if (colour == Colour::WHITE) {
@@ -53,71 +53,32 @@ U64 LookupTable::lookupMusk(int key, Piece piece) {
     }
 }
 
-// REPLACE .at(key) with [key] when done and remove try catches (TEMP)
 U64 LookupTable::lookupMove(int square, Piece piece, U64 allPieces) {
     switch (piece) {
         case (Piece::WHITEPAWN): {
             U64 blockers = whitePawnMusks[square] & allPieces;
-            pair<int, U64> key = make_pair(square, blockers);
-            try {
-                return whitePawnMoves.at(key);
-            } catch (exception& e) {
-                cout << key.first << endl;
-                printBitboard(key.second, cout);
-                throw e;
-            }
-            break;
+            int blockerKey = (blockers * whitePawnMagicArray[square]) >> whitePawnBlockerShifts[square];
+            return whitePawnMagicMoves[square][blockerKey];
         } case (Piece::BLACKPAWN): {
             U64 blockers = blackPawnMusks[square] & allPieces;
-            pair<int, U64> key = make_pair(square, blockers);
-            try {
-                return blackPawnMoves.at(key);
-            } catch (exception& e) {
-                cout << key.first << endl;
-                printBitboard(key.second, cout);
-                throw e;
-            }
-            break;
+            int blockerKey = (blockers * blackPawnMagicArray[square]) >> blackPawnBlockerShifts[square];
+            return blackPawnMagicMoves[square][blockerKey];
         } case (Piece::BISHOP): {
             U64 blockers = bishopMusks[square] & allPieces;
-            pair<int, U64> key = make_pair(square, blockers);
-            try {
-                return bishopMoves.at(key);
-            } catch (exception& e) {
-                cout << key.first << endl;
-                printBitboard(key.second, cout);
-                throw e;
-            }
-            break;
+            int blockerKey = (blockers * bishopMagicArray[square]) >> bishopBlockerShifts[square];
+            return bishopMagicMoves[square][blockerKey];
         } case (Piece::ROOK): {
             U64 blockers = rookMusks[square] & allPieces;
-            pair<int, U64> key = make_pair(square, blockers);
-            try {
-                return rookMoves.at(key);
-            } catch (exception& e) {
-                cout << key.first << endl;
-                printBitboard(key.second, cout);
-                throw e;
-            }
-            break;
+            int blockerKey = (blockers * rookMagicArray[square]) >> rookBlockerShifts[square];
+            return rookMagicMoves[square][blockerKey];
         } case (Piece::QUEEN): {
-            U64 verticalBlockers = rookMusks[square] & allPieces;
-            U64 diagonalBlockers = bishopMusks[square] & allPieces;
-            pair<int, U64> verticalKey = make_pair(square, verticalBlockers);
-            pair<int, U64> diagonalKey = make_pair(square, diagonalBlockers);
-            try {
-                return rookMoves.at(verticalKey) | bishopMoves.at(diagonalKey);
-            } catch (exception& e) {
-                cout << verticalKey.first << endl;
-                printBitboard(verticalKey.second, cout);
-                cout << diagonalKey.first << endl;
-                printBitboard(diagonalKey.second, cout);
-                throw e;
-            }
-            break;
+            U64 blockersB = bishopMusks[square] & allPieces;
+            int blockerKeyB = (blockersB * bishopMagicArray[square]) >> bishopBlockerShifts[square];
+            U64 blockersR = rookMusks[square] & allPieces;
+            int blockerKeyR = (blockersR * rookMagicArray[square]) >> rookBlockerShifts[square];
+            return bishopMagicMoves[square][blockerKeyB] | rookMagicMoves[square][blockerKeyR];
         } default:
             throw logic_error("Attempted to search an invalid musk");
-            break;
     }
 }
 
@@ -219,7 +180,7 @@ void LookupTable::setMusks() {
         | (((fromSquare >> 15) | (fromSquare << 17)) & ~A_FILE)
         | (((fromSquare << 15) | (fromSquare >> 17)) & ~H_FILE);
         
-        if (i <= 55) {
+        if (i >= 8 && i <= 55) {
             whitePawnMusks[i] = (((fromSquare << NEGATIVE_DIAGONAL)) & ~H_FILE)
             | (((fromSquare << POSITIVE_DIAGONAL)) & ~A_FILE)
             | (fromSquare << VERTICAL);
@@ -231,7 +192,7 @@ void LookupTable::setMusks() {
             | (((fromSquare << POSITIVE_DIAGONAL)) & ~A_FILE);
         }
 
-        if (i >= 8) {
+        if (i >= 8 && i <= 55) {
             blackPawnMusks[i] = (((fromSquare >> NEGATIVE_DIAGONAL)) & ~A_FILE)
             | (((fromSquare >> POSITIVE_DIAGONAL)) & ~H_FILE)
             | (fromSquare >> VERTICAL);
@@ -358,7 +319,7 @@ U64 generateLegalMoves(int square, U64 blockerMusk, Piece piece) {
     return legalMoveMusk;
 }
 
-U64 generatePawnMoves(int square, U64 blockerMusk, U64 pawnMusk, bool white) {
+U64 generatePawnMoves(int square, U64 blockerMusk, bool white) {
     U64 legalMoveMusk = 0x0ULL;
     if (white) {
         if (!getBit(blockerMusk, square + VERTICAL)) {
@@ -424,8 +385,8 @@ void LookupTable::mapBlockerKeys() {
         U64* blockerMusks{generateBlockerMusks(bishopMusks[square])};
         int totalPatterns = 1 << __builtin_popcountll(bishopMusks[square]);
         for (int blockerIndex = 0; blockerIndex < totalPatterns; blockerIndex++) {
-            pair<int, U64> key = make_pair(square, blockerMusks[blockerIndex]);
-            bishopMoves[key] = generateLegalMoves(square, blockerMusks[blockerIndex], Piece::BISHOP);
+            int blockerKey = (blockerMusks[blockerIndex] * bishopMagicArray[square]) >> bishopBlockerShifts[square];
+            bishopMagicMoves[square][blockerKey] = generateLegalMoves(square, blockerMusks[blockerIndex], Piece::BISHOP);
         }
     }
 
@@ -434,8 +395,8 @@ void LookupTable::mapBlockerKeys() {
         U64* blockerMusks{generateBlockerMusks(rookMusks[square])};
         int totalPatterns = 1 << __builtin_popcountll(rookMusks[square]);
         for (int blockerIndex = 0; blockerIndex < totalPatterns; blockerIndex++) {
-            pair<int, U64> key = make_pair(square, blockerMusks[blockerIndex]);
-            rookMoves[key] = generateLegalMoves(square, blockerMusks[blockerIndex], Piece::ROOK);
+            int blockerKey = (blockerMusks[blockerIndex] * rookMagicArray[square]) >> rookBlockerShifts[square];
+            rookMagicMoves[square][blockerKey] = generateLegalMoves(square, blockerMusks[blockerIndex], Piece::ROOK);
         }
     }
 
@@ -444,8 +405,13 @@ void LookupTable::mapBlockerKeys() {
         U64* blockerMusks{generateBlockerMusks(whitePawnMusks[square])};
         int totalPatterns = 1 << __builtin_popcountll(whitePawnMusks[square]);
         for (int blockerIndex = 0; blockerIndex < totalPatterns; blockerIndex++) {
-            pair<int, U64> key = make_pair(square, blockerMusks[blockerIndex]);
-            whitePawnMoves[key] = generatePawnMoves(square, blockerMusks[blockerIndex], whitePawnMusks[square], true);
+            int blockerKey = (blockerMusks[blockerIndex] * whitePawnMagicArray[square]) >> whitePawnBlockerShifts[square];
+            whitePawnMagicMoves[square][blockerKey] = generatePawnMoves(square, blockerMusks[blockerIndex], true);
+            cout << "square: " << square << endl;
+            cout << "blockers" << endl;
+            printBitboard(blockerMusks[blockerIndex], cout);
+            cout << "moves" << endl;
+            printBitboard(whitePawnMagicMoves[square][blockerKey], cout);
         }
     }
 
@@ -454,8 +420,13 @@ void LookupTable::mapBlockerKeys() {
         U64* blockerMusks{generateBlockerMusks(blackPawnMusks[square])};
         int totalPatterns = 1 << __builtin_popcountll(blackPawnMusks[square]);
         for (int blockerIndex = 0; blockerIndex < totalPatterns; blockerIndex++) {
-            pair<int, U64> key = make_pair(square, blockerMusks[blockerIndex]);
-            blackPawnMoves[key] = generatePawnMoves(square, blockerMusks[blockerIndex], blackPawnMusks[square], false);
+            int blockerKey = (blockerMusks[blockerIndex] * blackPawnMagicArray[square]) >> blackPawnBlockerShifts[square];
+            blackPawnMagicMoves[square][blockerKey] = generatePawnMoves(square, blockerMusks[blockerIndex], false);
+            cout << "square: " << square << endl;
+            cout << "blockers" << endl;
+            printBitboard(blockerMusks[blockerIndex], cout);
+            cout << "moves" << endl;
+            printBitboard(blackPawnMagicMoves[square][blockerKey], cout);
         }
     }
 }

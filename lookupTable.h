@@ -34,6 +34,11 @@ class LookupTable {
     static U64 bishopMagicArray[64];
     static U64 rookMagicArray[64];
 
+    static U64 rookMagicMoves[64][4096];
+    static U64 bishopMagicMoves[64][512];
+    static U64 whitePawnMagicMoves[64][16];
+    static U64 blackPawnMagicMoves[64][16];
+
     const static int UPINDEX = 0;
     const static int DOWNINDEX = 1;
     const static int LEFTINDEX = 2;
@@ -42,26 +47,7 @@ class LookupTable {
     const static int DOWNLEFTINDEX = 5;
     const static int UPLEFTINDEX = 6;
     const static int DOWNRIGHTINDEX = 7;
-
-    struct PairHash {
-        template <class T1, class T2>
-        size_t operator() (const pair<T1, T2>& p) const {
-            auto h1 = std::hash<T1>{}(p.first);
-            auto h2 = std::hash<T2>{}(p.second);
-            return h1 ^ (h2 << 1);
-        }
-    };
-
-    struct PairEqual {
-        template <class T1, class T2>
-        bool operator() (const pair<T1, T2>& lhs, const pair<T1, T2>& rhs) const {
-            return lhs.first == rhs.first && lhs.second == rhs.second;
-        }
-    };
-    static unordered_map<pair<int, U64>, U64, PairHash, PairEqual> whitePawnMoves;
-    static unordered_map<pair<int, U64>, U64, PairHash, PairEqual> blackPawnMoves;
-    static unordered_map<pair<int, U64>, U64, PairHash, PairEqual> bishopMoves;
-    static unordered_map<pair<int, U64>, U64, PairHash, PairEqual> rookMoves;
+    
     public:
     static U64 lookupPawnControlMusk(int key, Colour colour);
     static U64 lookupMusk(int key, Piece piece);
