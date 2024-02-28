@@ -22,7 +22,7 @@ class BoardNode {
    public:
     bool moveListEmpty();
     BoardNode(unique_ptr<Board> board, int lastDoublePawnMoveIndex, CastleStatus castleStatus, BoardNode* parent);
-    double staticEval();
+    double staticEval(Colour colour);
     void checkPinsAndChecks(Colour colour, bool &check, bool &doubleCheck, U64 &kingLegalMoves, int &kingSquare, unordered_map<int, U64> &pins, U64 teamPieces, U64 opponentPieces, bool print);
     void generateOpponentChecksAndUnsafeMusk(Colour myColour, U64 &unsafeMusk, U64 &diagonalChecks, U64 &straightChecks, U64 &knightChecks, U64 &pawnChecks, U64 teamPieces, U64 opponentPieces, bool print);
     void generateMoves(Colour colour, bool print);

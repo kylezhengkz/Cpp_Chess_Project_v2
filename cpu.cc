@@ -13,8 +13,8 @@ void CPU::pickMove(unique_ptr<BoardNode> &pos) {
     }
     iterativeDeepening(pos);
 
-   /*
     // move counter
+    /*
      int totalMoves1 = 0;
      countTotalPossibleMoves(pos, 1, true, totalMoves1);
      cout << totalMoves1 << endl;
@@ -70,7 +70,12 @@ double CPU::alphaBetaPruning(unique_ptr<BoardNode> &pos, int depth, double alpha
     auto duration = duration_cast<seconds>(currentTime - startTime);
     if (duration.count() >= maxTimeSeconds) {  // time is up! stop the search
         if (depth == 0) {
-            double staticEval = pos->staticEval();
+            double staticEval;
+            if (maximizingPlayer) {
+                staticEval = pos->staticEval(Colour::WHITE);
+            } else {
+                staticEval = pos->staticEval(Colour::BLACK);
+            }
             pos->setValue(staticEval);
             return staticEval;
         } else {
@@ -79,7 +84,12 @@ double CPU::alphaBetaPruning(unique_ptr<BoardNode> &pos, int depth, double alpha
     }
 
     if (depth == 0) {
-        double staticEval = pos->staticEval();
+        double staticEval;
+        if (maximizingPlayer) {
+            staticEval = pos->staticEval(Colour::WHITE);
+        } else {
+            staticEval = pos->staticEval(Colour::BLACK);
+        }
         pos->setValue(staticEval);
         return staticEval;
     }

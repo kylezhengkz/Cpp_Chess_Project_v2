@@ -4,7 +4,7 @@ bool BoardNode::moveListEmpty() { return moves.empty(); }
 
 BoardNode::BoardNode(unique_ptr<Board> board, int lastDoublePawnMoveIndex, CastleStatus castleStatus, BoardNode *parent) : board{move(board)}, lastDoublePawnMoveIndex{lastDoublePawnMoveIndex}, castleStatus{castleStatus}, parent{parent} {};
 
-double BoardNode::staticEval() {
+double BoardNode::staticEval(Colour colour) {
     double eval = 0;
 
     // material balance
@@ -18,6 +18,76 @@ double BoardNode::staticEval() {
     eval -= __builtin_popcountll(board->blackBishops) * 3;
     eval -= __builtin_popcountll(board->blackRooks) * 5;
     eval -= __builtin_popcountll(board->blackQueens) * 9;
+
+    U64 teamPieces;
+    U64 opponentPieces;
+    U64 allPieces;
+    vector<Piece> pieceGenerationOrder;
+    int enPassantCaptureIndex = -1;
+    if (colour == Colour::WHITE) {
+        pieceGenerationOrder = {Piece::WHITEPAWN, Piece::KNIGHT, Piece::BISHOP, Piece::ROOK, Piece::QUEEN};
+        teamPieces = board->getWhitePiecesMusk();
+        opponentPieces = board->getBlackPiecesMusk();
+        if (lastDoublePawnMoveIndex != 1) {
+            enPassantCaptureIndex = lastDoublePawnMoveIndex + 8;
+        }
+    } else {
+        pieceGenerationOrder = {Piece::BLACKPAWN, Piece::KNIGHT, Piece::BISHOP, Piece::ROOK, Piece::QUEEN};
+        teamPieces = board->getBlackPiecesMusk();
+        opponentPieces = board->getWhitePiecesMusk();
+        if (lastDoublePawnMoveIndex != 1) {
+            enPassantCaptureIndex = lastDoublePawnMoveIndex - 8;
+        }
+    }
+    allPieces = teamPieces | opponentPieces;
+
+    bool check = false;
+    bool doubleCheck = false;
+    U64 kingLegalMoves;
+    int kingSquare;
+    unordered_map<int, U64> pins;
+    checkPinsAndChecks(colour, check, doubleCheck, kingLegalMoves, kingSquare, pins, teamPieces, opponentPieces, false);
+
+    U64 unsafeMusk = 0x0ULL;
+    U64 diagonalChecks;
+    U64 straightChecks;
+    U64 knightChecks;
+    U64 pawnChecks;
+    generateOpponentChecksAndUnsafeMusk(colour, unsafeMusk, diagonalChecks, straightChecks, knightChecks, pawnChecks, teamPieces, opponentPieces, false);
+
+    for (Piece piece : pieceGenerationOrder) {
+        if (doubleCheck) {  // must move king only
+            break;
+        }
+        U64 existingPieces = board->getPieces(piece, colour);
+        while (existingPieces != 0) {
+            int initialSquare = popLSB(existingPieces);
+            U64 legalMoves;
+            if ((piece == Piece::WHITEPAWN || piece == Piece::BLACKPAWN) && (lastDoublePawnMoveIndex != -1)) {
+                legalMoves = (LookupTable::lookupMove(initialSquare, piece, allPieces | (0x1ULL << enPassantCaptureIndex))) & ~teamPieces;
+            } else if (piece == Piece::KNIGHT) {
+                legalMoves = LookupTable::lookupMusk(initialSquare, piece) & ~teamPieces;
+            } else {
+                legalMoves = LookupTable::lookupMove(initialSquare, piece, allPieces) & ~teamPieces;
+            }
+
+            if (pins.count(initialSquare) > 0) {
+                legalMoves &= pins[initialSquare];
+            }
+
+            if (check) {
+                // consider edge case where you can stop pawn check via en passant
+                if ((lastDoublePawnMoveIndex != -1) && (piece == Piece::WHITEPAWN || piece == Piece::BLACKPAWN) &&
+                    getBit(checkPathMusk, lastDoublePawnMoveIndex) &&
+                    getBit(legalMoves, enPassantCaptureIndex)) {
+                    legalMoves = 0x0ULL;
+                    setBit(legalMoves, enPassantCaptureIndex);
+                } else {
+                    legalMoves &= checkPathMusk;
+                }
+            }
+        }
+    }
 
     return eval;
 }
