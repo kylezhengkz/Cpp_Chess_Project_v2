@@ -1,49 +1,43 @@
 #ifndef BOARDNODE_H
 #define BOARDNODE_H
-#include "board.h"
-#include <vector>
-#include <map>
-#include "lookupTable.h"
-#include <random>
-#include "move.h"
-#include "castleStatus.h"
 #include <iterator>
+#include <map>
+#include <random>
+#include <vector>
+
+#include "board.h"
+#include "castleStatus.h"
+#include "lookupTable.h"
+#include "move.h"
 class BoardNode {
     unique_ptr<Board> board;
     int lastDoublePawnMoveIndex;
     CastleStatus castleStatus;
-    unordered_map<int, U64> pins;
-    unordered_map<int, U64> opponentPins;
     vector<unique_ptr<Move>> moves;
     vector<unique_ptr<BoardNode>> children;
     double value;
     U64 checkPathMusk;
-    // TEMP (debugging purposes only)
-    public:
-    BoardNode* parent;
-    // Board* getBoard(); // TEMP
-    bool moveListEmpty(); // TEMP
-    BoardNode(unique_ptr<Board> board, int lastDoublePawnMoveIndex, CastleStatus castleStatus, unordered_map<int, U64> opponentPins, BoardNode* parent);
-    U64 getColourPieces(Colour colour);
+
+   public:
+    bool moveListEmpty();
+    BoardNode(unique_ptr<Board> board, int lastDoublePawnMoveIndex, CastleStatus castleStatus);
     double staticEval();
-    void searchLegalMusks(Colour colour, bool& check, bool& doubleCheck, U64& kingLegalMoves, int& kingSquare, U64& pinBlockMusk, bool print);
-    void searchNewPinsOnly(Colour colour, int oldKingSquare, int newKingSquare, unordered_map<int, U64> newPins);
-    U64 generateUnsafeMusk(Colour teamColour, bool print);
+    void checkPinsAndChecks(Colour colour, bool &check, bool &doubleCheck, U64 &kingLegalMoves, int &kingSquare, unordered_map<int, U64> &pins);
+    void generateOpponentChecksAndUnsafeMusk(Colour myColour, U64 &unsafeMusk, U64 &diagonalChecks, U64 &straightChecks, U64 &knightChecks, U64 &pawnChecks, U64 teamPieces, U64 opponentPieces);
     void generateMoves(Colour colour);
     void addPredictedBestMove(Colour colour);
-    friend ostream& operator<<(ostream& out, BoardNode& boardNode);
-    ostream& printBoardOnly(ostream& out);
-    ostream& printChildrenValues(ostream& out);
-    ostream& printChildrenMoveNotation(ostream& out);
-    ostream& printChildrenTree(ostream& out);
-    ostream& printChildrenValue(ostream& out);
-    vector<unique_ptr<BoardNode>>& getChildren();
+    ostream &printBoardOnly(ostream &out);
+    ostream &printChildrenValues(ostream &out);
+    ostream &printChildrenMoveNotation(ostream &out);
+    ostream &printChildrenTree(ostream &out);
+    ostream &printChildrenValue(ostream &out);
+    vector<unique_ptr<BoardNode>> &getChildren();
     ~BoardNode();
     void clearMoves();
     bool containsMove(int fromSquare, int toSquare);
-    friend void branchToChild(unique_ptr<BoardNode>& boardNode, size_t index);
+    friend void branchToChild(unique_ptr<BoardNode> &boardNode, size_t index);
     void setValue(double val);
     double getValue() const;
-    vector<unique_ptr<Move>>& getMoves();
+    vector<unique_ptr<Move>> &getMoves();
 };
 #endif

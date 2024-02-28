@@ -1,11 +1,11 @@
 #include "cpu.h"
-CPU::CPU(Colour colour): Player{colour} {};
+CPU::CPU(Colour colour) : Player{colour} {};
 
 double const CPU::negativeInfinity = -9999;
 double const CPU::positiveInfinity = 9999;
 const int CPU::maxTimeSeconds = 10;
 
-void CPU::pickMove(unique_ptr<BoardNode>& pos) {
+void CPU::pickMove(unique_ptr<BoardNode> &pos) {
     if (colour == Colour::WHITE) {
         cout << "WHITE TO MOVE:" << endl;
     } else {
@@ -13,27 +13,27 @@ void CPU::pickMove(unique_ptr<BoardNode>& pos) {
     }
     iterativeDeepening(pos);
 
-   // move counter
-   /*
-    int totalMoves1 = 0;
-    countTotalPossibleMoves(pos, 1, true, totalMoves1);
-    cout << totalMoves1 << endl;
+    // move counter
+    /*
+     int totalMoves1 = 0;
+     countTotalPossibleMoves(pos, 1, true, totalMoves1);
+     cout << totalMoves1 << endl;
 
-    int totalMoves2 = 0;
-    countTotalPossibleMoves(pos, 2, true, totalMoves2);
-    cout << totalMoves2 - totalMoves1  << endl;
+     int totalMoves2 = 0;
+     countTotalPossibleMoves(pos, 2, true, totalMoves2);
+     cout << totalMoves2 - totalMoves1  << endl;
 
-    int totalMoves3 = 0;
-    countTotalPossibleMoves(pos, 3, true, totalMoves3);
-    cout << totalMoves3 - totalMoves2 << endl;
+     int totalMoves3 = 0;
+     countTotalPossibleMoves(pos, 3, true, totalMoves3);
+     cout << totalMoves3 - totalMoves2 << endl;
 
-    int totalMoves4 = 0;
-    countTotalPossibleMoves(pos, 4, true, totalMoves4);
-    cout << totalMoves4 - totalMoves3 << endl;
-    */
+     int totalMoves4 = 0;
+     countTotalPossibleMoves(pos, 4, true, totalMoves4);
+     cout << totalMoves4 - totalMoves3 << endl;
+     */
 }
 
-void CPU::iterativeDeepening(unique_ptr<BoardNode>& pos) {
+void CPU::iterativeDeepening(unique_ptr<BoardNode> &pos) {
     startTime = high_resolution_clock::now();
     int maxDepth = numeric_limits<int>::max();
     cout << "Begin iterative deepening search" << endl;
@@ -63,7 +63,7 @@ void CPU::iterativeDeepening(unique_ptr<BoardNode>& pos) {
     }
     cout << "End iterative deepening search" << endl;
     branchToChild(pos, 0);
-    
+
     /*
     cout << "Evaluation: " << pos->getValue() << endl;
     pos->printBoardOnly(cout);
@@ -91,10 +91,10 @@ void CPU::iterativeDeepening(unique_ptr<BoardNode>& pos) {
     */
 }
 
-double CPU::alphaBetaPruning(unique_ptr<BoardNode>& pos, int depth, double alpha, double beta, bool maximizingPlayer) {
+double CPU::alphaBetaPruning(unique_ptr<BoardNode> &pos, int depth, double alpha, double beta, bool maximizingPlayer) {
     auto currentTime = high_resolution_clock::now();
     auto duration = duration_cast<seconds>(currentTime - startTime);
-    if (duration.count() >= maxTimeSeconds) { // time is up! stop the search
+    if (duration.count() >= maxTimeSeconds) {  // time is up! stop the search
         if (depth == 0) {
             double staticEval = pos->staticEval();
             pos->setValue(staticEval);
@@ -129,14 +129,12 @@ double CPU::alphaBetaPruning(unique_ptr<BoardNode>& pos, int depth, double alpha
                 return negativeInfinity;
             }
         } else {
-            sort(pos->getChildren().begin(), pos->getChildren().end(), [](const unique_ptr<BoardNode>& lhs, const unique_ptr<BoardNode>& rhs) {
-                return lhs->getValue() > rhs->getValue();
-            });
+            sort(pos->getChildren().begin(), pos->getChildren().end(), [](const unique_ptr<BoardNode> &lhs, const unique_ptr<BoardNode> &rhs) { return lhs->getValue() > rhs->getValue(); });
             for (int i = 0; i < (pos->getChildren().size() + pos->getMoves().size()); i++) {
                 if (i >= pos->getChildren().size()) {
                     pos->addPredictedBestMove(Colour::WHITE);
                 }
-                unique_ptr<BoardNode>& child = pos->getChildren()[i];
+                unique_ptr<BoardNode> &child = pos->getChildren()[i];
                 double eval = alphaBetaPruning(child, depth - 1, alpha, beta, false);
                 maxEval = max(maxEval, eval);
                 alpha = max(alpha, eval);
@@ -166,14 +164,12 @@ double CPU::alphaBetaPruning(unique_ptr<BoardNode>& pos, int depth, double alpha
                 return positiveInfinity;
             }
         } else {
-            sort(pos->getChildren().begin(), pos->getChildren().end(), [](const unique_ptr<BoardNode>& lhs, const unique_ptr<BoardNode>& rhs) {
-                return lhs->getValue() < rhs->getValue();
-            });
+            sort(pos->getChildren().begin(), pos->getChildren().end(), [](const unique_ptr<BoardNode> &lhs, const unique_ptr<BoardNode> &rhs) { return lhs->getValue() < rhs->getValue(); });
             for (int i = 0; i < (pos->getChildren().size() + pos->getMoves().size()); i++) {
                 if (i >= pos->getChildren().size()) {
                     pos->addPredictedBestMove(Colour::BLACK);
                 }
-                unique_ptr<BoardNode>& child = pos->getChildren()[i];
+                unique_ptr<BoardNode> &child = pos->getChildren()[i];
                 double eval = alphaBetaPruning(child, depth - 1, alpha, beta, true);
                 minEval = min(minEval, eval);
                 beta = min(beta, eval);
@@ -188,10 +184,9 @@ double CPU::alphaBetaPruning(unique_ptr<BoardNode>& pos, int depth, double alpha
 }
 
 void CPU::quiescenceSearch() {
-    
 }
 
-void CPU::countTotalPossibleMoves(unique_ptr<BoardNode>& pos, int depth, bool maximizingPlayer, int& totalMoves) {
+void CPU::countTotalPossibleMoves(unique_ptr<BoardNode> &pos, int depth, bool maximizingPlayer, int &totalMoves) {
     if (depth == 0) {
         return;
     }

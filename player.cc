@@ -1,6 +1,4 @@
 #include "player.h"
-Player::Player(Colour colour): colour{colour} {}
+Player::Player(Colour colour) : colour{colour} {}
 
-Colour Player::getColour() {
-    return colour;
-}
+Colour Player::getColour() { return colour; }

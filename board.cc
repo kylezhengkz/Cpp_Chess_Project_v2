@@ -53,7 +53,8 @@ U64 Board::getPieces(Piece piece, Colour colour) {
     }
 }
 
-double Board::findPiece(int squareIndex, Colour teamColour, int8_t& captureFlag) {
+double Board::findPiece(int squareIndex, Colour teamColour,
+                        int8_t& captureFlag) {
     if (teamColour == Colour::WHITE) {
         if (getBit(whitePawns, squareIndex)) {
             captureFlag = Move::pawnCapture;
@@ -63,7 +64,7 @@ double Board::findPiece(int squareIndex, Colour teamColour, int8_t& captureFlag)
             return 3;
         } else if (getBit(whiteBishops, squareIndex)) {
             captureFlag = Move::bishopCapture;
-            return 3.05;
+            return 3;
         } else if (getBit(whiteRooks, squareIndex)) {
             captureFlag = Move::rookCapture;
             return 5;
@@ -82,7 +83,7 @@ double Board::findPiece(int squareIndex, Colour teamColour, int8_t& captureFlag)
             return 3;
         } else if (getBit(blackBishops, squareIndex)) {
             captureFlag = Move::bishopCapture;
-            return 3.05;
+            return 3;
         } else if (getBit(blackRooks, squareIndex)) {
             captureFlag = Move::rookCapture;
             return 5;
@@ -107,7 +108,7 @@ double Board::getPieceValue(Piece piece) {
             return 3;
             break;
         case (Piece::KNIGHT):
-            return 3.05;
+            return 3;
             break;
         case (Piece::ROOK):
             return 5;
@@ -119,6 +120,14 @@ double Board::getPieceValue(Piece piece) {
             throw logic_error("Cannot get piece value");
             break;
     }
+}
+
+U64 Board::getWhitePiecesMusk() {
+    return whitePawns | whiteKnights | whiteBishops | whiteRooks | whiteQueens | whiteKing;
+}
+
+U64 Board::getBlackPiecesMusk() {
+    return blackPawns | blackKnights | blackBishops | blackRooks | blackQueens | blackKing;
 }
 
 void printLetterRow(ostream& out) {
@@ -140,8 +149,8 @@ void printDashRow(ostream& out) {
 ostream& operator<<(ostream& out, Board& board) {
     printLetterRow(out);
     printDashRow(out);
-    for (int i = 56; i >= 0; i-=8) {
-        out << 8 - ((56 - i)/8) << '|';
+    for (int i = 56; i >= 0; i -= 8) {
+        out << 8 - ((56 - i) / 8) << '|';
         for (int j = 0; j < 8; j++) {
             int index = i + j;
             if (getBit(board.whitePawns, index)) {
@@ -172,7 +181,7 @@ ostream& operator<<(ostream& out, Board& board) {
                 out << '-';
             }
         }
-        out << '|' << 8 - ((56 - i)/8);
+        out << '|' << 8 - ((56 - i) / 8);
         out << endl;
     }
     printDashRow(out);

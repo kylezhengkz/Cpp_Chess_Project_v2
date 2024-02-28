@@ -24,10 +24,8 @@ struct Move {
     static const int bishopCapture = 0b0011;
     static const int rookCapture = 0b0100;
     static const int queenCapture = 0b0101;
-    int removePinIndex;
-    bool addPin;
     double value;
-    Move(int fromSquare, int toSquare, int flag, int8_t capture, int removePinIndex, bool addPin, double value);
+    Move(int fromSquare, int toSquare, int flag, int8_t capture, double value);
     int getFromSquare();
     int getToSquare();
     int getFlag();

@@ -1,13 +1,13 @@
 #include "board.h"
+#include "constants.h"
+#include "cpu.h"
 #include "lookupTable.h"
 #include "startPosition.h"
-#include "cpu.h"
 #include "user.h"
-#include "constants.h"
 using namespace std;
 using namespace MaskUtils;
 class Player;
-Player* choosePlayerType(Colour colour) {
+Player *choosePlayerType(Colour colour) {
     cout << "Choose players as follows: (user OR cpu) (user OR cpu)" << endl;
     string player;
     cin >> player;
@@ -22,9 +22,10 @@ int main() {
     LookupTable::setRayMusks();
     LookupTable::setMusks();
     LookupTable::mapBlockerKeys();
+    LookupTable::generatePawnPassMusk();
     unique_ptr<Board> board{new Board()};
-    unique_ptr<BoardNode> currentPosition = StartPosition::manualSetup(board);
-    // unique_ptr<BoardNode> currentPosition = StartPosition::defaultPosition(board);
+    // unique_ptr<BoardNode> currentPosition = StartPosition::manualSetup(board);
+    unique_ptr<BoardNode> currentPosition = StartPosition::defaultPosition(board);
 
     Player* player1 = choosePlayerType(Colour::WHITE);
     Player* player2 = choosePlayerType(Colour::BLACK);

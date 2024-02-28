@@ -3,10 +3,11 @@
 #include <stdexcept>
 #include <string>
 using namespace std;
-class InvalidUserMove: public exception {
+class InvalidUserMove : public exception {
     string errorMessage;
-  public:
+
+   public:
     InvalidUserMove();
-    const char* what() const noexcept override;
+    const char *what() const noexcept override;
 };
 #endif

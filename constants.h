@@ -1,6 +1,6 @@
 #ifndef CONSTANTS_H
 #define CONSTANTS_H
-enum class Colour{WHITE, BLACK};
+enum class Colour { WHITE, BLACK };
 inline Colour operator!(Colour colour) {
     if (colour == Colour::WHITE) {
         return Colour::BLACK;
@@ -8,5 +8,5 @@ inline Colour operator!(Colour colour) {
         return Colour::WHITE;
     }
 }
-enum class Piece{WHITEPAWN, BLACKPAWN, KNIGHT, BISHOP, ROOK, QUEEN, KING};
+enum class Piece { WHITEPAWN, BLACKPAWN, KNIGHT, BISHOP, ROOK, QUEEN, KING };
 #endif

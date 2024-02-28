@@ -1,13 +1,14 @@
 #ifndef PLAYER_H
 #define PLAYER_H
-#include "constants.h"
 #include "boardNode.h"
+#include "constants.h"
 class Player {
-    protected:
+   protected:
     Colour colour;
-    public:
+
+   public:
     Player(Colour colour);
     Colour getColour();
-    virtual void pickMove(unique_ptr<BoardNode>& pos) = 0;
+    virtual void pickMove(unique_ptr<BoardNode> &pos) = 0;
 };
 #endif
