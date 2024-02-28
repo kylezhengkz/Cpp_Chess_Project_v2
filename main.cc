@@ -4,6 +4,7 @@
 #include "lookupTable.h"
 #include "startPosition.h"
 #include "user.h"
+#include "invalidUserMoveException.h"
 using namespace std;
 using namespace MaskUtils;
 class Player;
@@ -36,7 +37,7 @@ int main() {
             try {
                 player1->pickMove(currentPosition);
                 break;
-            } catch (const exception& e) {
+            } catch (const InvalidUserMoveException& e) {
                 cout << e.what() << endl;
                 continue;
             }
@@ -47,7 +48,8 @@ int main() {
             try {
                 player2->pickMove(currentPosition);
                 break;
-            } catch (const exception& e) {
+            } catch (const InvalidUserMoveException& e) {
+                cout << e.what() << endl;
                 continue;
             }
         }

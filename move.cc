@@ -1,5 +1,5 @@
 #include "move.h"
-Move::Move(int fromSquare, int toSquare, int flag, int8_t capture, double value): capture{capture}, value{value} {
+Move::Move(int fromSquare, int toSquare, int flag, int8_t capture, double value, bool check): capture{capture}, value{value}, check{check} {
     move = fromSquare | (toSquare << 6) | (flag << 12);
 }
 

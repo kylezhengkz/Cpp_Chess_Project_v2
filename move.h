@@ -25,7 +25,8 @@ struct Move {
     static const int rookCapture = 0b0100;
     static const int queenCapture = 0b0101;
     double value;
-    Move(int fromSquare, int toSquare, int flag, int8_t capture, double value);
+    bool check;
+    Move(int fromSquare, int toSquare, int flag, int8_t capture, double value, bool check);
     int getFromSquare();
     int getToSquare();
     int getFlag();

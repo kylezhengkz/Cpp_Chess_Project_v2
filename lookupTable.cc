@@ -43,22 +43,16 @@ U64 LookupTable::lookupMusk(int key, Piece piece) {
     switch (piece) {
         case (Piece::KNIGHT):
             return knightMusks[key];
-            break;
         case (Piece::KING):
             return kingMusks[key];
-            break;
         case (Piece::QUEEN):
             return queenMusks[key];
-            break;
         case (Piece::BISHOP):
             return bishopMusks[key];
-            break;
         case (Piece::ROOK):
             return rookMusks[key];
-            break;
         default:
             throw logic_error("Attempted to search an invalid musk");
-            break;
     }
 }
 
@@ -491,6 +485,8 @@ void LookupTable::mapBlockerKeys() {
         for (int blockerIndex = 0; blockerIndex < totalPatterns; blockerIndex++) {
             int blockerKey = (blockerMusks[blockerIndex] * rookMagicArray[square]) >> rookBlockerShifts[square];
             rookMagicMoves[square][blockerKey] = generateLegalMoves(square, blockerMusks[blockerIndex], Piece::ROOK);
+            
+
             rookPSTTable[square][blockerKey] = generatePSTValue(rookMagicMoves[square][blockerKey] & ~blockerMusks[blockerIndex]);
         }
     }

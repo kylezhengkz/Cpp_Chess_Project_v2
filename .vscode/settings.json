@@ -65,6 +65,9 @@
         "variant": "cpp",
         "algorithm": "cpp",
         "unordered_set": "cpp",
-        "deque": "cpp"
+        "deque": "cpp",
+        "fstream": "cpp",
+        "iomanip": "cpp",
+        "stack": "cpp"
     }
 }
