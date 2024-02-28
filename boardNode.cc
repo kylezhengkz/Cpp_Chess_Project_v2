@@ -2,7 +2,7 @@
 
 bool BoardNode::moveListEmpty() { return moves.empty(); }
 
-BoardNode::BoardNode(unique_ptr<Board> board, int lastDoublePawnMoveIndex, CastleStatus castleStatus) : board{move(board)}, lastDoublePawnMoveIndex{lastDoublePawnMoveIndex}, castleStatus{castleStatus} {};
+BoardNode::BoardNode(unique_ptr<Board> board, int lastDoublePawnMoveIndex, CastleStatus castleStatus, BoardNode *parent) : board{move(board)}, lastDoublePawnMoveIndex{lastDoublePawnMoveIndex}, castleStatus{castleStatus}, parent{parent} {};
 
 double BoardNode::staticEval() {
     double eval = 0;
@@ -22,14 +22,12 @@ double BoardNode::staticEval() {
     return eval;
 }
 
-void BoardNode::checkPinsAndChecks(Colour colour, bool &check, bool &doubleCheck, U64 &kingLegalMoves, int &kingSquare, unordered_map<int, U64> &pins) {
+void BoardNode::checkPinsAndChecks(Colour colour, bool &check, bool &doubleCheck, U64 &kingLegalMoves, int &kingSquare, unordered_map<int, U64> &pins, U64 teamPieces, U64 opponentPieces, bool print) {
     U64 oppositionPawns;
     U64 oppositionKnights;
     U64 oppositionBishops;
     U64 oppositionRooks;
     U64 oppositionQueens;
-    U64 teamPieces;
-    U64 oppositionPieces;
     if (colour == Colour::WHITE) {
         kingSquare = getLSB(board->whiteKing);
         oppositionPawns = board->blackPawns;
@@ -37,7 +35,6 @@ void BoardNode::checkPinsAndChecks(Colour colour, bool &check, bool &doubleCheck
         oppositionBishops = board->blackBishops;
         oppositionRooks = board->blackRooks;
         oppositionQueens = board->blackQueens;
-        oppositionPieces = oppositionPawns | oppositionKnights | oppositionBishops | oppositionRooks | oppositionQueens;
     } else {
         kingSquare = getLSB(board->blackKing);
         oppositionPawns = board->whitePawns;
@@ -45,7 +42,6 @@ void BoardNode::checkPinsAndChecks(Colour colour, bool &check, bool &doubleCheck
         oppositionBishops = board->whiteBishops;
         oppositionRooks = board->whiteRooks;
         oppositionQueens = board->whiteQueens;
-        teamPieces = oppositionPawns | oppositionKnights | oppositionBishops | oppositionRooks | oppositionQueens;
     }
 
     kingLegalMoves = LookupTable::lookupMusk(kingSquare, Piece::KING) & ~teamPieces;
@@ -72,8 +68,8 @@ void BoardNode::checkPinsAndChecks(Colour colour, bool &check, bool &doubleCheck
 
     U64 checkDiagonalMusk = LookupTable::lookupMove(kingSquare, Piece::BISHOP, 0x0ULL);
     U64 diagonalOpponentAttackers = oppositionBishops | oppositionQueens;
-    if ((checkDiagonalMusk | diagonalOpponentAttackers) != 0) {
-        U64 attackers = checkDiagonalMusk | diagonalOpponentAttackers;
+    if ((checkDiagonalMusk & diagonalOpponentAttackers) != 0) {
+        U64 attackers = checkDiagonalMusk & diagonalOpponentAttackers;
         while (attackers != 0) {
             int attacker = popLSB(attackers);
             int direction;
@@ -100,11 +96,11 @@ void BoardNode::checkPinsAndChecks(Colour colour, bool &check, bool &doubleCheck
                 }
             }
 
-            if (attackMusk & oppositionPieces) {  // opponent piece in the way
+            if (attackMusk & opponentPieces) {  // opponent piece in the way
                 continue;
             } else if ((attackMusk & teamPieces) == 0) {  // check
                 kingLegalMoves &= ~attackMusk;
-                kingLegalMoves &= ~LookupTable::lookupRayMusk(kingSquare, direction);
+                kingLegalMoves &= ~LookupTable::lookupRayMusk(kingSquare, -direction);
                 if (check) {
                     doubleCheck = true;
                     return;
@@ -122,8 +118,9 @@ void BoardNode::checkPinsAndChecks(Colour colour, bool &check, bool &doubleCheck
 
     U64 checkStraightMusk = LookupTable::lookupMove(kingSquare, Piece::ROOK, 0x0ULL);
     U64 straightOpponentAttackers = oppositionRooks | oppositionQueens;
-    if ((checkStraightMusk | straightOpponentAttackers) != 0) {
-        U64 attackers = checkStraightMusk | straightOpponentAttackers;
+
+    if ((checkStraightMusk & straightOpponentAttackers) != 0) {
+        U64 attackers = checkStraightMusk & straightOpponentAttackers;
         while (attackers != 0) {
             int attacker = popLSB(attackers);
             int direction;
@@ -150,11 +147,11 @@ void BoardNode::checkPinsAndChecks(Colour colour, bool &check, bool &doubleCheck
                 }
             }
 
-            if (attackMusk & oppositionPieces) {  // piece in the way
+            if (attackMusk & opponentPieces) {  // piece in the way
                 continue;
             } else if ((attackMusk & teamPieces) == 0) {  // check
                 kingLegalMoves &= ~attackMusk;
-                kingLegalMoves &= ~LookupTable::lookupRayMusk(kingSquare, direction);
+                kingLegalMoves &= ~LookupTable::lookupRayMusk(kingSquare, -direction);
                 if (check) {
                     doubleCheck = true;
                     return;
@@ -171,7 +168,7 @@ void BoardNode::checkPinsAndChecks(Colour colour, bool &check, bool &doubleCheck
     }
 }
 
-void BoardNode::generateOpponentChecksAndUnsafeMusk(Colour myColour, U64 &unsafeMusk, U64 &diagonalChecks, U64 &straightChecks, U64 &knightChecks, U64 &pawnChecks, U64 teamPieces, U64 opponentPieces) {
+void BoardNode::generateOpponentChecksAndUnsafeMusk(Colour myColour, U64 &unsafeMusk, U64 &diagonalChecks, U64 &straightChecks, U64 &knightChecks, U64 &pawnChecks, U64 teamPieces, U64 opponentPieces, bool print) {
     // first need to consider pinned pieces
     U64 myBishops;
     U64 myRooks;
@@ -207,8 +204,8 @@ void BoardNode::generateOpponentChecksAndUnsafeMusk(Colour myColour, U64 &unsafe
     if ((potentialCheckPaths & (myBishops | myRooks | myQueens)) != 0) {
         U64 checkDiagonalMusk = LookupTable::lookupMove(opponentKingSquare, Piece::BISHOP, 0x0ULL);
         U64 diagonalOpponentAttackers = myBishops | myQueens;
-        if ((checkDiagonalMusk | diagonalOpponentAttackers) != 0) {
-            U64 attackers = checkDiagonalMusk | diagonalOpponentAttackers;
+        if ((checkDiagonalMusk & diagonalOpponentAttackers) != 0) {
+            U64 attackers = checkDiagonalMusk & diagonalOpponentAttackers;
             while (attackers != 0) {
                 int attacker = popLSB(attackers);
                 int direction;
@@ -247,8 +244,8 @@ void BoardNode::generateOpponentChecksAndUnsafeMusk(Colour myColour, U64 &unsafe
 
         U64 checkStraightMusk = LookupTable::lookupMove(opponentKingSquare, Piece::ROOK, 0x0ULL);
         U64 straightOpponentAttackers = myRooks | myQueens;
-        if ((checkStraightMusk | straightOpponentAttackers) != 0) {
-            U64 attackers = checkStraightMusk | straightOpponentAttackers;
+        if ((checkStraightMusk & straightOpponentAttackers) != 0) {
+            U64 attackers = checkStraightMusk & straightOpponentAttackers;
             while (attackers != 0) {
                 int attacker = popLSB(attackers);
                 int direction;
@@ -300,22 +297,15 @@ void BoardNode::generateOpponentChecksAndUnsafeMusk(Colour myColour, U64 &unsafe
             }
 
             if (pins.count(initialSquare) > 0) {
-                unsafeMusk &= pins[initialSquare];
+                controlMusk &= pins[initialSquare];
             }
 
-            unsafeMusk |= unsafeMusk;
+            unsafeMusk |= controlMusk;
         }
     }
 }
 
-void BoardNode::generateMoves(Colour colour) {
-    bool check = false;
-    bool doubleCheck = false;
-    U64 kingLegalMoves;
-    int kingSquare;
-    unordered_map<int, U64> pins;
-    checkPinsAndChecks(colour, check, doubleCheck, kingLegalMoves, kingSquare, pins);
-
+void BoardNode::generateMoves(Colour colour, bool print) {
     U64 teamPieces;
     U64 opponentPieces;
     U64 allPieces;
@@ -338,12 +328,38 @@ void BoardNode::generateMoves(Colour colour) {
     }
     allPieces = teamPieces | opponentPieces;
 
+    bool check = false;
+    bool doubleCheck = false;
+    U64 kingLegalMoves;
+    int kingSquare;
+    unordered_map<int, U64> pins;
+    checkPinsAndChecks(colour, check, doubleCheck, kingLegalMoves, kingSquare, pins, teamPieces, opponentPieces, false);
+
     U64 unsafeMusk = 0x0ULL;
     U64 diagonalChecks;
     U64 straightChecks;
     U64 knightChecks;
     U64 pawnChecks;
-    generateOpponentChecksAndUnsafeMusk(colour, unsafeMusk, diagonalChecks, straightChecks, knightChecks, pawnChecks, teamPieces, opponentPieces);
+    generateOpponentChecksAndUnsafeMusk(colour, unsafeMusk, diagonalChecks, straightChecks, knightChecks, pawnChecks, teamPieces, opponentPieces, false);
+
+    if (print && check) {
+        cout << "King is in check" << endl;
+        bool check = false;
+        bool doubleCheck = false;
+        U64 kingLegalMoves;
+        int kingSquare;
+        unordered_map<int, U64> pins;
+        checkPinsAndChecks(colour, check, doubleCheck, kingLegalMoves, kingSquare, pins, teamPieces, opponentPieces, true);
+
+        U64 unsafeMusk = 0x0ULL;
+        U64 diagonalChecks;
+        U64 straightChecks;
+        U64 knightChecks;
+        U64 pawnChecks;
+        generateOpponentChecksAndUnsafeMusk(colour, unsafeMusk, diagonalChecks, straightChecks, knightChecks, pawnChecks, teamPieces, opponentPieces, false);
+        cout << "unsafe musk" << endl;
+        printBitboard(unsafeMusk, cout);
+    }
 
     for (Piece piece : pieceGenerationOrder) {
         if (doubleCheck) {  // must move king only
@@ -479,7 +495,7 @@ void BoardNode::generateMoves(Colour colour) {
                             }
                         }
 
-                        if (getBit(pawnChecks, newSquare)) { // chceck
+                        if (getBit(pawnChecks, newSquare)) {  // chceck
                             if (safe) {
                                 moveVal += 0.1;
                             } else {
@@ -496,7 +512,7 @@ void BoardNode::generateMoves(Colour colour) {
                             moveVal += (LookupTable::lookupKnightPSTValue(newSquare, newAllPieces)) - (LookupTable::lookupKnightPSTValue(initialSquare, allPieces));
                         }
 
-                        if (getBit(knightChecks, newSquare)) { // chceck
+                        if (getBit(knightChecks, newSquare)) {  // chceck
                             if (safe) {
                                 moveVal += 0.1;
                             } else {
@@ -513,7 +529,7 @@ void BoardNode::generateMoves(Colour colour) {
                             moveVal += (LookupTable::lookupPSTValue(newSquare, Piece::BISHOP, newAllPieces)) - (LookupTable::lookupPSTValue(initialSquare, Piece::BISHOP, allPieces));
                         }
 
-                        if (getBit(diagonalChecks, newSquare)) { // chceck
+                        if (getBit(diagonalChecks, newSquare)) {  // chceck
                             if (safe) {
                                 moveVal += 0.1;
                             } else {
@@ -529,8 +545,8 @@ void BoardNode::generateMoves(Colour colour) {
                             clearBit(newAllPieces, initialSquare);
                             moveVal += (LookupTable::lookupPSTValue(newSquare, Piece::ROOK, newAllPieces)) - (LookupTable::lookupPSTValue(initialSquare, Piece::ROOK, allPieces));
                         }
-                        
-                        if (getBit(straightChecks, newSquare)) { // chceck
+
+                        if (getBit(straightChecks, newSquare)) {  // chceck
                             if (safe) {
                                 moveVal += 0.1;
                             } else {
@@ -546,8 +562,8 @@ void BoardNode::generateMoves(Colour colour) {
                             clearBit(newAllPieces, initialSquare);
                             moveVal += (LookupTable::lookupPSTValue(newSquare, Piece::QUEEN, newAllPieces)) - (LookupTable::lookupPSTValue(initialSquare, Piece::QUEEN, allPieces));
                         }
-                        
-                        if (getBit(diagonalChecks, newSquare) || getBit(straightChecks, newSquare)) { // chceck
+
+                        if (getBit(diagonalChecks, newSquare) || getBit(straightChecks, newSquare)) {  // chceck
                             if (safe) {
                                 moveVal += 0.1;
                             } else {
@@ -564,9 +580,32 @@ void BoardNode::generateMoves(Colour colour) {
                 if (getBit(opponentPieces, newSquare)) {  // if capture
                     try {
                         moveVal += board->findPiece(newSquare, !colour, captureFlag);
-                    } catch (exception& e) {
+                    } catch (exception &e) {
                         cout << "Attempted to capture from " << initialSquare << " to " << newSquare << endl;
                         printBoardOnly(cout);
+                        BoardNode *getParent = parent;
+                        Colour switchColour = colour;
+                        while (getParent) {
+                            getParent->printBoardOnly(cout);
+                            if (switchColour == Colour::WHITE) {
+                                switchColour = Colour::BLACK;
+                            } else {
+                                switchColour = Colour::WHITE;
+                            }
+                            bool check = false;
+                            bool doubleCheck = false;
+                            U64 kingLegalMoves;
+                            int kingSquare;
+                            unordered_map<int, U64> pins;
+                            getParent->checkPinsAndChecks(switchColour, check, doubleCheck, kingLegalMoves, kingSquare, pins, teamPieces, opponentPieces, true);
+                            U64 unsafeMusk = 0x0ULL;
+                            U64 diagonalChecks;
+                            U64 straightChecks;
+                            U64 knightChecks;
+                            U64 pawnChecks;
+                            getParent->generateOpponentChecksAndUnsafeMusk(switchColour, unsafeMusk, diagonalChecks, straightChecks, knightChecks, pawnChecks, teamPieces, opponentPieces, true);
+                            getParent = getParent->parent;
+                        }
                         throw;
                     }
                 } else if (flag == Move::enPassant) {
@@ -603,9 +642,32 @@ void BoardNode::generateMoves(Colour colour) {
         if (getBit(opponentPieces, newSquare)) {  // if capture
             try {
                 moveVal += board->findPiece(newSquare, !colour, captureFlag);
-            } catch (exception& e) {
+            } catch (exception &e) {
                 cout << "Attempted to capture from " << kingSquare << " to " << newSquare << endl;
                 printBoardOnly(cout);
+                BoardNode *getParent = parent;
+                Colour switchColour = colour;
+                while (getParent) {
+                    getParent->printBoardOnly(cout);
+                    if (switchColour == Colour::WHITE) {
+                        switchColour = Colour::BLACK;
+                    } else {
+                        switchColour = Colour::WHITE;
+                    }
+                    bool check = false;
+                    bool doubleCheck = false;
+                    U64 kingLegalMoves;
+                    int kingSquare;
+                    unordered_map<int, U64> pins;
+                    getParent->checkPinsAndChecks(switchColour, check, doubleCheck, kingLegalMoves, kingSquare, pins, teamPieces, opponentPieces, true);
+                    U64 unsafeMusk = 0x0ULL;
+                    U64 diagonalChecks;
+                    U64 straightChecks;
+                    U64 knightChecks;
+                    U64 pawnChecks;
+                    getParent->generateOpponentChecksAndUnsafeMusk(switchColour, unsafeMusk, diagonalChecks, straightChecks, knightChecks, pawnChecks, teamPieces, opponentPieces, true);
+                    getParent = getParent->parent;
+                }
                 throw;
             }
         }
@@ -679,17 +741,17 @@ void BoardNode::addPredictedBestMove(Colour colour) {
                 } else if (bestPredictedMove->getToSquare() == 6) {
                     newPosition->whiteRooks ^= (0x1ULL << 5) | (0x1ULL << 7);
                 }
-                children.emplace_back(make_unique<BoardNode>(move(newPosition), newLastDoublePawnMoveIndex, newCastleStatus));
+                children.emplace_back(make_unique<BoardNode>(move(newPosition), newLastDoublePawnMoveIndex, newCastleStatus, this));
                 return;
             case Move::enPassant:
                 newPosition->whitePawns ^= (0x1ULL << bestPredictedMove->getFromSquare()) | (0x1ULL << bestPredictedMove->getToSquare());
                 clearBit(newPosition->blackPawns, lastDoublePawnMoveIndex);
-                children.emplace_back(make_unique<BoardNode>(move(newPosition), newLastDoublePawnMoveIndex, newCastleStatus));
+                children.emplace_back(make_unique<BoardNode>(move(newPosition), newLastDoublePawnMoveIndex, newCastleStatus, this));
                 return;
             case Move::pawnDoubleMove:
                 newPosition->whitePawns ^= (0x1ULL << bestPredictedMove->getFromSquare()) | (0x1ULL << bestPredictedMove->getToSquare());
                 newLastDoublePawnMoveIndex = bestPredictedMove->getToSquare();
-                children.emplace_back(make_unique<BoardNode>(move(newPosition), newLastDoublePawnMoveIndex, newCastleStatus));
+                children.emplace_back(make_unique<BoardNode>(move(newPosition), newLastDoublePawnMoveIndex, newCastleStatus, this));
                 return;
             case Move::queenPromotion:
                 clearBit(newPosition->whitePawns, bestPredictedMove->getFromSquare());
@@ -750,18 +812,17 @@ void BoardNode::addPredictedBestMove(Colour colour) {
                 } else if (bestPredictedMove->getToSquare() == 62) {
                     newPosition->blackRooks ^= (0x1ULL << 61) | (0x1ULL << 63);
                 }
-                children.emplace_back(make_unique<BoardNode>(
-                    move(newPosition), newLastDoublePawnMoveIndex, newCastleStatus));
+                children.emplace_back(make_unique<BoardNode>(move(newPosition), newLastDoublePawnMoveIndex, newCastleStatus, this));
                 return;
             case Move::enPassant:
                 newPosition->blackPawns ^= (0x1ULL << bestPredictedMove->getFromSquare()) | (0x1ULL << bestPredictedMove->getToSquare());
                 clearBit(newPosition->whitePawns, lastDoublePawnMoveIndex);
-                children.emplace_back(make_unique<BoardNode>(move(newPosition), newLastDoublePawnMoveIndex, newCastleStatus));
+                children.emplace_back(make_unique<BoardNode>(move(newPosition), newLastDoublePawnMoveIndex, newCastleStatus, this));
                 return;
             case Move::pawnDoubleMove:
                 newPosition->blackPawns ^= (0x1ULL << bestPredictedMove->getFromSquare()) | (0x1ULL << bestPredictedMove->getToSquare());
                 newLastDoublePawnMoveIndex = bestPredictedMove->getToSquare();
-                children.emplace_back(make_unique<BoardNode>(move(newPosition), newLastDoublePawnMoveIndex, newCastleStatus));
+                children.emplace_back(make_unique<BoardNode>(move(newPosition), newLastDoublePawnMoveIndex, newCastleStatus, this));
                 return;
             case Move::queenPromotion:
                 clearBit(newPosition->blackPawns, bestPredictedMove->getFromSquare());
@@ -868,7 +929,7 @@ void BoardNode::addPredictedBestMove(Colour colour) {
         }
     }
 
-    children.emplace_back(make_unique<BoardNode>(move(newPosition), newLastDoublePawnMoveIndex, newCastleStatus));
+    children.emplace_back(make_unique<BoardNode>(move(newPosition), newLastDoublePawnMoveIndex, newCastleStatus, this));
 }
 
 ostream &BoardNode::printBoardOnly(ostream &out) {
@@ -956,6 +1017,51 @@ bool BoardNode::containsMove(int fromSquare, int toSquare) {
 
 void branchToChild(unique_ptr<BoardNode> &boardNode, size_t childIndex) {
     boardNode = move(boardNode->children[childIndex]);
+}
+
+size_t BoardNode::branchToChildInput(int fromSquare, int toSquare, Colour colour) {
+    vector<Piece> pieceCheckOrder;
+
+    if (colour == Colour::WHITE) {
+        pieceCheckOrder = {Piece::WHITEPAWN, Piece::KNIGHT, Piece::BISHOP, Piece::KING, Piece::ROOK, Piece::QUEEN};
+    } else {
+        pieceCheckOrder = {Piece::BLACKPAWN, Piece::KNIGHT, Piece::BISHOP, Piece::KING, Piece::ROOK, Piece::QUEEN};
+    }
+
+    size_t childIndex = -1;
+    for (int i = 0; i < children.size(); i++) {
+        unique_ptr<BoardNode> &child = children[i];
+        for (Piece piece : pieceCheckOrder) {
+            U64 checkNewPos = child->board->getPieces(piece, colour);
+
+            if ((colour == Colour::WHITE) && (piece == Piece::WHITEPAWN) && (toSquare >= 56)) {
+                U64 checkQueen = child->board->getPieces(Piece::QUEEN, colour);
+                if (getBit(checkQueen, toSquare) && !getBit(checkQueen, fromSquare)) {
+                    U64 checkPieces = board->getPieces(piece, colour);
+                    if (!getBit(checkPieces, toSquare) && getBit(checkPieces, fromSquare)) {
+                        childIndex = i;
+                    }
+                }
+            } else if ((colour == Colour::BLACK) && (piece == Piece::BLACKPAWN) && (toSquare <= 7)) {
+                U64 checkQueen = child->board->getPieces(Piece::QUEEN, colour);
+                if (getBit(checkQueen, toSquare) && !getBit(checkQueen, fromSquare)) {
+                    U64 checkPieces = board->getPieces(piece, colour);
+                    if (!getBit(checkPieces, toSquare) && getBit(checkPieces, fromSquare)) {
+                        childIndex = i;
+                    }
+                }
+            }
+
+            if (getBit(checkNewPos, toSquare) && !getBit(checkNewPos, fromSquare)) {
+                U64 checkPieces = board->getPieces(piece, colour);
+                if (!getBit(checkPieces, toSquare) && getBit(checkPieces, fromSquare)) {
+                    childIndex = i;
+                }
+            }
+        }
+    }
+
+    return childIndex;
 }
 
 void BoardNode::setValue(double value) { this->value = value; }

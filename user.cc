@@ -15,18 +15,47 @@ void User::pickMove(unique_ptr<BoardNode>& pos) {
         cout << "BLACK TO MOVE:" << endl;
     }
 
-    cout << "Input command as follows: (move OR list OR display)" << endl;
+    cout << "Input command as follows: (move OR list OR display OR printMoveGeneration)" << endl;
     string command;
     cin >> command;
     while (command != "move") {
         if (command == "list") {
-            pos->generateMoves(colour);
+            pos->generateMoves(colour, false);
             pos->printChildrenMoveNotation(cout);
             pos->clearMoves();
         } else if (command == "display") {
             pos->printBoardOnly(cout);
+        } else if (command == "printMoveGeneration") {
+            pos->generateMoves(colour, true);
+            pos->clearMoves();
         }
-        cout << "Input command as follows: (move OR list OR display)" << endl;
+        cout << "Input command as follows: (move OR list OR display OR printMoveGeneration)" << endl;
         cin >> command;
+    }
+
+    string fromSquare;
+    cin >> fromSquare;
+    string toSquare;
+    cin >> toSquare;
+    pos->generateMoves(colour, false);
+    int fromSquareInt = strToIndex(fromSquare);
+    int toSquareInt = strToIndex(toSquare);
+    if (fromSquareInt >= 64 || fromSquareInt < 0) {
+        throw logic_error("Invalid from square");
+    }
+
+    if (toSquareInt >= 64 || toSquareInt < 0) {
+        throw logic_error("Invalid to square");
+    }
+
+    while (!pos->moveListEmpty()) {
+        pos->addPredictedBestMove(Colour::WHITE);
+    }
+
+    size_t childIndex = pos->branchToChildInput(fromSquareInt, toSquareInt, colour);
+    if (childIndex == -1) {
+        throw logic_error("Invalid move");
+    } else {
+        branchToChild(pos, childIndex);
     }
 }

@@ -26,16 +26,17 @@ int main() {
     unique_ptr<Board> board{new Board()};
     // unique_ptr<BoardNode> currentPosition = StartPosition::manualSetup(board);
     unique_ptr<BoardNode> currentPosition = StartPosition::defaultPosition(board);
-
+    
     Player* player1 = choosePlayerType(Colour::WHITE);
     Player* player2 = choosePlayerType(Colour::BLACK);
+
     int maxTurns = numeric_limits<int>::max();
     for (int i = 0; i < maxTurns; i++) {
         while (true) {
             try {
                 player1->pickMove(currentPosition);
                 break;
-            } catch (const InvalidUserMove& e) {
+            } catch (const exception& e) {
                 cout << e.what() << endl;
                 continue;
             }
@@ -46,7 +47,7 @@ int main() {
             try {
                 player2->pickMove(currentPosition);
                 break;
-            } catch (const InvalidUserMove& e) {
+            } catch (const exception& e) {
                 continue;
             }
         }

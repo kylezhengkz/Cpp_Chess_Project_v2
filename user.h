@@ -1,6 +1,5 @@
 #include "boardNode.h"
 #include "constants.h"
-#include "invalidUserMove.h"
 #include "player.h"
 class User : public Player {
    public:

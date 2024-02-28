@@ -13,8 +13,8 @@ void CPU::pickMove(unique_ptr<BoardNode> &pos) {
     }
     iterativeDeepening(pos);
 
+   /*
     // move counter
-    /*
      int totalMoves1 = 0;
      countTotalPossibleMoves(pos, 1, true, totalMoves1);
      cout << totalMoves1 << endl;
@@ -63,32 +63,6 @@ void CPU::iterativeDeepening(unique_ptr<BoardNode> &pos) {
     }
     cout << "End iterative deepening search" << endl;
     branchToChild(pos, 0);
-
-    /*
-    cout << "Evaluation: " << pos->getValue() << endl;
-    pos->printBoardOnly(cout);
-    cout << "Printing leftmost path" << endl;
-    Colour switchColour = colour;
-    while (pos->getChildren().size() > 0) {
-        if (switchColour == Colour::WHITE) {
-            sort(pos->getChildren().begin(), pos->getChildren().end(), [](const unique_ptr<BoardNode>& lhs, const unique_ptr<BoardNode>& rhs) {
-                return lhs->getValue() > rhs->getValue();
-            });
-        } else {
-            sort(pos->getChildren().begin(), pos->getChildren().end(), [](const unique_ptr<BoardNode>& lhs, const unique_ptr<BoardNode>& rhs) {
-                return lhs->getValue() < rhs->getValue();
-            });
-        }
-        pos->printBoardOnly(cout);
-
-        if (switchColour == Colour::WHITE) {
-            switchColour = Colour::BLACK;
-        } else {
-            switchColour = Colour::WHITE;
-        }
-        branchToChild(pos, 0);
-    }
-    */
 }
 
 double CPU::alphaBetaPruning(unique_ptr<BoardNode> &pos, int depth, double alpha, double beta, bool maximizingPlayer) {
@@ -113,7 +87,7 @@ double CPU::alphaBetaPruning(unique_ptr<BoardNode> &pos, int depth, double alpha
     if (maximizingPlayer) {
         double maxEval = negativeInfinity;
         if (pos->getChildren().size() == 0) {
-            pos->generateMoves(Colour::WHITE);
+            pos->generateMoves(Colour::WHITE, false);
             int index = -1;
             while (!pos->moveListEmpty()) {
                 pos->addPredictedBestMove(Colour::WHITE);
@@ -148,7 +122,7 @@ double CPU::alphaBetaPruning(unique_ptr<BoardNode> &pos, int depth, double alpha
     } else {
         double minEval = positiveInfinity;
         if (pos->getChildren().size() == 0) {
-            pos->generateMoves(Colour::BLACK);
+            pos->generateMoves(Colour::BLACK, false);
             int index = -1;
             while (!pos->moveListEmpty()) {
                 pos->addPredictedBestMove(Colour::BLACK);
@@ -192,7 +166,7 @@ void CPU::countTotalPossibleMoves(unique_ptr<BoardNode> &pos, int depth, bool ma
     }
 
     if (maximizingPlayer) {
-        pos->generateMoves(Colour::WHITE);
+        pos->generateMoves(Colour::WHITE, false);
         int index = -1;
         while (!pos->moveListEmpty()) {
             pos->addPredictedBestMove(Colour::WHITE);
@@ -201,7 +175,7 @@ void CPU::countTotalPossibleMoves(unique_ptr<BoardNode> &pos, int depth, bool ma
             countTotalPossibleMoves(pos->getChildren()[index], depth - 1, false, totalMoves);
         }
     } else {
-        pos->generateMoves(Colour::BLACK);
+        pos->generateMoves(Colour::BLACK, false);
         int index = -1;
         while (!pos->moveListEmpty()) {
             pos->addPredictedBestMove(Colour::BLACK);

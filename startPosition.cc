@@ -24,7 +24,7 @@ unique_ptr<BoardNode> StartPosition::defaultPosition(unique_ptr<Board> &board) {
     setBit(board->whiteKing, 4);
     setBit(board->blackKing, 60);
     CastleStatus castleStatus(true, true, true, true);
-    unique_ptr<BoardNode> boardNode(new BoardNode(move(board), -1, castleStatus));
+    unique_ptr<BoardNode> boardNode(new BoardNode(move(board), -1, castleStatus, nullptr));
     return boardNode;
 }
 
@@ -37,7 +37,7 @@ unique_ptr<BoardNode> StartPosition::castleTestSetup(unique_ptr<Board> &board) {
     setBit(board->blackKing, 60);
     unordered_map<int, U64> emptyMap;
     CastleStatus castleStatus(true, true, true, true);
-    unique_ptr<BoardNode> boardNode(new BoardNode(move(board), -1, castleStatus));
+    unique_ptr<BoardNode> boardNode(new BoardNode(move(board), -1, castleStatus, nullptr));
     return boardNode;
 }
 
@@ -72,11 +72,7 @@ unique_ptr<BoardNode> StartPosition::manualSetup(unique_ptr<Board> &board) {
     setBit(board->blackPawns, 54);
     setBit(board->blackPawns, 55);
     CastleStatus castleStatus(true, false, false, false);
-    unique_ptr<BoardNode> boardNode(new BoardNode(move(board), -1, castleStatus));
+    unique_ptr<BoardNode> boardNode(new BoardNode(move(board), -1, castleStatus, nullptr));
     boardNode->printBoardOnly(cout);
     return boardNode;
-}
-
-unique_ptr<BoardNode> StartPosition::setFromOutput(unique_ptr<Board> &board) {
-
 }
