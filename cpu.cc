@@ -91,6 +91,8 @@ double CPU::alphaBetaPruning(unique_ptr<BoardNode> &pos, int depth, double alpha
             staticEval = pos->staticEval(Colour::BLACK);
         }
         pos->setValue(staticEval);
+        // cout << "Static eval: " << staticEval << endl;
+        // pos->printBoardOnly(cout);
         return staticEval;
     }
 

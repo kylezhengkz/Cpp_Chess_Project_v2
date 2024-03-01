@@ -1,36 +1,4 @@
 #include "maskUtils.h"
-int MaskUtils::getBit(const U64& b, int i) {
-    return (b & (1ULL << i)) != 0;
-}
-
-void MaskUtils::setBit(U64& b, int i) {
-    b |= (1ULL << i);
-}
-
-void MaskUtils::clearBit(U64& b, int i) {
-    b &= ~(1ULL << i);
-}
-
-int MaskUtils::getLSB(const U64& b) {
-    if (b == 0) {
-        return -1;
-    }
-    return __builtin_ctzll(b);
-}
-
-int MaskUtils::getMSB(const U64& b) {
-    if (b == 0) {
-        return -1;
-    }
-    return 63 - (__builtin_clzll(b));
-}
-
-int MaskUtils::popLSB(U64& b) {
-    int i = getLSB(b);
-    b &= b - 1;
-    return i;
-}
-
 MaskUtils::U64 MaskUtils::clearBitsEqualGreaterThanIndex(U64 b, int index) {
     U64 musk = (1ULL << index) - 1;
     return b & musk;

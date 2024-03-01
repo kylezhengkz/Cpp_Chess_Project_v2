@@ -119,12 +119,32 @@ const U64 threeSquares = (0x1ULL << 16) | (0x1ULL << 9) | (0x1ULL << 2) | (0x1UL
 const U64 twoSquares = (0x1ULL << 8) | (0x1ULL << 1) | (0x1ULL << 6) | (0x1ULL << 15) | (0x1ULL << 48) | (0x1ULL << 57) | (0x1ULL << 62) | (0x1ULL << 55);
 const U64 oneSquares = (0x1ULL << 56) | (0x1ULL << 63) | (0x1ULL << 0) | (0x1ULL << 7);
 
-int getBit(const U64& b, int i);
-void setBit(U64& b, int i);
-void clearBit(U64& b, int i);
-int getLSB(const U64& b);
-int getMSB(const U64& b);
-int popLSB(U64& b);
+static inline int getBit(const U64& b, int i) {
+    return (b & (1ULL << i)) != 0;
+}
+static inline void setBit(U64& b, int i) {
+    b |= (1ULL << i);
+}
+static inline void clearBit(U64& b, int i) {
+    b &= ~(1ULL << i);
+}
+static inline int getLSB(const U64& b) {
+    if (b == 0) {
+        return -1;
+    }
+    return __builtin_ctzll(b);
+}
+static inline int getMSB(const U64& b) {
+    if (b == 0) {
+        return -1;
+    }
+    return 63 - (__builtin_clzll(b));
+}
+static inline int popLSB(U64& b) {
+    int i = getLSB(b);
+    b &= b - 1;
+    return i;
+}
 U64 clearBitsEqualGreaterThanIndex(U64 b, int index);
 U64 clearBitsEqualLessThanIndex(U64 b, int index);
 ostream& printBitboard(const U64& board, ostream& out);

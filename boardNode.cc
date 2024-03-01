@@ -6,7 +6,7 @@ BoardNode::BoardNode(unique_ptr<Board> board, int lastDoublePawnMoveIndex, Castl
 
 double BoardNode::staticEval(Colour colour) {
     double eval = 0;
-    
+
     // material balance
     eval += __builtin_popcountll(board->whitePawns) * 1;
     eval += __builtin_popcountll(board->whiteKnights) * 3;
@@ -20,10 +20,10 @@ double BoardNode::staticEval(Colour colour) {
     eval -= __builtin_popcountll(board->blackQueens) * 9;
 
     /*
-    if (eval >= 3) { // lazy evaluation
+    if (eval >= 3) {  // lazy evaluation
         return eval;
     }
-
+    
     vector<Piece> pieceGenerationOrder;
     Piece switchPiece;
     Colour oppositionColour;
