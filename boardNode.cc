@@ -6,7 +6,7 @@ BoardNode::BoardNode(unique_ptr<Board> board, int lastDoublePawnMoveIndex, Castl
 
 double BoardNode::staticEval(Colour colour) {
     double eval = 0;
-
+    
     // material balance
     eval += __builtin_popcountll(board->whitePawns) * 1;
     eval += __builtin_popcountll(board->whiteKnights) * 3;
@@ -18,6 +18,62 @@ double BoardNode::staticEval(Colour colour) {
     eval -= __builtin_popcountll(board->blackBishops) * 3;
     eval -= __builtin_popcountll(board->blackRooks) * 5;
     eval -= __builtin_popcountll(board->blackQueens) * 9;
+
+    /*
+    if (eval >= 3) { // lazy evaluation
+        return eval;
+    }
+
+    vector<Piece> pieceGenerationOrder;
+    Piece switchPiece;
+    Colour oppositionColour;
+    U64 opponentPawns;
+    U64 switchOpponentPawns;
+    if (colour == Colour::WHITE) {
+        oppositionColour = Colour::BLACK;
+        pieceGenerationOrder = {Piece::WHITEPAWN, Piece::KNIGHT, Piece::BISHOP, Piece::ROOK, Piece::QUEEN};
+        opponentPawns = board->getPieces(Piece::BLACKPAWN, oppositionColour);
+        switchPiece = Piece::BLACKPAWN;
+        switchOpponentPawns = board->getPieces(Piece::WHITEPAWN, colour);
+    } else {
+        oppositionColour = Colour::WHITE;
+        pieceGenerationOrder = {Piece::BLACKPAWN, Piece::KNIGHT, Piece::BISHOP, Piece::ROOK, Piece::QUEEN};
+        opponentPawns = board->getPieces(Piece::WHITEPAWN, oppositionColour);
+        switchPiece = Piece::WHITEPAWN;
+        switchOpponentPawns = board->getPieces(Piece::BLACKPAWN, colour);
+    }
+
+    U64 allPieces = board->getWhitePiecesMusk() | board->getBlackPiecesMusk();
+
+    for (Piece piece : pieceGenerationOrder) {
+        U64 existingPieces = board->getPieces(piece, colour);
+        while (existingPieces != 0) {
+            int square = popLSB(existingPieces);
+            if ((piece == Piece::WHITEPAWN || piece == Piece::BLACKPAWN)) {
+                eval += LookupTable::lookupPawnPSTValue(square, opponentPawns, colour) * 0.1;
+            } else if (piece == Piece::KNIGHT) {
+                eval += LookupTable::lookupKnightPSTValue(square, allPieces) * 0.1;
+            } else {
+                eval += LookupTable::lookupPSTValue(square, piece, allPieces) * 0.1;
+            }
+        }
+    }
+
+    pieceGenerationOrder[0] = switchPiece;
+    for (Piece piece : pieceGenerationOrder) {
+        U64 existingPieces = board->getPieces(piece, oppositionColour);
+        while (existingPieces != 0) {
+            int square = popLSB(existingPieces);
+            if ((piece == Piece::WHITEPAWN || piece == Piece::BLACKPAWN)) {
+                eval -= LookupTable::lookupPawnPSTValue(square, switchOpponentPawns, oppositionColour) * 0.1;
+            } else if (piece == Piece::KNIGHT) {
+                eval -= LookupTable::lookupKnightPSTValue(square, allPieces) * 0.1;
+            } else {
+                eval -= LookupTable::lookupPSTValue(square, piece, allPieces) * 0.1;
+            }
+        }
+    }
+    */
 
     return eval;
 }
@@ -168,7 +224,7 @@ void BoardNode::checkPinsAndChecks(Colour colour, bool &check, bool &doubleCheck
     }
 }
 
-void BoardNode::generateOpponentChecksAndUnsafeMusk(Colour myColour, U64 &unsafeMusk, U64 &diagonalChecks, U64 &straightChecks, U64 &knightChecks, U64 &pawnChecks, U64 teamPieces, U64 opponentPieces, unordered_map<int, U64>& improperEvasions, bool print) {
+void BoardNode::generateOpponentChecksAndUnsafeMusk(Colour myColour, U64 &unsafeMusk, U64 &diagonalChecks, U64 &straightChecks, U64 &knightChecks, U64 &pawnChecks, U64 teamPieces, U64 opponentPieces, unordered_map<int, U64> &improperEvasions, bool print) {
     // first need to consider pinned pieces
     U64 myBishops;
     U64 myRooks;
@@ -653,6 +709,7 @@ void BoardNode::generateMoves(Colour colour, bool print) {
                         break;
                     }
                     default:
+                        throw logic_error("Invalid piece");
                         break;
                 }
 
