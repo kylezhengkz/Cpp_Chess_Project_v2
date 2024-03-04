@@ -1,6 +1,8 @@
 #include "cpu.h"
 CPU::CPU(Colour colour) : Player{colour} {};
 
+int CPU::prevDepth = -1;
+
 double const CPU::negativeInfinity = -9999;
 double const CPU::positiveInfinity = 9999;
 const int CPU::maxTimeSeconds = 10;
@@ -37,7 +39,13 @@ void CPU::iterativeDeepening(unique_ptr<BoardNode> &pos) {
     startTime = high_resolution_clock::now();
     int maxDepth = numeric_limits<int>::max();
     cout << "Begin iterative deepening search" << endl;
-    for (int depth = 1; depth < maxDepth; depth++) {
+    int startDepth;
+    if (prevDepth == -1) {
+        startDepth = 1;
+    } else {
+        startDepth = prevDepth - 1;
+    }
+    for (int depth = startDepth; depth < maxDepth; depth++) {
         cout << "Searching depth " << depth << endl;
         if (colour == Colour::WHITE) {
             alphaBetaPruning(pos, depth, negativeInfinity, positiveInfinity, true);
@@ -49,6 +57,7 @@ void CPU::iterativeDeepening(unique_ptr<BoardNode> &pos) {
         cout << "Time elasped: " << timeElasped << endl;
         if (timeElasped >= maxTimeSeconds) {
             cout << "Halted search at depth " << depth << endl;
+            prevDepth = depth;
             break;
         }
         cout << "Finished searching depth " << depth << endl;
@@ -62,7 +71,126 @@ void CPU::iterativeDeepening(unique_ptr<BoardNode> &pos) {
         }
     }
     cout << "End iterative deepening search" << endl;
+
+    /*
+    cout << "Printing leftmost path" << endl;
+    unique_ptr<BoardNode>& root = pos;
+    unique_ptr<BoardNode>& getPosition = pos;
+    Colour switchColour = colour;
+    cout << "Evaluation: " << root->getValue() << endl;
+    while (getPosition->getChildren().size() > 0) {
+        if (switchColour == Colour::WHITE) {
+            sort(pos->getChildren().begin(), pos->getChildren().end(), [](const unique_ptr<BoardNode> &lhs, const unique_ptr<BoardNode> &rhs) { return lhs->getValue() > rhs->getValue(); });
+        } else {
+            sort(pos->getChildren().begin(), pos->getChildren().end(), [](const unique_ptr<BoardNode> &lhs, const unique_ptr<BoardNode> &rhs) { return lhs->getValue() < rhs->getValue(); });
+        }
+
+        branchToChild(getPosition, 0);
+        getPosition->printBoardOnly(cout);
+        switchColour = !switchColour;
+    }
+    pos = move(root);
+    */
+
     branchToChild(pos, 0);
+}
+
+double CPU::quiescenceSearch(unique_ptr<BoardNode> &pos, double alpha, double beta, bool maximizingPlayer) {
+    double staticEval;
+    if (maximizingPlayer) {
+        staticEval = pos->staticEval(Colour::WHITE);
+    } else {
+        staticEval = pos->staticEval(Colour::BLACK);
+    }
+
+    if (staticEval != 10000 && staticEval != 20000) {
+        pos->setValue(staticEval);
+        return staticEval;
+    } else if (staticEval == 20000) {
+        if (maximizingPlayer) {
+            return negativeInfinity;
+        } else {
+            return positiveInfinity;
+        }
+    }
+
+    if (maximizingPlayer) {
+        double maxEval = negativeInfinity;
+        if (pos->getChildren().size() == 0) {
+            int index = -1;
+            do {
+                pos->addPredictedBestMove(Colour::WHITE);
+                index++;
+                double eval = quiescenceSearch(pos->getChildren()[index], alpha, beta, false);
+                maxEval = max(maxEval, eval);
+                alpha = max(alpha, eval);
+                if (beta <= alpha) {
+                    break;
+                }
+            } while (!pos->moveListEmpty() && pos->isWorthChecking(2.4));
+            if (index == -1) {
+                return negativeInfinity;
+            }
+        } else {
+            sort(pos->getChildren().begin(), pos->getChildren().end(), [](const unique_ptr<BoardNode> &lhs, const unique_ptr<BoardNode> &rhs) { return lhs->getValue() > rhs->getValue(); });
+            for (int i = 0; i < (pos->getChildren().size() + pos->getMoves().size()); i++) {
+                if (i >= pos->getChildren().size()) {
+                    if (pos->isWorthChecking(2.4)) {
+                        pos->addPredictedBestMove(Colour::WHITE);
+                    } else {
+                        break;
+                    }
+                }
+                unique_ptr<BoardNode> &child = pos->getChildren()[i];
+                double eval = quiescenceSearch(child, alpha, beta, false);
+                maxEval = max(maxEval, eval);
+                alpha = max(alpha, eval);
+                if (beta <= alpha) {
+                    break;
+                }
+            }
+        }
+        pos->setValue(maxEval);
+        return maxEval;
+    } else {
+        double minEval = positiveInfinity;
+        if (pos->getChildren().size() == 0) {
+            int index = -1;
+            do {
+                pos->addPredictedBestMove(Colour::BLACK);
+                index++;
+                double eval = quiescenceSearch(pos->getChildren()[index], alpha, beta, true);
+                minEval = min(minEval, eval);
+                beta = min(beta, eval);
+                if (beta <= alpha) {
+                    break;
+                }
+            } while (!pos->moveListEmpty() && pos->isWorthChecking(2.4));
+            if (index == -1) {
+                return positiveInfinity;
+            }
+        } else {
+            sort(pos->getChildren().begin(), pos->getChildren().end(), [](const unique_ptr<BoardNode> &lhs, const unique_ptr<BoardNode> &rhs) { return lhs->getValue() < rhs->getValue(); });
+            for (int i = 0; i < (pos->getChildren().size() + pos->getMoves().size()); i++) {
+                if (i >= pos->getChildren().size()) {
+                    if (pos->isWorthChecking(2.4)) {
+                        pos->addPredictedBestMove(Colour::BLACK);
+                    } else {
+                        break;
+                    }
+                }
+                unique_ptr<BoardNode> &child = pos->getChildren()[i];
+                double eval = quiescenceSearch(child, alpha, beta, true);
+                minEval = min(minEval, eval);
+                beta = min(beta, eval);
+                if (beta <= alpha) {
+                    break;
+                }
+            }
+        }
+        pos->setValue(minEval);
+        return minEval;
+    }
 }
 
 double CPU::alphaBetaPruning(unique_ptr<BoardNode> &pos, int depth, double alpha, double beta, bool maximizingPlayer) {
@@ -70,12 +198,7 @@ double CPU::alphaBetaPruning(unique_ptr<BoardNode> &pos, int depth, double alpha
     auto duration = duration_cast<seconds>(currentTime - startTime);
     if (duration.count() >= maxTimeSeconds) {  // time is up! stop the search
         if (depth == 0) {
-            double staticEval;
-            if (maximizingPlayer) {
-                staticEval = pos->staticEval(Colour::WHITE);
-            } else {
-                staticEval = pos->staticEval(Colour::BLACK);
-            }
+            double staticEval = quiescenceSearch(pos, alpha, beta, maximizingPlayer);
             pos->setValue(staticEval);
             return staticEval;
         } else {
@@ -84,15 +207,8 @@ double CPU::alphaBetaPruning(unique_ptr<BoardNode> &pos, int depth, double alpha
     }
 
     if (depth == 0) {
-        double staticEval;
-        if (maximizingPlayer) {
-            staticEval = pos->staticEval(Colour::WHITE);
-        } else {
-            staticEval = pos->staticEval(Colour::BLACK);
-        }
+        double staticEval = quiescenceSearch(pos, alpha, beta, maximizingPlayer);
         pos->setValue(staticEval);
-        // cout << "Static eval: " << staticEval << endl;
-        // pos->printBoardOnly(cout);
         return staticEval;
     }
 
@@ -167,9 +283,6 @@ double CPU::alphaBetaPruning(unique_ptr<BoardNode> &pos, int depth, double alpha
         pos->setValue(minEval);
         return minEval;
     }
-}
-
-void CPU::quiescenceSearch() {
 }
 
 void CPU::countTotalPossibleMoves(unique_ptr<BoardNode> &pos, int depth, bool maximizingPlayer, int &totalMoves) {

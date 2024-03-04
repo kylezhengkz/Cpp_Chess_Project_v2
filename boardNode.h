@@ -27,6 +27,7 @@ class BoardNode {
     void generateOpponentChecksAndUnsafeMusk(Colour myColour, U64 &unsafeMusk, U64 &diagonalChecks, U64 &straightChecks, U64 &knightChecks, U64 &pawnChecks, U64 teamPieces, U64 opponentPieces, unordered_map<int, U64>& improperEvasions, bool print);
     void generateMoves(Colour colour, bool print);
     void addPredictedBestMove(Colour colour);
+    bool isWorthChecking(double limit);
     ostream &printBoardOnly(ostream &out);
     ostream &printChildrenValues(ostream &out);
     ostream &printChildrenMoveNotation(ostream &out);

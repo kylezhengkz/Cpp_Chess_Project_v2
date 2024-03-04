@@ -19,11 +19,14 @@ double BoardNode::staticEval(Colour colour) {
     eval -= __builtin_popcountll(board->blackRooks) * 5;
     eval -= __builtin_popcountll(board->blackQueens) * 9;
 
-    /*
-    if (eval >= 3) {  // lazy evaluation
-        return eval;
+    generateMoves(colour, false);
+    if (moves.size() == 0) {
+        return 20000;
     }
-    
+    if (isWorthChecking(2.4)) {
+        return 10000; // quiescenceSearch
+    }
+
     vector<Piece> pieceGenerationOrder;
     Piece switchPiece;
     Colour oppositionColour;
@@ -50,11 +53,11 @@ double BoardNode::staticEval(Colour colour) {
         while (existingPieces != 0) {
             int square = popLSB(existingPieces);
             if ((piece == Piece::WHITEPAWN || piece == Piece::BLACKPAWN)) {
-                eval += LookupTable::lookupPawnPSTValue(square, opponentPawns, colour) * 0.1;
+                eval += LookupTable::lookupPawnPSTValue(square, opponentPawns, colour);
             } else if (piece == Piece::KNIGHT) {
-                eval += LookupTable::lookupKnightPSTValue(square, allPieces) * 0.1;
+                eval += LookupTable::lookupKnightPSTValue(square, allPieces);
             } else {
-                eval += LookupTable::lookupPSTValue(square, piece, allPieces) * 0.1;
+                eval += LookupTable::lookupPSTValue(square, piece, allPieces);
             }
         }
     }
@@ -65,15 +68,14 @@ double BoardNode::staticEval(Colour colour) {
         while (existingPieces != 0) {
             int square = popLSB(existingPieces);
             if ((piece == Piece::WHITEPAWN || piece == Piece::BLACKPAWN)) {
-                eval -= LookupTable::lookupPawnPSTValue(square, switchOpponentPawns, oppositionColour) * 0.1;
+                eval -= LookupTable::lookupPawnPSTValue(square, switchOpponentPawns, oppositionColour);
             } else if (piece == Piece::KNIGHT) {
-                eval -= LookupTable::lookupKnightPSTValue(square, allPieces) * 0.1;
+                eval -= LookupTable::lookupKnightPSTValue(square, allPieces);
             } else {
-                eval -= LookupTable::lookupPSTValue(square, piece, allPieces) * 0.1;
+                eval -= LookupTable::lookupPSTValue(square, piece, allPieces);
             }
         }
     }
-    */
 
     return eval;
 }
@@ -578,7 +580,7 @@ void BoardNode::generateMoves(Colour colour, bool print) {
                             if (safe) {
                                 moveVal += 0.1;
                             } else {
-                                moveVal += 1.5;
+                                moveVal += 2.6;
                             }
                         }
                         break;
@@ -631,7 +633,7 @@ void BoardNode::generateMoves(Colour colour, bool print) {
                             if (safe) {
                                 moveVal += 0.1;
                             } else {
-                                moveVal += 1.5;
+                                moveVal += 2.6;
                             }
                         }
                         break;
@@ -649,7 +651,7 @@ void BoardNode::generateMoves(Colour colour, bool print) {
                             if (safe) {
                                 moveVal += 0.1;
                             } else {
-                                moveVal += 1.5;
+                                moveVal += 2.6;
                             }
                         }
                         break;
@@ -667,7 +669,7 @@ void BoardNode::generateMoves(Colour colour, bool print) {
                             if (safe) {
                                 moveVal += 0.1;
                             } else {
-                                moveVal += 1.5;
+                                moveVal += 2.6;
                             }
                         }
                         break;
@@ -685,7 +687,7 @@ void BoardNode::generateMoves(Colour colour, bool print) {
                             if (safe) {
                                 moveVal += 0.1;
                             } else {
-                                moveVal += 1.5;
+                                moveVal += 2.6;
                             }
                         }
                         break;
@@ -703,7 +705,7 @@ void BoardNode::generateMoves(Colour colour, bool print) {
                             if (safe) {
                                 moveVal += 0.1;
                             } else {
-                                moveVal += 1.5;
+                                moveVal += 2.6;
                             }
                         }
                         break;
@@ -820,10 +822,10 @@ void BoardNode::generateMoves(Colour colour, bool print) {
         if (castleStatus.canWhiteKingCastleLeft() && ((whiteLeftCastle & allPieces) == 0)) {
             if (!getBit(unsafeMusk, 4) && !getBit(unsafeMusk, 1) && !getBit(unsafeMusk, 2) && !getBit(unsafeMusk, 3)) {
                 if (getBit(straightChecks, 3)) {
-                    unique_ptr<Move> newMove = make_unique<Move>(kingSquare, 2, 0b0001, 0b0000, 1.5, true);
+                    unique_ptr<Move> newMove = make_unique<Move>(kingSquare, 2, 0b0001, 0b0000, 2.6, true);
                     moves.emplace_back(move(newMove));
                 } else {
-                    unique_ptr<Move> newMove = make_unique<Move>(kingSquare, 2, 0b0001, 0b0000, 1.5, false);
+                    unique_ptr<Move> newMove = make_unique<Move>(kingSquare, 2, 0b0001, 0b0000, 2.6, false);
                     moves.emplace_back(move(newMove));
                 }
             }
@@ -845,10 +847,10 @@ void BoardNode::generateMoves(Colour colour, bool print) {
             ((blackLeftCastle & allPieces) == 0)) {
             if (!getBit(unsafeMusk, 60) && !getBit(unsafeMusk, 57) && !getBit(unsafeMusk, 58) && !getBit(unsafeMusk, 59)) {
                 if (getBit(straightChecks, 59)) {
-                    unique_ptr<Move> newMove = make_unique<Move>(kingSquare, 58, 0b0001, 0b0000, 1.5, true);
+                    unique_ptr<Move> newMove = make_unique<Move>(kingSquare, 58, 0b0001, 0b0000, 2.6, true);
                     moves.emplace_back(move(newMove));
                 } else {
-                    unique_ptr<Move> newMove = make_unique<Move>(kingSquare, 58, 0b0001, 0b0000, 1.5, false);
+                    unique_ptr<Move> newMove = make_unique<Move>(kingSquare, 58, 0b0001, 0b0000, 2.6, false);
                     moves.emplace_back(move(newMove));
                 }
             }
@@ -1089,6 +1091,14 @@ void BoardNode::addPredictedBestMove(Colour colour) {
     }
 
     children.emplace_back(make_unique<BoardNode>(move(newPosition), newLastDoublePawnMoveIndex, newCastleStatus, this));
+}
+
+bool BoardNode::isWorthChecking(double limit) {
+    auto& firstMove = moves.at(0);
+    if (firstMove->value >= limit) {
+        return true;
+    }
+    return false;
 }
 
 ostream &BoardNode::printBoardOnly(ostream &out) {
