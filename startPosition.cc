@@ -1,4 +1,12 @@
 #include "startPosition.h"
+unique_ptr<BoardNode> StartPosition::kingSetup(unique_ptr<Board> &board) {
+    setBit(board->whiteKing, 62);
+    setBit(board->blackKing, 60);
+    CastleStatus castleStatus(false, false, false, false);
+    unique_ptr<BoardNode> boardNode(new BoardNode(move(board), -1, castleStatus, nullptr));
+    return boardNode;
+}
+
 unique_ptr<BoardNode> StartPosition::defaultPosition(unique_ptr<Board> &board) {
     for (int i = 8; i < 16; i++) {
         setBit(board->whitePawns, i);

@@ -41,11 +41,11 @@ void User::pickMove(unique_ptr<BoardNode>& pos) {
     int fromSquareInt = strToIndex(fromSquare);
     int toSquareInt = strToIndex(toSquare);
     if (fromSquareInt >= 64 || fromSquareInt < 0) {
-        throw logic_error("Invalid from square");
+        throw InvalidUserMoveException();
     }
 
     if (toSquareInt >= 64 || toSquareInt < 0) {
-        throw logic_error("Invalid to square");
+        throw InvalidUserMoveException();
     }
 
     while (!pos->moveListEmpty()) {
@@ -54,7 +54,7 @@ void User::pickMove(unique_ptr<BoardNode>& pos) {
 
     size_t childIndex = pos->branchToChildInput(fromSquareInt, toSquareInt, colour);
     if (childIndex == -1) {
-        throw logic_error("Invalid move");
+        throw InvalidUserMoveException();
     } else {
         branchToChild(pos, childIndex);
     }

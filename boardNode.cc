@@ -239,14 +239,14 @@ void BoardNode::generateOpponentChecksAndUnsafeMusk(Colour myColour, U64 &unsafe
         myBishops = board->whiteBishops;
         myRooks = board->whiteRooks;
         myQueens = board->whiteQueens;
-        pieceGenerationOrder = {Piece::BLACKPAWN, Piece::KNIGHT, Piece::BISHOP, Piece::ROOK, Piece::QUEEN};
+        pieceGenerationOrder = {Piece::BLACKPAWN, Piece::KNIGHT, Piece::BISHOP, Piece::ROOK, Piece::QUEEN, Piece::KING};
         oppositionColour = Colour::BLACK;
     } else {
         opponentKingSquare = getLSB(board->whiteKing);
         myBishops = board->blackBishops;
         myRooks = board->blackRooks;
         myQueens = board->blackQueens;
-        pieceGenerationOrder = {Piece::WHITEPAWN, Piece::KNIGHT, Piece::BISHOP, Piece::ROOK, Piece::QUEEN};
+        pieceGenerationOrder = {Piece::WHITEPAWN, Piece::KNIGHT, Piece::BISHOP, Piece::ROOK, Piece::QUEEN, Piece::KING};
         oppositionColour = Colour::WHITE;
     }
     U64 allPieces = teamPieces | opponentPieces;

@@ -92,6 +92,11 @@ void CPU::iterativeDeepening(unique_ptr<BoardNode> &pos) {
     pos = move(root);
     */
 
+    if (colour == Colour::WHITE) {
+            sort(pos->getChildren().begin(), pos->getChildren().end(), [](const unique_ptr<BoardNode> &lhs, const unique_ptr<BoardNode> &rhs) { return lhs->getValue() > rhs->getValue(); });
+        } else {
+            sort(pos->getChildren().begin(), pos->getChildren().end(), [](const unique_ptr<BoardNode> &lhs, const unique_ptr<BoardNode> &rhs) { return lhs->getValue() < rhs->getValue(); });
+        }
     branchToChild(pos, 0);
 }
 
